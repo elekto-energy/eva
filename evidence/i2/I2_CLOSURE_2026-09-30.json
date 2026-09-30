@@ -1,0 +1,114 @@
+{
+  "claims_not_made": [
+    "VPS suite is not a full 1293 pass",
+    "EVE installation identity remains OPERATOR_DECLARED",
+    "no MCP OAuth; static bearer at nginx only",
+    "trusted-git not claimed (PATH git)"
+  ],
+  "closed_utc": "2026-09-30",
+  "deviations_and_findings": [
+    "Instrument defects found and fixed during I2 (all measured): git bundle verify needs a repo (-> list-heads); pytest capture under pipefail was silent (-> explicit capture + exit code); pm2 jlist warning before JSON (-> parse from first '['); nginx step printed NGINX_OK on 404/404 (-> strict nginx-check, exit 3 on any mismatch; owner FRAGESTOPP).",
+    "404/404 after the first reload = nginx reload race (old workers served the request); same configuration measured minutes later gave 401/401/400(eve-mcp)/200. No nginx change after diagnosis; bounded settle-loop added to the instrument.",
+    "SECURITY: the diagnostic dump exposed the pre-existing X-Trinity-Key and X-Ctrl-Energy-Key (api.eveverified.com) in terminal/chat output. Classified COMPROMISED; rotation is a separate owner-authorized act after I2. Values never reproduced.",
+    "EVE-PAR-LOCAL-000001..000004 in the VPS store are all accepted-run records (no aborted-run records)."
+  ],
+  "evidence_inventory": {
+    "ACCEPTANCE_2026-09-30T143617Z.json": {
+      "bytes": 9430,
+      "sha256": "d9fb10ddfc5fea6de4224959c3399ea133cae5f74449f6da9bbf705bd0711833"
+    },
+    "REMOTE_PROBE_20260930T144452Z.json": {
+      "bytes": 1368,
+      "sha256": "9bfbbe0aaecbc175536fc8398588818bc003c34705468e4adf1103da3a4e1d01"
+    },
+    "SCENARIO_BUILD_2026-09-30T143402Z.json": {
+      "bytes": 2859,
+      "sha256": "ba30a8dc7277d757a9954c0ae1dd0d7e171a2912eb4be471ea66dccaf05b2f3f"
+    },
+    "SCENARIO_BUILD_2026-09-30T143437Z.json": {
+      "bytes": 2851,
+      "sha256": "7802dc06797560033ad8b6963717f59d5243c758e18bf5f83f93aac788941b0b"
+    },
+    "SUITE_VPS_20260930T142655Z.json": {
+      "bytes": 2470,
+      "sha256": "d62871df848232ec8969f32d23e3b64c312e472563397180eb8fc73fc105f7b4"
+    },
+    "SUITE_VPS_20260930T142655Z.txt": {
+      "bytes": 17383,
+      "sha256": "3e6ac7d8731123481b8caa3819064f7b4446188c87de6ac4b9d4bba7d8838f34"
+    },
+    "demo-venv-freeze.txt": {
+      "bytes": 443,
+      "sha256": "3963c053d6e8a6adc1e42f2e168861b12c32e933cbd4c36ec88b6aaabd7f337b"
+    },
+    "grc-venv-freeze.txt": {
+      "bytes": 316,
+      "sha256": "fd350457e923cce3bfed0ba1b0023db8fad5c068737494267757868083fbfe86"
+    },
+    "pm2_20260930T142904Z.txt": {
+      "bytes": 0,
+      "note": "empty: first 'state' attempt aborted on pm2 7.0.1 printing its daemon-version warning before the JSON; parser fixed, snapshot retaken as 143346Z",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "pm2_20260930T143346Z.txt": {
+      "bytes": 547,
+      "sha256": "5e4acde66cd796a57607c1113883fd746a5ff91ee922302f876cd9155837b456"
+    },
+    "pm2_20260930T144649Z.txt": {
+      "bytes": 547,
+      "sha256": "5e4acde66cd796a57607c1113883fd746a5ff91ee922302f876cd9155837b456"
+    }
+  },
+  "gates": {
+    "G_clone_tree": "PASS tree a698922c... == eve-core-v1",
+    "G_environment": "GRC production-derived 18 packages (grc-venv-freeze.txt) + I2 test-only additions: pytest==9.1.1 (+iniconfig, packaging, pluggy, Pygments) and httpx==0.28.1 (+certifi, httpcore) -- owner-approved test-only; runtime of eva-eve does not use them",
+    "G_external_ports": "PASS from workstation: Test-NetConnection 185.20.15.189:8012 False, :8765 False; from VPS public IP also not reachable",
+    "G_local_acceptance": "PHASE1_ACCEPTANCE_PASS (record 879c9ae8...): CASE_A ACTION_CHAIN_SUPPORTED/allow EVE-PAR-LOCAL-000001, CASE_B HUMAN_REVIEW_REQUIRED/escalate EVE-PAR-LOCAL-000002, verify VALID, all correspondence predicates true; harness eve_full_suite NOT_EXECUTED_BY_HARNESS by design, suite evidence = SUITE_VPS record",
+    "G_mcp_vendor": "PASS",
+    "G_nginx_gate": "NGINX_GATE_OK: no-token 401, wrong-token 401 (both nginx, upstream not reached), correct-token + MCP initialize 200, GRC page 200",
+    "G_remote": "REMOTE_PROBE_PASS (record 7b5181ed...): via public hostname+TLS+nginx; protocol 2025-11-25, server eve-mcp 0.1.0, tools/list [eve_pre_action]; CASE_A allow EVE-PAR-LOCAL-000003, CASE_B escalate EVE-PAR-LOCAL-000004, both http 200, policy hash e7a23e8c...",
+    "G_scenarios": "PASS dry-run then SAVE; content_hash A 4a972db7... B 3246e463... identical to workstation (cross-platform deterministic)",
+    "G_secrets": "PASS snippet 600 root; env.eve/env.mcp/nginx-bearer.txt 600 ubuntu; site file and backup bearer-free; no token value in any evidence file (48-hex and auth-header scan clean); dump.pm2 deliberately not exported",
+    "G_suite": "SUITE_QUALIFIED_PASS -- 1283 passed / 10 failed, all 1293 run, none deselected; the 10 = H4/H5 sealer tests failing with trusted_git_unconfigured because the H6 MACHINE_BOUND_CONFIG D:\\EVE_RUNNER\\trusted_git.json does not exist on Linux (owner decision A). NOT a full pass. Full accepted regression for this tree remains workstation 1293/1293.",
+    "G_units_non_interference": "PASS loopback-only listeners; pm2 snapshot before (143346Z) == after (144649Z), byte-identical, 11 processes same names/status/restart counts"
+  },
+  "identities": {
+    "eve_core": {
+      "commit": "ffe118c326e3d4ec4b194ddea0ba6c8d09d78f27",
+      "source": "git bundle of refs/tags/eve-core-v1 (tag object be46c3c0309a7050c8eac23add7785826f40f4c1)",
+      "tag": "eve-core-v1",
+      "tree": "a698922c9fd740c4b114e572a626380abf1590a4"
+    },
+    "eve_mcp": {
+      "adapter_tests": "88 passed (VPS venv-mcp)",
+      "tag": "eve-mcp-v1",
+      "tree": "cbdcd191710c472f7706a9487f31eef3cfd1821d",
+      "vendor_verify": "PASS 18/18"
+    },
+    "policy": {
+      "policy_content_sha256": "e7a23e8c448ccff96f54ca7a449908e5707a2df5e7f37afcc61d712a285867aa",
+      "policy_ref": "eve-mcp-demo-policy-v1",
+      "registry_file_sha256": "7d9cd6a72ff48673c58ed0973e228be6a73f87af0d9fb1f03176f3036a39609c"
+    }
+  },
+  "increment": "Phase 1 / I2 hosted demo backend",
+  "instruments": {
+    "tools/verify_vendor.py": "7a61aee3c330d59d674704b89fa8a69f3e4e2d7a2aad32debf9943632bf53445",
+    "tools/vps/i2_backend.sh": "263dc8c95327d22df73d7d7f559f786899e38d114641c17ad6312a2b7f912bbb",
+    "tools/vps/i2_diag_nginx.sh": "8e57a0a9d2c940f458f9e057db145096a2b3e02a71113fef93e020d84d5f3d8a",
+    "tools/vps/i2_remote_probe.py": "09d35a7bf359d6343197b3be7659ed3847ba8fe7675d965185cd1aa1f575655e"
+  },
+  "project": "EVA -- Evidence Verification Agent, powered by EVE (052_eva)",
+  "record_kind": "eva_i2_closure",
+  "record_schema_version": "eva-i2-closure-1.0",
+  "record_sha256": "be1fb1fd312ba34ffb4e98fc6a347b6e59efc1350e13a1200d6659849b01a700",
+  "status": "I2_GATES_PASS -- awaiting owner closure; I3 not started",
+  "topology": {
+    "eve": "systemd eva-eve.service, 127.0.0.1:8012, external store /opt/eva-demo/eve_store",
+    "eve_mcp": "systemd eva-mcp.service, 127.0.0.1:8765",
+    "existing_services": "untouched: /opt/eve-grc, 11 pm2 processes, pre-existing nginx locations",
+    "host": "VPS 185.20.15.189",
+    "public_surface": "https://grc.eveverified.com/eva/mcp only (nginx location = /eva/mcp, bearer check in root-0600 include /etc/nginx/snippets/eva-mcp-bearer.conf)",
+    "root": "/opt/eva-demo"
+  }
+}

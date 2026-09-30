@@ -1,0 +1,38 @@
+{
+  "bearer": "PRESENT_NOT_RECORDED",
+  "cases": {
+    "CASE_A": {
+      "chain_id": "EVE-MCP-DEMO-A-2026-001",
+      "customer_policy_outcome": "allow",
+      "eve_record_id": "EVE-PAR-LOCAL-000003",
+      "http_status": 200,
+      "policy_content_sha256": "e7a23e8c448ccff96f54ca7a449908e5707a2df5e7f37afcc61d712a285867aa",
+      "pre_action_status": "evaluated",
+      "verified_chain_outcome": "ACTION_CHAIN_SUPPORTED"
+    },
+    "CASE_B": {
+      "chain_id": "EVE-MCP-DEMO-B-2026-001",
+      "customer_policy_outcome": "escalate",
+      "eve_record_id": "EVE-PAR-LOCAL-000004",
+      "http_status": 200,
+      "policy_content_sha256": "e7a23e8c448ccff96f54ca7a449908e5707a2df5e7f37afcc61d712a285867aa",
+      "pre_action_status": "evaluated",
+      "verified_chain_outcome": "HUMAN_REVIEW_REQUIRED"
+    }
+  },
+  "initialize": {
+    "protocolVersion": "2025-11-25",
+    "serverInfo_name": "eve-mcp",
+    "serverInfo_version": "0.1.0"
+  },
+  "origin_host": "VPS 185.20.15.189 via public hostname + TLS + nginx bearer gate",
+  "record_kind": "eva_i2_remote_probe",
+  "record_schema_version": "eva-remote-probe-1.0",
+  "record_sha256": "7b5181ed84632f1e196bc8b68739e38be98a13ea756cad4c6f8157c9a38a735f",
+  "result": "REMOTE_PROBE_PASS",
+  "run_utc": "20260930T144452Z",
+  "surface": "https://grc.eveverified.com/eva/mcp",
+  "tools_list": [
+    "eve_pre_action"
+  ]
+}
