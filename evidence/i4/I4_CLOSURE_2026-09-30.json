@@ -1,0 +1,357 @@
+{
+  "date": "2026-09-30",
+  "files_added_or_changed": {
+    "eva/web/__init__.py": {
+      "bytes": 182,
+      "sha256": "40c9f46cebedcdc75e3d0987448a5c37afed03ac1a7198681eb95a40dfc3da2d"
+    },
+    "eva/web/app.py": {
+      "bytes": 8556,
+      "sha256": "1ef877a203ff37a97f220fa5530655baf81f50e4b1131c2dbed5f60da6ea7dbf"
+    },
+    "eva/web/proposer.py": {
+      "bytes": 996,
+      "sha256": "d5b5008c0a6220865ee026d69392ff5d55201c3b8878556f353ae4b49a7f53bc"
+    },
+    "eva/web/report.py": {
+      "bytes": 6074,
+      "sha256": "fd94a8c48819b96355a485ac6a728e401c0745bc4b8c096abc40db1016e03c2e"
+    },
+    "eva/web/static/index.html": {
+      "bytes": 12849,
+      "sha256": "d11f7b3888cfcebf829bb7e9cd9677e12022640711f8b2ac0e09827cd99a6963"
+    },
+    "requirements-eva.txt": {
+      "bytes": 371,
+      "sha256": "b5e14d1a26d1f6d2db44e8bb70beed93b2a7b4fb644cd3963fab1bcbe959894e"
+    },
+    "tests/test_web.py": {
+      "bytes": 7231,
+      "sha256": "97252c171e58b45db570052d6ea72530bcb708e17ee24d96ade4a5877dacfd79"
+    }
+  },
+  "findings": [
+    "Queueing defect found in live use: turns were serialized behind a lock, so a Nova turn throttled by Bedrock (~2 min 45 s each, measured between turns 6-10) blocked later scripted turns ('Checking with EVE...'). Fixed inside I4: a turn in progress now makes /api/turn and /api/reset answer 409 at once, and the page disables all controls while a turn runs. Pre-fix hashes: app.py 8516ee59..., index.html 22d0a68f..., test_web.py 237e8baa...",
+    "Register resets are not written to evidence/i4 (they appear only as runs/web_* directories: 5 in session 1 = 1 start + 4 resets, matching the 4 turns that start again from the seed). Proposed for I5: a reset record.",
+    "Browser voice input reported 'not-allowed' (microphone permission denied for the page in the browser); speech output unaffected; typing works. Not an EVA defect."
+  ],
+  "frozen_i3a_boundary": {
+    "eva/authorization.py": "4247e513d5408297e1eecddb6b6b7eb5240a577e17c48d91433b6d8fd087f2ae",
+    "eva/data/chain_map.json": "987a7e625d172e797ce1f51cc7f43f7f9cf28e8c63abe53410478ef0b6f94b6c",
+    "eva/eve_client.py": "82f6afb2b5685b67bea96ceaa03870367206aec35e2d2d9cc7e4b93d6eeeaa44",
+    "eva/gate.py": "8eeff78772a97508cbf2ee8acfdbbb22c0c4ad08b7677063f3b9e9a58cbc7ed8",
+    "eva/tools.py": "70e88f7138ec02f099d0b4e79ebc81909febe63810e99be4a5f68ee0d5e84ac3"
+  },
+  "increment": "Phase 1 / I4 -- simulated voice-assistant experience (not Alexa+)",
+  "limitations": [
+    "proposer in the live acceptance is the scripted keyword proposer; Nova is blocked by Bedrock quotas (see docs/FRICTION_LOG.md F-002)",
+    "single local user, one turn at a time by design",
+    "voice input depends on the browser's Web Speech API (Chrome/Edge)"
+  ],
+  "live_acceptance_real_eve": {
+    "all_turns_self_hash": "21/21 MATCH; 0 pending authorizations after every turn; no access keys or nonces in any record",
+    "screenshot_turns": {
+      "A": "TURN_20260930T192518345317Z_1.json -> ALLOW, allow, EVE-PAR-LOCAL-000019, executed once, medium->high",
+      "B": "TURN_20260930T192541253230Z_2.json -> DENY, escalate, EVE-PAR-LOCAL-000020, not executed, register unchanged",
+      "screenshots": "OWNER_OBSERVED: full-page screenshots of both turns shared in the review chat; not stored in the repository"
+    },
+    "session_1_summary": "19 turns: scripted A x5 ALLOW (EVE-PAR-LOCAL-000007/9/11/13/17), scripted B x7 DENY escalate (000008/10/12/14/15/16/18), Nova x7 ThrottlingException -> proposer failed, nothing proposed, nothing changed, no fallback",
+    "turn_records": {
+      "TURN_20260930T190043163032Z_1.json": {
+        "bytes": 3175,
+        "customer_policy_outcome": "allow",
+        "eve_record_id": "EVE-PAR-LOCAL-000007",
+        "gate": "ALLOW",
+        "proposer": "scripted",
+        "proposer_error": null,
+        "record_sha256": "44b59138e6e3221e6b273b14ad29a32d3a4c4481493e665d39ca02226130cf5a",
+        "register_changed": true,
+        "sha256": "7a42f8ababea2231c09c0944bc660a17a18bcdc1a40eed1597aa7491633f09c2",
+        "tool_executed": true,
+        "utterance": "Raise Epsilon to high"
+      },
+      "TURN_20260930T190046446689Z_2.json": {
+        "bytes": 2914,
+        "customer_policy_outcome": "escalate",
+        "eve_record_id": "EVE-PAR-LOCAL-000008",
+        "gate": "DENY",
+        "proposer": "scripted",
+        "proposer_error": null,
+        "record_sha256": "fafc8b4bcac1719d17901ee4633a197eb11804c9a952e1af541776bff6fbd1ee",
+        "register_changed": false,
+        "sha256": "db8e621cf0e162fae263d33ff0d29e38d23ce3cb0cc26549da10c6c9999efdf9",
+        "tool_executed": false,
+        "utterance": "Raise Zeta to high"
+      },
+      "TURN_20260930T190050530659Z_3.json": {
+        "bytes": 3175,
+        "customer_policy_outcome": "allow",
+        "eve_record_id": "EVE-PAR-LOCAL-000009",
+        "gate": "ALLOW",
+        "proposer": "scripted",
+        "proposer_error": null,
+        "record_sha256": "0a3b55dbeeaa0e736f8078dbed70b1f8f61dc60fd9e99b3881b44b0d249ae984",
+        "register_changed": true,
+        "sha256": "f7493677c1b77cf66cc724de72941d0ad04c73ca50a867568dfee0cb741c51af",
+        "tool_executed": true,
+        "utterance": "Raise Epsilon to high"
+      },
+      "TURN_20260930T190052543425Z_4.json": {
+        "bytes": 2918,
+        "customer_policy_outcome": "escalate",
+        "eve_record_id": "EVE-PAR-LOCAL-000010",
+        "gate": "DENY",
+        "proposer": "scripted",
+        "proposer_error": null,
+        "record_sha256": "036130196672b6f0c35e06b53221781ae06e01b1000794e4746de81c00c6d7fb",
+        "register_changed": false,
+        "sha256": "a5491d244a75fccccb1e1ee1edd753cf7308a6b7f70514d9327efa996b18c891",
+        "tool_executed": false,
+        "utterance": "Raise Zeta to high"
+      },
+      "TURN_20260930T190053854619Z_5.json": {
+        "bytes": 3175,
+        "customer_policy_outcome": "allow",
+        "eve_record_id": "EVE-PAR-LOCAL-000011",
+        "gate": "ALLOW",
+        "proposer": "scripted",
+        "proposer_error": null,
+        "record_sha256": "712d8179678b30134540826231fbbaf2575b674a1d50ad3307ada72433ae40cc",
+        "register_changed": true,
+        "sha256": "136171ad93695a7062bd5e7cc16a52945308ebf4b7a61bf8777b35e47f90de21",
+        "tool_executed": true,
+        "utterance": "Raise Epsilon to high"
+      },
+      "TURN_20260930T190059588496Z_6.json": {
+        "bytes": 2367,
+        "customer_policy_outcome": null,
+        "eve_record_id": null,
+        "gate": null,
+        "proposer": "nova",
+        "proposer_error": "ThrottlingException",
+        "record_sha256": "8d271bd92735e29c0610e67f24a2d140d33d29092c8ba807eb69fc04d3fc326c",
+        "register_changed": false,
+        "sha256": "29ccc6cdbc6e6f7879e38e2820b1237a8f2e8f0360430a873bef9c79e50d334a",
+        "tool_executed": false,
+        "utterance": "Raise Zeta to high"
+      },
+      "TURN_20260930T190346804325Z_7.json": {
+        "bytes": 2370,
+        "customer_policy_outcome": null,
+        "eve_record_id": null,
+        "gate": null,
+        "proposer": "nova",
+        "proposer_error": "ThrottlingException",
+        "record_sha256": "4de8ede0628484d87871a96dab1dbec6f699ab3a37abe46efcccfcf42e0ac702",
+        "register_changed": false,
+        "sha256": "4ec118b22ae930ebaa9f0ba349947e1b4b27e56127c37f9427ab20181b4ac62d",
+        "tool_executed": false,
+        "utterance": "Raise Epsilon to high"
+      },
+      "TURN_20260930T190626818323Z_8.json": {
+        "bytes": 2367,
+        "customer_policy_outcome": null,
+        "eve_record_id": null,
+        "gate": null,
+        "proposer": "nova",
+        "proposer_error": "ThrottlingException",
+        "record_sha256": "8afeda8e8f254428208ad04b96a343bd7e81eeec58add21d5fb101680a5d5435",
+        "register_changed": false,
+        "sha256": "33f95b2d627c2a95c52540e1f5300f9834372775f36f53f40ebed8cd2efb374a",
+        "tool_executed": false,
+        "utterance": "Raise Zeta to high"
+      },
+      "TURN_20260930T190916459736Z_9.json": {
+        "bytes": 2371,
+        "customer_policy_outcome": null,
+        "eve_record_id": null,
+        "gate": null,
+        "proposer": "nova",
+        "proposer_error": "ThrottlingException",
+        "record_sha256": "62549c74565e02079ab59af089a921e332da8f4fdb0689786c0c3996591f0f94",
+        "register_changed": false,
+        "sha256": "4f3b1ded98708ca620ef5b48d24ad51d4f1a2c55895d87bc4a23fbfb9706c0ed",
+        "tool_executed": false,
+        "utterance": "Raise Zeta to high"
+      },
+      "TURN_20260930T191217680877Z_10.json": {
+        "bytes": 2375,
+        "customer_policy_outcome": null,
+        "eve_record_id": null,
+        "gate": null,
+        "proposer": "nova",
+        "proposer_error": "ThrottlingException",
+        "record_sha256": "0b8d05bfe5f12151bcba33e5b37e4bdec6dab227b3b0ce0ad54445fc9522ab0c",
+        "register_changed": false,
+        "sha256": "e1080a8f1ac685d86afe9a0064d6a6a7a4a28674d002e3548934b17bcb743f51",
+        "tool_executed": false,
+        "utterance": "Raise Epsilon to high"
+      },
+      "TURN_20260930T191510901507Z_11.json": {
+        "bytes": 2920,
+        "customer_policy_outcome": "escalate",
+        "eve_record_id": "EVE-PAR-LOCAL-000012",
+        "gate": "DENY",
+        "proposer": "scripted",
+        "proposer_error": null,
+        "record_sha256": "cde35e42bd85537e036331249b9dcee033929ba3394d65b80591389011fb5a52",
+        "register_changed": false,
+        "sha256": "3f8fa4a017b7ac910aa209f8075d42de099f04426aa54d065b9ec942949cf9a2",
+        "tool_executed": false,
+        "utterance": "Raise Zeta to high"
+      },
+      "TURN_20260930T191511429208Z_12.json": {
+        "bytes": 3178,
+        "customer_policy_outcome": "allow",
+        "eve_record_id": "EVE-PAR-LOCAL-000013",
+        "gate": "ALLOW",
+        "proposer": "scripted",
+        "proposer_error": null,
+        "record_sha256": "ca9cd56d92ae4ac92738dde0ca6f0c7b21a9c04eee807156a8cea889a2d83be1",
+        "register_changed": true,
+        "sha256": "33c28bbeea6140a23459c6a2086d72469ca7953c7f382ec252ef6b85917c4c4f",
+        "tool_executed": true,
+        "utterance": "Raise Epsilon to high"
+      },
+      "TURN_20260930T191511834284Z_13.json": {
+        "bytes": 2920,
+        "customer_policy_outcome": "escalate",
+        "eve_record_id": "EVE-PAR-LOCAL-000014",
+        "gate": "DENY",
+        "proposer": "scripted",
+        "proposer_error": null,
+        "record_sha256": "5e86ab16e734c522ff5dfc78f1b5e4bc7c11aa4bdc12d24f678b1ea883642b9f",
+        "register_changed": false,
+        "sha256": "84c3cd852a8a4e368de7f8ab4996165acf716706478fb1c31f6c1cf98442f65c",
+        "tool_executed": false,
+        "utterance": "Raise Zeta to high"
+      },
+      "TURN_20260930T191512285574Z_14.json": {
+        "bytes": 2920,
+        "customer_policy_outcome": "escalate",
+        "eve_record_id": "EVE-PAR-LOCAL-000015",
+        "gate": "DENY",
+        "proposer": "scripted",
+        "proposer_error": null,
+        "record_sha256": "d5773695513695f2b9c7d39746ad10f444927f6e61a7860d296b3b799a4faaa6",
+        "register_changed": false,
+        "sha256": "601fa96698c440b217023e317ba1b0f9ed43ee14772e7e2d361b1750021ffe29",
+        "tool_executed": false,
+        "utterance": "Raise Zeta to high"
+      },
+      "TURN_20260930T191512705901Z_15.json": {
+        "bytes": 2920,
+        "customer_policy_outcome": "escalate",
+        "eve_record_id": "EVE-PAR-LOCAL-000016",
+        "gate": "DENY",
+        "proposer": "scripted",
+        "proposer_error": null,
+        "record_sha256": "33ba2ed3d5058677c825ab81a5e6dd8b4575a52dd72a7f5fb7847ad9f02ffbc4",
+        "register_changed": false,
+        "sha256": "38f2a16219835059fa6ad68de6367418ee1f1e6869cab89671c3db129da138a0",
+        "tool_executed": false,
+        "utterance": "Raise Zeta to high"
+      },
+      "TURN_20260930T191513127986Z_16.json": {
+        "bytes": 3178,
+        "customer_policy_outcome": "allow",
+        "eve_record_id": "EVE-PAR-LOCAL-000017",
+        "gate": "ALLOW",
+        "proposer": "scripted",
+        "proposer_error": null,
+        "record_sha256": "18d87b930f87b71d88b23814a346c54ed7e851e101dec61be8e95046e5cb1114",
+        "register_changed": true,
+        "sha256": "76a033b2ca831bee9ec192640fed5834e218e5d379a18074b16ad0770eda1f3d",
+        "tool_executed": true,
+        "utterance": "Raise Epsilon to high"
+      },
+      "TURN_20260930T191513621349Z_17.json": {
+        "bytes": 2916,
+        "customer_policy_outcome": "escalate",
+        "eve_record_id": "EVE-PAR-LOCAL-000018",
+        "gate": "DENY",
+        "proposer": "scripted",
+        "proposer_error": null,
+        "record_sha256": "502b10e62736db4e35600497fd025cdc67ec53fdeecc2f74fc63cda29d5bb9bf",
+        "register_changed": false,
+        "sha256": "286000061ec4363970f58355aa68a40e86053f76533930b585b70ac802f0f623",
+        "tool_executed": false,
+        "utterance": "Raise Zeta to high"
+      },
+      "TURN_20260930T191738828170Z_18.json": {
+        "bytes": 2368,
+        "customer_policy_outcome": null,
+        "eve_record_id": null,
+        "gate": null,
+        "proposer": "nova",
+        "proposer_error": "ThrottlingException",
+        "record_sha256": "11f48055935ec75b10b6883acaaeae19262addbdbaf599cf3b0f4ef894a7ae5f",
+        "register_changed": false,
+        "sha256": "6725480ca7f70f4be327e7d481e5ae77f0b1c005fcef79979274fc5016a520eb",
+        "tool_executed": false,
+        "utterance": "Raise Zeta to high"
+      },
+      "TURN_20260930T192035076187Z_19.json": {
+        "bytes": 2371,
+        "customer_policy_outcome": null,
+        "eve_record_id": null,
+        "gate": null,
+        "proposer": "nova",
+        "proposer_error": "ThrottlingException",
+        "record_sha256": "73ee0790f4e48fbcdb04fed937ac1cd81257e5e0ef710701b72a0b8661c9fb9d",
+        "register_changed": false,
+        "sha256": "3348bff7c827a5e0cbdc5a2992396c7491d7ca041220676542eb2ac06f76d81d",
+        "tool_executed": false,
+        "utterance": "Raise Epsilon to high"
+      },
+      "TURN_20260930T192518345317Z_1.json": {
+        "bytes": 3175,
+        "customer_policy_outcome": "allow",
+        "eve_record_id": "EVE-PAR-LOCAL-000019",
+        "gate": "ALLOW",
+        "proposer": "scripted",
+        "proposer_error": null,
+        "record_sha256": "e7f51deeb6b4ffd7edf11299069d5106e4ac3efc4041c584eb40b7329fb580c1",
+        "register_changed": true,
+        "sha256": "26166f3706467b3cba0c92c236c59b21e7dd0151ebce9cd5eac0f479031bc308",
+        "tool_executed": true,
+        "utterance": "Raise Epsilon to high"
+      },
+      "TURN_20260930T192541253230Z_2.json": {
+        "bytes": 2914,
+        "customer_policy_outcome": "escalate",
+        "eve_record_id": "EVE-PAR-LOCAL-000020",
+        "gate": "DENY",
+        "proposer": "scripted",
+        "proposer_error": null,
+        "record_sha256": "a4608e6303627b403753159b8d5eaf2cd3106290cb61c8a95543e9365da28a0a",
+        "register_changed": false,
+        "sha256": "0b44768fa4855917754c84af40719029bc43e589bb7d234887c82d6bb1b5e5ac",
+        "tool_executed": false,
+        "utterance": "Raise Zeta to high"
+      }
+    }
+  },
+  "non_claims": [
+    "not Alexa+ and not affiliated with or endorsed by Amazon",
+    "no accepted EVE state is created",
+    "no production readiness"
+  ],
+  "owner_rules": [
+    "the spoken text is built only from an explicit schema of observed fields (ObservedOutcome); no model text or free generation can reach it",
+    "the five I3A boundary files stay byte-frozen; I4 adds files (plus two explicit dependency pins)",
+    "localhost only (127.0.0.1); no VPS change; no public surface; no Amazon trademarks or artwork",
+    "the proposer is always labelled; a Nova failure is shown verbatim and never falls back to the scripted proposer"
+  ],
+  "project": "052_eva",
+  "record_kind": "eva_i4_closure",
+  "record_schema_version": "eva-i4-closure-1.0",
+  "record_sha256": "562b0ef14b2a733bba7aada032f83caad774dad14a0fe1880de656e9c4650753",
+  "requirements_change": "added explicit pins starlette==1.7.0 and uvicorn==0.54.0 (already installed transitively via mcp; versions measured in evidence/i3a/eva-venv-freeze.txt)",
+  "status": "I4_GATES_PASS -- awaiting owner review; no commit; I5 NOT STARTED",
+  "tests": {
+    "known_warning": "StarletteDeprecationWarning (httpx with starlette.testclient); informational, no package added",
+    "sandbox_linux_py312": "49 passed",
+    "workstation_windows_py311": "49 passed after the busy fix (48 passed before it); both reported by owner"
+  }
+}

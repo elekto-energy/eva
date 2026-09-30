@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EVA - evidence-gated voice agent (simulated)</title>
+<style>
+:root{
+  --mist:#EEF1F4; --paper:#FFFFFF; --ink:#1C2530; --muted:#5B6673; --rule:#C9D1DA;
+  --eve:#2C4A7A; --done:#1F6F52; --hold:#9A5B00; --stop:#9B1C1C;
+  --serif: "Iowan Old Style","Charter","Palatino Linotype","Book Antiqua",Georgia,serif;
+  --sans: system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --mono: ui-monospace,"Cascadia Mono",Consolas,"SFMono-Regular",Menlo,monospace;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--mist);color:var(--ink);font:16px/1.5 var(--sans)}
+.notice{background:var(--ink);color:#E8EDF2;font-size:.875rem;padding:.5rem 1.25rem}
+main{max-width:1080px;margin:0 auto;padding:2rem 1.25rem 3rem}
+header h1{font:600 2rem/1.1 var(--sans);letter-spacing:-.01em;margin:0}
+header p{margin:.35rem 0 0;color:var(--muted);max-width:62ch}
+.ask{display:flex;flex-wrap:wrap;gap:.6rem;align-items:center;margin:1.75rem 0 .6rem}
+.mic{width:3.25rem;height:3.25rem;border-radius:50%;border:2px solid var(--eve);background:var(--paper);color:var(--eve);cursor:pointer;display:grid;place-items:center}
+.mic[aria-pressed="true"]{background:var(--eve);color:#fff}
+.mic svg{width:1.3rem;height:1.3rem}
+.ask input[type=text]{flex:1 1 20rem;min-width:0;font:inherit;padding:.75rem .9rem;border:1px solid var(--rule);border-radius:6px;background:var(--paper)}
+button.primary{font:600 1rem var(--sans);padding:.75rem 1.1rem;border:0;border-radius:6px;background:var(--eve);color:#fff;cursor:pointer}
+button.quiet{font:inherit;padding:.45rem .7rem;border:1px solid var(--rule);border-radius:6px;background:transparent;color:var(--ink);cursor:pointer}
+.controls{display:flex;flex-wrap:wrap;gap:.9rem 1.4rem;align-items:center;color:var(--muted);font-size:.9rem}
+.controls select{font:inherit;padding:.3rem .4rem;border:1px solid var(--rule);border-radius:4px;background:var(--paper);color:var(--ink)}
+.try{display:flex;gap:.5rem;flex-wrap:wrap}
+:focus-visible{outline:3px solid var(--eve);outline-offset:2px}
+
+.chain{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin:2.25rem 0 0;counter-reset:none}
+.stage{position:relative;background:var(--paper);border-top:4px solid var(--rule);padding:1rem 1.1rem 1.2rem;min-height:12.5rem}
+.stage + .stage{border-left:1px solid var(--mist)}
+.stage h2{font:600 1rem/1.2 var(--sans);margin:0 0 .15rem}
+.stage .role{color:var(--muted);font-size:.85rem;margin:0 0 .8rem}
+.stage dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:.2rem .6rem;font-size:.88rem}
+.stage dt{color:var(--muted)}
+.stage dd{margin:0;overflow-wrap:anywhere}
+.id{font-family:var(--mono);font-size:.82rem}
+.verdict{font:600 1.35rem/1.1 var(--sans);margin:.2rem 0 .6rem}
+.stage.done{border-top-color:var(--done)} .stage.done .verdict{color:var(--done)}
+.stage.hold{border-top-color:var(--hold)} .stage.hold .verdict{color:var(--hold)}
+.stage.stop{border-top-color:var(--stop)} .stage.stop .verdict{color:var(--stop)}
+.stage.eve{border-top-color:var(--eve)}
+.stage.proposed{border-top-color:var(--ink)}
+.stage.after-stop{opacity:.55}
+.stopmark{position:absolute;right:.9rem;top:1rem;z-index:2;background:var(--stop);color:#fff;font:600 .75rem var(--sans);padding:.25rem .45rem;border-radius:3px}
+.stage.hold .stopmark{background:var(--hold)}
+
+.spoken{margin:2.5rem 0 0;padding:1.6rem 1.75rem;background:var(--paper);border-left:6px solid var(--eve)}
+.spoken.done{border-left-color:var(--done)} .spoken.hold{border-left-color:var(--hold)} .spoken.stop{border-left-color:var(--stop)}
+.spoken .cap{margin:0 0 .5rem;color:var(--muted);font-size:.85rem}
+.spoken blockquote{margin:0;font:400 1.75rem/1.35 var(--serif);max-width:44ch}
+.below{display:grid;grid-template-columns:1.2fr 1fr;gap:1.5rem;margin-top:1.75rem;align-items:start}
+details{background:var(--paper);padding:.8rem 1rem}
+details summary{cursor:pointer;color:var(--muted)}
+details p{margin:.6rem 0 0;white-space:pre-wrap;overflow-wrap:anywhere}
+table{width:100%;border-collapse:collapse;background:var(--paper);font-size:.92rem}
+th,td{text-align:left;padding:.55rem .8rem;border-bottom:1px solid var(--mist)}
+th{color:var(--muted);font-weight:500}
+tr.changed td{background:#E4F1EB}
+.small{color:var(--muted);font-size:.82rem;margin:.6rem 0 0}
+.error{color:var(--stop)}
+@media (max-width:800px){.chain{grid-template-columns:1fr 1fr}.below{grid-template-columns:1fr}}
+@media (max-width:520px){.chain{grid-template-columns:1fr}.spoken blockquote{font-size:1.4rem}}
+@media (prefers-reduced-motion:no-preference){.stage{transition:border-color .25s,opacity .25s}}
+</style>
+</head>
+<body>
+<div class="notice" role="note">Simulated voice-assistant experience. Not Alexa+, and not affiliated with or endorsed by Amazon. Suppliers are synthetic demo entities.</div>
+<main>
+<header>
+  <h1>EVA</h1>
+  <p>An agent that may propose a change to the supplier register, but can only make it when EVE has verified the evidence and allowed it.</p>
+</header>
+
+<section class="ask" aria-label="Ask EVA">
+  <button id="mic" class="mic" type="button" aria-pressed="false" aria-label="Speak a request" title="Speak a request">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg>
+  </button>
+  <input id="utterance" type="text" maxlength="300" placeholder="Say or type a request, e.g. Raise Epsilon to high" aria-label="Request">
+  <button id="send" class="primary" type="button">Ask EVA</button>
+</section>
+<div class="controls">
+  <label>Proposer
+    <select id="proposer">
+      <option value="scripted">Scripted proposer (no LLM)</option>
+      <option value="nova">Amazon Nova on Bedrock</option>
+    </select>
+  </label>
+  <label><input id="speak" type="checkbox" checked> Speak replies</label>
+  <span class="try"><button class="quiet" data-say="Raise Epsilon to high" type="button">Raise Epsilon to high</button>
+  <button class="quiet" data-say="Raise Zeta to high" type="button">Raise Zeta to high</button></span>
+  <button id="reset" class="quiet" type="button">Reset register</button>
+  <span id="micnote"></span>
+</div>
+
+<section class="chain" aria-label="Decision chain">
+  <article class="stage" id="s-eva"><h2>EVA proposes</h2><p class="role">What the agent tries to do</p><div class="body"><p class="small">Waiting for a request.</p></div></article>
+  <article class="stage" id="s-eve"><h2>EVE decides</h2><p class="role">EVE's answer, exactly as returned</p><div class="body"></div></article>
+  <article class="stage" id="s-gate"><h2>Gate enforces</h2><p class="role">Deterministic, outside the model</p><div class="body"></div></article>
+  <article class="stage" id="s-reg"><h2>Register</h2><p class="role">What actually happened</p><div class="body"></div></article>
+</section>
+
+<section class="spoken" id="spoken" aria-live="polite">
+  <p class="cap">What EVA says, built only from the observed outcome</p>
+  <blockquote id="spokenText">Ask EVA to change a supplier's risk status.</blockquote>
+</section>
+
+<div class="below">
+  <details id="modeldetails"><summary>The model's own text (shown, never spoken)</summary><p id="modelText">None yet.</p></details>
+  <div>
+    <table aria-label="Supplier register"><thead><tr><th>Supplier</th><th>Risk status</th></tr></thead><tbody id="reg"></tbody></table>
+    <p class="small" id="evidence"></p>
+  </div>
+</div>
+</main>
+<script>
+"use strict";
+const $ = id => document.getElementById(id);
+function el(tag, text, cls){ const e=document.createElement(tag); if(text!=null) e.textContent=String(text); if(cls) e.className=cls; return e; }
+function dl(rows){ const d=el("dl"); for(const [k,v,mono] of rows){ if(v==null||v==="") continue; d.append(el("dt",k)); d.append(el("dd",v,mono?"id":null)); } return d; }
+function setStage(id, cls, verdict, rows, mark){
+  const s=$(id); s.className="stage"+(cls?" "+cls:""); const b=s.querySelector(".body"); b.replaceChildren();
+  s.querySelectorAll(".stopmark").forEach(x=>x.remove());
+  if(verdict) b.append(el("p",verdict,"verdict"));
+  if(rows) b.append(dl(rows));
+  if(mark) s.append(el("span",mark,"stopmark"));
+}
+function renderRegister(reg, changedId){
+  const tb=$("reg"); tb.replaceChildren();
+  for(const [sid,rec] of Object.entries(reg)){ const tr=el("tr"); if(sid===changedId) tr.className="changed"; tr.append(el("td",sid,"id")); tr.append(el("td",rec.risk_status)); tb.append(tr); }
+}
+function tone(o){
+  if(!o.proposed) return "";
+  if(o.tool_executed && o.gate_decision==="ALLOW") return "done";
+  if(o.customer_policy_outcome==="escalate"||o.customer_policy_outcome==="pause") return "hold";
+  return "stop";
+}
+function render(t){
+  const o=t.observed, d=(t.gate_decisions||[]).filter(x=>x.tool_name==="set_supplier_risk_status").pop();
+  const k=tone(o);
+  setStage("s-eva", o.proposed?"proposed":"", o.proposed?"Change risk status":(t.proposer_error?"Proposer failed":"No change proposed"),
+    [["Proposer",t.proposer.label],["Supplier",o.supplier_id,true],["Requested",o.requested_risk_status],["Error",t.proposer_error]]);
+  if(o.proposed && o.eve_called){
+    setStage("s-eve","eve",o.customer_policy_outcome||o.pre_action_status||"No answer",
+      [["Status",o.pre_action_status],["Chain",d&&d.verified_chain_outcome],["Policy",o.customer_policy_outcome],["Chain id",d&&d.chain_id,true],["Record",o.eve_record_id,true]]);
+  } else setStage("s-eve", o.proposed?"stop":"", o.proposed?"Not reached":"", o.proposed?[["Reason",o.gate_reason]]:null);
+  if(o.proposed){
+    const allow=o.gate_decision==="ALLOW";
+    setStage("s-gate", allow?"done":k, allow?"Allowed":"Stopped", [["Decision",o.gate_decision],["Reason",o.gate_reason]], allow?null:"Stopped here");
+    setStage("s-reg", o.tool_executed?"done":"after-stop", o.tool_executed?"Changed":"Unchanged",
+      [["Before",o.risk_before],["After",o.risk_after],["Tool run",o.tool_executed?"yes, once":"no"]]);
+  } else { setStage("s-gate","",""); setStage("s-reg","",""); }
+  $("spoken").className="spoken"+(k?" "+k:""); $("spokenText").textContent=t.spoken;
+  $("modelText").textContent=t.model_text||"(none)";
+  renderRegister(t.register.after, o.tool_executed?o.supplier_id:null);
+  $("evidence").textContent="Evidence: evidence/i4/"+t.evidence_file+"  sha256 "+t.record_sha256.slice(0,16)+"...";
+  if($("speak").checked && "speechSynthesis" in window){ speechSynthesis.cancel(); speechSynthesis.speak(new SpeechSynthesisUtterance(t.spoken)); }
+}
+let inFlight=false;
+function setBusy(b){
+  inFlight=b;
+  for(const e of document.querySelectorAll("#send,#reset,#proposer,[data-say]")) e.disabled=b;
+}
+async function ask(text){
+  if(inFlight) return;
+  text=(text||$("utterance").value).trim(); if(!text) return;
+  $("utterance").value=text; setBusy(true);
+  $("spokenText").className=""; $("spokenText").textContent=$("proposer").value==="nova"
+    ? "Checking with EVE... (Amazon Nova can take a few minutes if Bedrock is throttling)" : "Checking with EVE...";
+  try{
+    const r=await fetch("/api/turn",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({utterance:text,proposer:$("proposer").value})});
+    const t=await r.json();
+    if(!r.ok){ $("spokenText").textContent=t.error||("Request failed with status "+r.status); $("spokenText").className="error"; return; }
+    $("spokenText").className=""; render(t);
+  }catch(e){ $("spokenText").textContent="The EVA server did not respond. Check that it is running."; }
+  finally{ setBusy(false); }
+}
+$("send").onclick=()=>ask();
+$("utterance").addEventListener("keydown",e=>{ if(e.key==="Enter") ask(); });
+document.querySelectorAll("[data-say]").forEach(b=>b.onclick=()=>ask(b.dataset.say));
+$("reset").onclick=async()=>{
+  if(inFlight) return;
+  const r=await fetch("/api/reset",{method:"POST"}); const j=await r.json();
+  if(!r.ok){ $("spokenText").textContent=j.error; return; }
+  renderRegister(j,null); $("spokenText").textContent="Register reset to the demo seed.";
+};
+fetch("/api/register").then(r=>r.json()).then(reg=>renderRegister(reg,null));
+const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+if(SR){
+  const rec=new SR(); rec.lang="en-US"; rec.interimResults=false; rec.maxAlternatives=1;
+  rec.onresult=e=>{ const s=e.results[0][0].transcript; $("utterance").value=s; ask(s); };
+  rec.onend=()=>$("mic").setAttribute("aria-pressed","false");
+  rec.onerror=e=>{ $("micnote").textContent="Voice input: "+e.error+". Type the request instead."; };
+  $("mic").onclick=()=>{ $("mic").setAttribute("aria-pressed","true"); $("micnote").textContent=""; rec.start(); };
+} else { $("mic").hidden=true; $("micnote").textContent="Voice input needs Chrome or Edge. Typing works everywhere."; }
+</script>
+</body>
+</html>

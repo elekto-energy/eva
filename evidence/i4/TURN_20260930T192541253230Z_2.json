@@ -1,0 +1,84 @@
+{
+  "authorizations_pending_after": 0,
+  "eva_version": "0.1.0-i3a",
+  "eve": {
+    "bearer": "PRESENT_NOT_RECORDED",
+    "policy_ref": "eve-mcp-demo-policy-v1"
+  },
+  "frozen_i3a_boundary_verified": {
+    "eva/authorization.py": "4247e513d5408297e1eecddb6b6b7eb5240a577e17c48d91433b6d8fd087f2ae",
+    "eva/data/chain_map.json": "987a7e625d172e797ce1f51cc7f43f7f9cf28e8c63abe53410478ef0b6f94b6c",
+    "eva/eve_client.py": "82f6afb2b5685b67bea96ceaa03870367206aec35e2d2d9cc7e4b93d6eeeaa44",
+    "eva/gate.py": "8eeff78772a97508cbf2ee8acfdbbb22c0c4ad08b7677063f3b9e9a58cbc7ed8",
+    "eva/tools.py": "70e88f7138ec02f099d0b4e79ebc81909febe63810e99be4a5f68ee0d5e84ac3"
+  },
+  "gate_decisions": [
+    {
+      "args": {
+        "risk_status": "high",
+        "supplier_id": "SUP-ZETA-002"
+      },
+      "at_utc": "2026-09-30T19:25:41.260839+00:00",
+      "chain_id": "EVE-MCP-DEMO-B-2026-001",
+      "customer_policy_outcome": "escalate",
+      "decision": "DENY",
+      "eve_called": true,
+      "eve_record_id": "EVE-PAR-LOCAL-000020",
+      "pre_action_status": "evaluated",
+      "reason": "EVE_OUTCOME: escalate",
+      "tool_name": "set_supplier_risk_status",
+      "tool_use_id": "eva-web-20260930T192541253230Z-2",
+      "verified_chain_outcome": "HUMAN_REVIEW_REQUIRED"
+    }
+  ],
+  "model_text": "I asked to update the supplier.",
+  "observed": {
+    "customer_policy_outcome": "escalate",
+    "eve_called": true,
+    "eve_record_id": "EVE-PAR-LOCAL-000020",
+    "gate_decision": "DENY",
+    "gate_reason": "EVE_OUTCOME: escalate",
+    "pre_action_status": "evaluated",
+    "proposed": true,
+    "requested_risk_status": "high",
+    "risk_after": "medium",
+    "risk_before": "medium",
+    "supplier_id": "SUP-ZETA-002",
+    "tool_executed": false
+  },
+  "proposer": {
+    "kind": "scripted",
+    "label": "Scripted proposer (no LLM)"
+  },
+  "proposer_error": null,
+  "record_kind": "eva_i4_turn",
+  "record_schema_version": "eva-i4-turn-1.0",
+  "record_sha256": "a4608e6303627b403753159b8d5eaf2cd3106290cb61c8a95543e9365da28a0a",
+  "register": {
+    "after": {
+      "SUP-EPSILON-001": {
+        "risk_status": "high"
+      },
+      "SUP-ZETA-002": {
+        "risk_status": "medium"
+      }
+    },
+    "after_sha256": "b7d4e0c6b12b513768ae1cea87d272196ed1531a92b76a45d26b94542c86c500",
+    "before": {
+      "SUP-EPSILON-001": {
+        "risk_status": "high"
+      },
+      "SUP-ZETA-002": {
+        "risk_status": "medium"
+      }
+    },
+    "before_sha256": "b7d4e0c6b12b513768ae1cea87d272196ed1531a92b76a45d26b94542c86c500",
+    "changed": false
+  },
+  "spoken": "EVE required human review. No change was made. SUP-ZETA-002 risk status is still medium. Evidence record EVE-PAR-LOCAL-000020.",
+  "spoken_source": "eva.web.report.compose_spoken(ObservedOutcome) -- observed fields only",
+  "tool_executions": [],
+  "turn_seq": 2,
+  "turn_utc": "20260930T192541253230Z",
+  "utterance": "Raise Zeta to high"
+}
