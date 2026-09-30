@@ -1,0 +1,75 @@
+{
+  "authorizations_left_unconsumed": 0,
+  "case": "A",
+  "eva_version": "0.1.0-i3a",
+  "eve": {
+    "bearer": "PRESENT_NOT_RECORDED",
+    "mcp_url": "https://grc.eveverified.com/eva/mcp",
+    "policy_ref": "eve-mcp-demo-policy-v1"
+  },
+  "gate_decisions": [
+    {
+      "args": {
+        "risk_status": "high",
+        "supplier_id": "SUP-EPSILON-001"
+      },
+      "at_utc": "2026-09-30T17:26:18.976742+00:00",
+      "chain_id": "EVE-MCP-DEMO-A-2026-001",
+      "customer_policy_outcome": "allow",
+      "decision": "ALLOW",
+      "eve_called": true,
+      "eve_record_id": "EVE-PAR-LOCAL-000005",
+      "pre_action_status": "evaluated",
+      "reason": "EVE_OUTCOME: allow",
+      "tool_name": "set_supplier_risk_status",
+      "tool_use_id": "eva-20260930T172618Z-A",
+      "verified_chain_outcome": "ACTION_CHAIN_SUPPORTED"
+    }
+  ],
+  "model": {
+    "bedrock_invoked": false,
+    "kind": "scripted"
+  },
+  "proposal": {
+    "args": {
+      "risk_status": "high",
+      "supplier_id": "SUP-EPSILON-001"
+    },
+    "tool": "set_supplier_risk_status",
+    "tool_use_id": "eva-20260930T172618Z-A"
+  },
+  "record_kind": "eva_i3a_run",
+  "record_schema_version": "eva-i3a-run-1.0",
+  "record_sha256": "36b8b3c0abf05400b038b7af48a9bdda33897208eb0a69e351bebf3922d2e008",
+  "register": {
+    "after_sha256": "b7d4e0c6b12b513768ae1cea87d272196ed1531a92b76a45d26b94542c86c500",
+    "before_sha256": "2df927e7043fb8dd4419cfa2f00b2fc27bc6a9342dd2d52f8a3cb1c40bfc81c3",
+    "changed": true,
+    "supplier_after": {
+      "name": "EVE Synthetic Supplier Epsilon (Synthetic demo entity. Not a real company.)",
+      "risk_status": "high"
+    },
+    "supplier_before": {
+      "name": "EVE Synthetic Supplier Epsilon (Synthetic demo entity. Not a real company.)",
+      "risk_status": "medium"
+    }
+  },
+  "run_utc": "20260930T172618Z",
+  "tool_executions": [
+    {
+      "chain_id": "EVE-MCP-DEMO-A-2026-001",
+      "eve_record_id": "EVE-PAR-LOCAL-000005",
+      "executed": true,
+      "new": "high",
+      "old": "medium",
+      "supplier_id": "SUP-EPSILON-001",
+      "tool_use_id": "eva-20260930T172618Z-A"
+    }
+  ],
+  "tool_results": [
+    {
+      "status": "success",
+      "text": "EXECUTED: SUP-EPSILON-001 risk_status medium -> high. Authorized by EVE record EVE-PAR-LOCAL-000005 (chain EVE-MCP-DEMO-A-2026-001)."
+    }
+  ]
+}

@@ -1,0 +1,155 @@
+{
+  "architecture": "EVA proposes -> EVE decides -> gate enforces. Deterministic BeforeToolCallEvent hook; single-use authorization bound to (tool_use_id, tool, exact arguments); operator-owned chain binding; model never supplies chain or policy.",
+  "date": "2026-09-30",
+  "dependencies": {
+    "direct_pins": "requirements-eva.txt",
+    "freeze_committed_sha256_lf": "094a6f7fe0766ac5dc13cea99608ea7e903e148252851fc73fadbc5bd4498dce",
+    "freeze_disk_sha256_crlf": "76167369ebabddf69848649eb4c80645a5c67beb9a8f28e60110f9f97c5ebc45",
+    "freeze_packages": 53,
+    "key_versions": {
+      "boto3": "1.43.105",
+      "botocore": "1.43.105",
+      "httpx": "0.28.1",
+      "mcp": "1.30.0",
+      "pytest": "9.1.1",
+      "strands-agents": "1.57.1"
+    },
+    "resolved_freeze": "evidence/i3a/eva-venv-freeze.txt"
+  },
+  "eve_mcp_contract_used": {
+    "allow_only_on": "evaluated + allow + record id + bound chain",
+    "customer_policy_outcome": 6,
+    "pre_action_status": 3,
+    "verified_chain_outcome": 5
+  },
+  "files_added_or_changed": {
+    ".gitignore": {
+      "change": "added line .venv-eva/"
+    },
+    "eva/__init__.py": {
+      "bytes": 205,
+      "sha256": "d449e49a36a95d3a7a49a42cd4b6a36c2039bb00c7af8b6f12d5b57f016d5162"
+    },
+    "eva/agent.py": {
+      "bytes": 1488,
+      "sha256": "0200954c2698b8d45e9ce761247cf1acc03665e28294884f57c310c5de81bff9"
+    },
+    "eva/authorization.py": {
+      "bytes": 2601,
+      "sha256": "4247e513d5408297e1eecddb6b6b7eb5240a577e17c48d91433b6d8fd087f2ae"
+    },
+    "eva/cli.py": {
+      "bytes": 4912,
+      "sha256": "b6bca13c4e388f198a1c521b45036c0bb0029f3af841e6b5ef51841436a4279a"
+    },
+    "eva/config.py": {
+      "bytes": 1870,
+      "sha256": "92618b2a9467eddf2ec91f4ba77f9b6f7e1f720642db33c640b7653ffcbbb3aa"
+    },
+    "eva/data/chain_map.json": {
+      "bytes": 391,
+      "sha256": "987a7e625d172e797ce1f51cc7f43f7f9cf28e8c63abe53410478ef0b6f94b6c"
+    },
+    "eva/data/supplier_register_seed.json": {
+      "bytes": 543,
+      "sha256": "2df927e7043fb8dd4419cfa2f00b2fc27bc6a9342dd2d52f8a3cb1c40bfc81c3"
+    },
+    "eva/eve_client.py": {
+      "bytes": 1601,
+      "sha256": "82f6afb2b5685b67bea96ceaa03870367206aec35e2d2d9cc7e4b93d6eeeaa44"
+    },
+    "eva/gate.py": {
+      "bytes": 8528,
+      "sha256": "8eeff78772a97508cbf2ee8acfdbbb22c0c4ad08b7677063f3b9e9a58cbc7ed8"
+    },
+    "eva/scripted_model.py": {
+      "bytes": 1775,
+      "sha256": "7f3522c8d98c451d5a962d0b96786db093217254f3afaf8ab734a4785b453ac8"
+    },
+    "eva/tools.py": {
+      "bytes": 3421,
+      "sha256": "70e88f7138ec02f099d0b4e79ebc81909febe63810e99be4a5f68ee0d5e84ac3"
+    },
+    "pytest.ini": {
+      "bytes": 57,
+      "sha256": "8fa307d1ef787f3822b949dc90f1b3c405769c4eb97bb2e813b271109d9d8a90"
+    },
+    "requirements-eva.txt": {
+      "bytes": 264,
+      "sha256": "2e9832bf9610721af42c6dd2377af349327bf06ace86bace0c3eb94c4930f5ea"
+    },
+    "tests/test_eva_gate.py": {
+      "bytes": 15718,
+      "sha256": "51796b2cad4f1e05b474197364203758743f7888db60469292bd3eb79bdf64fb"
+    }
+  },
+  "gate_contract_basis": {
+    "eva_additions": "EVA additionally requires a non-empty eve_record_id and chain_id == the operator-bound chain; both only narrow the rule",
+    "rule": "pre_action_status == evaluated AND customer_policy_outcome == allow -> may proceed; anything else -> do not proceed",
+    "source": "frozen EVE MCP v1 (tag eve-mcp-v1, tree cbdcd191...; vendored at vendor/eve-mcp): README section 'Integration routing rule (the integrator's, documented, NOT a field)' and the eve_pre_action tool description in eve_mcp/server.py ('Integrators must route on customer_policy_outcome exactly and fail closed on anything but allow')",
+    "verified_chain_outcome": "EVE's verification state; copied verbatim into records, NOT used as a gating field by EVA (per contract)"
+  },
+  "increment": "Phase 1 / I3 Del A (no Bedrock)",
+  "limitations": [
+    "proposer in Del A is a scripted model, not an LLM; LLM behaviour is Del B",
+    "Bedrock invocation capability for amazon.nova-lite-v1:0 NOT_ESTABLISHED",
+    "authorization store is in-process memory (single process, single run)",
+    "EVE installation identity on the VPS remains OPERATOR_DECLARED; VPS suite qualified 1283/10 (I2)",
+    "demo register and suppliers are synthetic"
+  ],
+  "non_claims": [
+    "no accepted EVE state is created",
+    "EVA is not Alexa+",
+    "no production readiness"
+  ],
+  "owner_decisions": [
+    "I3 candidate frozen: amazon.nova-lite-v1:0, eu-north-1, ON_DEMAND (from discovery_round2b.json); invocation capability NOT_ESTABLISHED until the Del B live invocation gate",
+    "Del A: no Bedrock invocation, no eva-runtime identity, no Bedrock runtime credentials",
+    "EVE core, EVE MCP v1, Atlas, SOT, Start Map and the I2 deployment not mutated; EVE MCP used read-only through /eva/mcp"
+  ],
+  "project": "052_eva",
+  "real_eve_acceptance": {
+    "RUN_20260930T172618Z_A.json": {
+      "bytes": 2329,
+      "record_sha256_prefix": "36b8b3c0abf05400",
+      "result": "ALLOW; evaluated/ACTION_CHAIN_SUPPORTED/allow; EVE-PAR-LOCAL-000005; tool executed once; SUP-EPSILON-001 medium->high; register changed; 0 authorizations left",
+      "sha256": "b3ac02b2a877e9f4a74c171755d493435cf0f0ab1edac750091fdb617344dd62"
+    },
+    "RUN_20260930T172631Z_B.json": {
+      "bytes": 2129,
+      "record_sha256_prefix": "0adb8d1610568e4d",
+      "result": "DENY; evaluated/HUMAN_REVIEW_REQUIRED/escalate; EVE-PAR-LOCAL-000006; tool not executed; register byte-unchanged; 0 authorizations left",
+      "sha256": "8799799c5e0ddcbfa632a9d81f6bc78b09d52f1a29e0c5412726629314d6caeb"
+    }
+  },
+  "record_kind": "eva_i3a_closure",
+  "record_schema_version": "eva-i3a-closure-1.1",
+  "record_sha256": "ce38863644ba6603de6b8e883a7bcd583b8dc7b417d2df951a16b287051cd0bb",
+  "review_corrections": [
+    "test_gate_internal_error_fails_closed exercises an unexpected exception from the EVE client, which _decide() classifies as 'EVE_UNREACHABLE: RuntimeError' (measured); it does NOT reach the outer branch",
+    "added test_outer_gate_internal_error_branch_fails_closed: an exception inside _decide() before EVE is reached yields 'GATE_INTERNAL_ERROR: RuntimeError', tool cancelled, 0 executions, register byte-identical, 0 pending authorizations",
+    "production code unchanged by the correction: eva/gate.py remains 8eeff78772a97508cbf2ee8acfdbbb22c0c4ad08b7677063f3b9e9a58cbc7ed8"
+  ],
+  "secrets": "bearer read from D:\\EVE_SECRETS\\eva_mcp_bearer.txt (outside repo), never printed; run records carry 'PRESENT_NOT_RECORDED'; no 48-hex strings, no nonce in records",
+  "status": "I3A_GATES_PASS (v1.1, review-corrected) -- awaiting owner review; Del B NOT STARTED",
+  "strands_measured": {
+    "BedrockModel_fallbacks": "model global.anthropic.claude-sonnet-4-6 / region us-west-2 when unset (EVA pins both explicitly)",
+    "BeforeToolCallEvent": "sees toolUseId/name/input; cancel_tool prevents execution and yields an error tool result",
+    "default_executor": "ConcurrentToolExecutor (EVA pins SequentialToolExecutor)",
+    "direct_tool_call": "agent.tool.x() also passes the hook",
+    "hook_exception": "propagates (gate catches everything itself)",
+    "later_hook_may_rewrite_tool_use": "yes (hence argument-bound authorization)",
+    "version": "1.57.1"
+  },
+  "supersedes": {
+    "bytes": 5984,
+    "path": "evidence/i3a/I3A_CLOSURE_2026-09-30.json",
+    "reason": "reviewer finding: v1 overstated coverage of the outer GATE_INTERNAL_ERROR branch; v1 is retained unmodified",
+    "record_sha256": "b3cb1e0ac88acbf12df543bd692aa48eb80806f8c3301a06db43698256ed765a",
+    "sha256": "839fe52ae1ddb72988f8acd225a1e2b81e6d536e301ad8f191994a7e92fbb44c"
+  },
+  "tests": {
+    "sandbox_linux_py312": "37 passed",
+    "workstation_windows_py311": "37 passed (.venv-eva)"
+  }
+}

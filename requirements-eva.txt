@@ -1,0 +1,8 @@
+# EVA I3 direct dependencies (pinned). The fully resolved environment is measured after install
+# with `pip freeze` and recorded as evidence/i3a/eva-venv-freeze.txt.
+strands-agents==1.57.1
+mcp==1.30.0
+httpx==0.28.1
+boto3==1.43.105
+botocore==1.43.105
+pytest==9.1.1

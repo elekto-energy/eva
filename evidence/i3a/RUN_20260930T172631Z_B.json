@@ -1,0 +1,65 @@
+{
+  "authorizations_left_unconsumed": 0,
+  "case": "B",
+  "eva_version": "0.1.0-i3a",
+  "eve": {
+    "bearer": "PRESENT_NOT_RECORDED",
+    "mcp_url": "https://grc.eveverified.com/eva/mcp",
+    "policy_ref": "eve-mcp-demo-policy-v1"
+  },
+  "gate_decisions": [
+    {
+      "args": {
+        "risk_status": "high",
+        "supplier_id": "SUP-ZETA-002"
+      },
+      "at_utc": "2026-09-30T17:26:31.715281+00:00",
+      "chain_id": "EVE-MCP-DEMO-B-2026-001",
+      "customer_policy_outcome": "escalate",
+      "decision": "DENY",
+      "eve_called": true,
+      "eve_record_id": "EVE-PAR-LOCAL-000006",
+      "pre_action_status": "evaluated",
+      "reason": "EVE_OUTCOME: escalate",
+      "tool_name": "set_supplier_risk_status",
+      "tool_use_id": "eva-20260930T172631Z-B",
+      "verified_chain_outcome": "HUMAN_REVIEW_REQUIRED"
+    }
+  ],
+  "model": {
+    "bedrock_invoked": false,
+    "kind": "scripted"
+  },
+  "proposal": {
+    "args": {
+      "risk_status": "high",
+      "supplier_id": "SUP-ZETA-002"
+    },
+    "tool": "set_supplier_risk_status",
+    "tool_use_id": "eva-20260930T172631Z-B"
+  },
+  "record_kind": "eva_i3a_run",
+  "record_schema_version": "eva-i3a-run-1.0",
+  "record_sha256": "0adb8d1610568e4dcfa1df249fff31e2f18457fda288428a6ada9193541cea88",
+  "register": {
+    "after_sha256": "2df927e7043fb8dd4419cfa2f00b2fc27bc6a9342dd2d52f8a3cb1c40bfc81c3",
+    "before_sha256": "2df927e7043fb8dd4419cfa2f00b2fc27bc6a9342dd2d52f8a3cb1c40bfc81c3",
+    "changed": false,
+    "supplier_after": {
+      "name": "EVE Synthetic Supplier Zeta (Synthetic demo entity. Not a real company.)",
+      "risk_status": "medium"
+    },
+    "supplier_before": {
+      "name": "EVE Synthetic Supplier Zeta (Synthetic demo entity. Not a real company.)",
+      "risk_status": "medium"
+    }
+  },
+  "run_utc": "20260930T172631Z",
+  "tool_executions": [],
+  "tool_results": [
+    {
+      "status": "error",
+      "text": "EVE GATE: action not executed. reason=EVE_OUTCOME: escalate pre_action_status=evaluated verified_chain_outcome=HUMAN_REVIEW_REQUIRED customer_policy_outcome=escalate eve_record_id=EVE-PAR-LOCAL-000006"
+    }
+  ]
+}

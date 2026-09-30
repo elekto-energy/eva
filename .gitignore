@@ -1,5 +1,6 @@
 # EVA -- never commit environments, caches, runtime state or secrets
 .venv/
+.venv-eva/
 __pycache__/
 *.py[cod]
 .pytest_cache/

@@ -1,0 +1,14 @@
+{
+  "schema": "eva-supplier-register-1.0",
+  "note": "Synthetic demo register. Every supplier is a synthetic demo entity, not a real company. The CLI copies this seed into a run directory and mutates only the copy.",
+  "suppliers": {
+    "SUP-EPSILON-001": {
+      "name": "EVE Synthetic Supplier Epsilon (Synthetic demo entity. Not a real company.)",
+      "risk_status": "medium"
+    },
+    "SUP-ZETA-002": {
+      "name": "EVE Synthetic Supplier Zeta (Synthetic demo entity. Not a real company.)",
+      "risk_status": "medium"
+    }
+  }
+}

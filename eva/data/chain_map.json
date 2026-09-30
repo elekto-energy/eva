@@ -1,0 +1,10 @@
+{
+  "schema": "eva-chain-map-1.0",
+  "note": "Operator-owned binding of a consequential action to the EVE evidence chain that governs it. The model never sees or chooses a chain_id. Unlisted (tool, supplier) pairs fail closed.",
+  "bindings": {
+    "set_supplier_risk_status": {
+      "SUP-EPSILON-001": "EVE-MCP-DEMO-A-2026-001",
+      "SUP-ZETA-002": "EVE-MCP-DEMO-B-2026-001"
+    }
+  }
+}
