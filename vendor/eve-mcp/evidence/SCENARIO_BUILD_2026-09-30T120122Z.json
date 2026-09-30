@@ -1,0 +1,78 @@
+{
+  "equivalence_gate": {
+    "reference_chain_id": "AI-ACTION-2026-001",
+    "reference_content_hash": "d05f220af3c8dc1a1f6d504605dc3e9f532d2218978d291b16685ef66f6f4287",
+    "status": "PASS"
+  },
+  "eve_checkout": {
+    "git_executable": "C:\\Program Files\\Git\\cmd\\git.EXE",
+    "head": "ffe118c326e3d4ec4b194ddea0ba6c8d09d78f27",
+    "path": "D:\\EVE_DEMO\\eve-core-v1",
+    "tree": "a698922c9fd740c4b114e572a626380abf1590a4",
+    "trusted_git_claim": "NONE (PATH git; not the H6 protected verifier)"
+  },
+  "instrument": {
+    "path": "D:\\EVE11\\Projects\\051_eve_mcp\\scenarios\\build_scenario_chains.py",
+    "sha256": "d11c248409609e7a29b82ad34db6a26b23989e1723025005796def8696ce8f4b",
+    "version": "eve-mcp-scenario-builder-0.1.0"
+  },
+  "mode": "PRINT_ONLY",
+  "record_kind": "eve_mcp_scenario_build",
+  "record_schema_version": "eve-mcp-scenario-build-1.0",
+  "record_sha256": "034c48c32c24f89957a75809aab8a882ba9bc56f94b8e7a321807dde66a3c39a",
+  "recorded_utc": "2026-09-30T12:01:22Z",
+  "runtime_store_root": "D:\\EVE_DEMO\\eve_store",
+  "scenarios": [
+    {
+      "chain_id": "EVE-MCP-DEMO-A-2026-001",
+      "declared_data_sha256": "fee292b86a4a0034e943a69719798743dbbc064b6ce913080faea032c46ffaab",
+      "expected": {
+        "action_gate": "ACTION_CHAIN_SUPPORTED",
+        "gap_codes": [],
+        "overall_verdict": "SUPPORTED"
+      },
+      "expected_met": true,
+      "measured": {
+        "action_gate": "ACTION_CHAIN_SUPPORTED",
+        "content_hash": "4a972db7121f635494887510278304b50e6c12498a7aead4f8a2d8ded27d8402",
+        "control_result_supported": true,
+        "gap_codes": [],
+        "human_review_required": false,
+        "overall_verdict": "SUPPORTED"
+      },
+      "persisted": false,
+      "readback_content_hash_match": null,
+      "scenario_id": "CASE_A"
+    },
+    {
+      "chain_id": "EVE-MCP-DEMO-B-2026-001",
+      "declared_data_sha256": "2b6f14fc928a1a8b7582df892057040a59ed1ddbdc6771b03aabaaeabfa0a954",
+      "expected": {
+        "action_gate": "HUMAN_REVIEW_REQUIRED",
+        "gap_codes": [
+          "MISSING_EVIDENCE"
+        ],
+        "overall_verdict": "PARTIAL"
+      },
+      "expected_met": true,
+      "measured": {
+        "action_gate": "HUMAN_REVIEW_REQUIRED",
+        "content_hash": "3246e4631f0fa87778ab55411a583d5dbb10048033f30057b5f1ce2e45308453",
+        "control_result_supported": false,
+        "gap_codes": [
+          "MISSING_EVIDENCE"
+        ],
+        "human_review_required": true,
+        "overall_verdict": "PARTIAL"
+      },
+      "persisted": false,
+      "readback_content_hash_match": null,
+      "scenario_id": "CASE_B"
+    }
+  ],
+  "scenarios_file": {
+    "path": "D:\\EVE11\\Projects\\051_eve_mcp\\scenarios\\scenarios_v1.json",
+    "sha256": "98bc8a5e7c9cf045afa7332fa6588fe5bee5dac9500b6708bc02eb0898d4a803"
+  },
+  "steps_source": "examples.CHAIN_CONFIGS['ai_agent_action']['steps'] (canonical, unchanged)"
+}

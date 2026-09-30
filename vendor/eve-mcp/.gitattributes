@@ -1,0 +1,12 @@
+# Byte identity is the proof property: keep every text file LF on every platform.
+* text=auto eol=lf
+*.py text eol=lf
+*.json text eol=lf
+*.md text eol=lf
+*.toml text eol=lf
+*.txt text eol=lf
+
+# Evidence records are immutable as written by the instruments (Windows text mode => CRLF).
+# Their whole-file SHA-256 is recorded in FREEZE_MANIFEST_EVE_MCP_v1.json over exactly those
+# bytes, so Git must never normalize them. Scoped exception, not a change of policy.
+evidence/*.json -text

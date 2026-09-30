@@ -1,0 +1,56 @@
+{
+  "registry_schema_version": "eve-mcp-policy-registry-1.0",
+  "note": "OPERATOR-owned customer policies. policy_content_sha256 = sha256 over canonical JSON of policy_config (sort_keys, separators (',',':'), ensure_ascii=False) -- the same canonicalization EVE core/eve_chain/schema.py sha256_hex uses, so it equals the policy_content_hash EVE binds into the sealed pre-action record. A mismatch is a startup failure.",
+  "policies": {
+    "eve-mcp-demo-policy-v1": {
+      "policy_content_sha256": "e7a23e8c448ccff96f54ca7a449908e5707a2df5e7f37afcc61d712a285867aa",
+      "policy_config": {
+        "policy_id": "eve-mcp-demo-policy-v1",
+        "policy_version": "eve-mcp-demo-policy-v1",
+        "rules": [
+          {
+            "rule_id": "EMP-ALLOW-001",
+            "priority": 10,
+            "if": {
+              "chain_type": "ai_agent_action",
+              "derived_chain_outcome": "ACTION_CHAIN_SUPPORTED"
+            },
+            "then": "allow",
+            "reason": "AI-agent chain fully supported: every required evidence step and every governance fact established"
+          },
+          {
+            "rule_id": "EMP-ESCALATE-001",
+            "priority": 20,
+            "if": {
+              "gap_codes_any": [
+                "MISSING_EVIDENCE",
+                "ACCOUNTABILITY_GAP",
+                "APPROVAL_SCOPE_MISMATCH",
+                "AGENT_PERMISSION_OVERSCOPED",
+                "ACTION_SCOPE_UNCONFIRMED",
+                "NO_ANSWER",
+                "STALE"
+              ]
+            },
+            "then": "escalate",
+            "reason": "Required evidence missing or contradicted: a human must decide"
+          },
+          {
+            "rule_id": "EMP-BLOCK-001",
+            "priority": 30,
+            "if": {
+              "gap_codes_any": [
+                "CHAIN_SCOPE_CHANGED",
+                "CHAIN_AUTHORISATION_EXPIRED",
+                "CHAIN_AUTHORISATION_GAP"
+              ]
+            },
+            "then": "block",
+            "reason": "Chain authorisation is missing, expired or no longer covers the current scope"
+          }
+        ],
+        "default_outcome": "pause"
+      }
+    }
+  }
+}

@@ -1,0 +1,24 @@
+[project]
+name = "eve-mcp"
+version = "0.1.0"
+description = "Thin, deterministic MCP (Streamable HTTP) boundary over the EVE pre-action API. One tool: eve_pre_action."
+requires-python = ">=3.11"
+dependencies = [
+    "mcp==1.30.0",
+    "httpx==0.28.1",
+    "uvicorn==0.54.0",
+    "starlette==1.7.0",
+]
+
+[project.optional-dependencies]
+test = ["pytest==9.1.1"]
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["eve_mcp"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

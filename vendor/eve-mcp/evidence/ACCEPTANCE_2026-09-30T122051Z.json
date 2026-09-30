@@ -1,0 +1,229 @@
+{
+  "completed_utc": "2026-09-30T12:20:51Z",
+  "eve_instance_identity_claim": "OPERATOR_DECLARED: EVE has no self-attesting identity endpoint; the tree identity above was measured from the checkout git objects, not from the running service",
+  "harness": {
+    "sha256": "0c3732ba05143ccc57e72846904a7fc21a84c63b4d5895fa366ea765ab2d61cb",
+    "version": "eve-mcp-acceptance-0.1.0"
+  },
+  "record_kind": "eve_mcp_phase1_acceptance",
+  "record_schema_version": "eve-mcp-acceptance-1.0",
+  "record_sha256": "79698509e0d2351e464e424a7b4266ffeb5a80c42590815a2fe387f0a4352635",
+  "started_utc": "2026-09-30T12:19:08Z",
+  "status": "PHASE1_ACCEPTANCE_PASS",
+  "steps": {
+    "chains": {
+      "CASE_A": {
+        "action_gate": "ACTION_CHAIN_SUPPORTED",
+        "chain_id": "EVE-MCP-DEMO-A-2026-001",
+        "chain_verify_status": "VALID",
+        "content_hash": "4a972db7121f635494887510278304b50e6c12498a7aead4f8a2d8ded27d8402",
+        "manifest_hash": "a539878b278d63ee5242c1d916df2dc0dd453c8b6750387ace8898cb3701c413",
+        "overall_verdict": "SUPPORTED",
+        "seal_id": "EVE-CHAIN-LOCAL-000001"
+      },
+      "CASE_B": {
+        "action_gate": "HUMAN_REVIEW_REQUIRED",
+        "chain_id": "EVE-MCP-DEMO-B-2026-001",
+        "chain_verify_status": "VALID",
+        "content_hash": "3246e4631f0fa87778ab55411a583d5dbb10048033f30057b5f1ce2e45308453",
+        "manifest_hash": "3417b01e316e82f4c5fe042af991e47b25be4997560871c22e9a05e011443b93",
+        "overall_verdict": "PARTIAL",
+        "seal_id": "EVE-CHAIN-LOCAL-000002"
+      }
+    },
+    "eve_fail_closed_direct": {
+      "no_chain_id": {
+        "http": 422,
+        "pre_action_status": "chain_reference_required",
+        "record_header": null,
+        "verified_chain_outcome": null
+      },
+      "unknown_chain": {
+        "http": 404,
+        "pre_action_status": "chain_not_found",
+        "record_header": null,
+        "verified_chain_outcome": null
+      }
+    },
+    "eve_full_suite": {
+      "exit_code": 0,
+      "python": "D:\\EVE11\\venv_gpu\\Scripts\\python.exe",
+      "stdout_sha256": "bf90afff41bf6c9706fccb045100b8e8269da6045526a0ac262611ab68712236",
+      "tail": "\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n1293 passed, 1 warning in 100.95s (0:01:40)"
+    },
+    "eve_identity": {
+      "checkout": "D:\\EVE_DEMO\\eve-core-v1",
+      "expected_tree": "a698922c9fd740c4b114e572a626380abf1590a4",
+      "git_executable": "C:\\Program Files\\Git\\cmd\\git.EXE",
+      "head": "ffe118c326e3d4ec4b194ddea0ba6c8d09d78f27",
+      "tree": "a698922c9fd740c4b114e572a626380abf1590a4",
+      "trusted_git_claim": "NONE (PATH git)"
+    },
+    "loopback": {
+      "eve_base_url": "http://127.0.0.1:8002",
+      "mcp_url": "http://127.0.0.1:8765/mcp"
+    },
+    "mcp": {
+      "caller_policy_config_refused": true,
+      "cases": {
+        "CASE_A": {
+          "mcp_server": {
+            "name": "eve-mcp",
+            "protocol": "2025-11-25",
+            "version": "0.1.0"
+          },
+          "result": {
+            "eve": {
+              "action_context": {
+                "agent_id": "eve-mcp-acceptance",
+                "requested_by": "operator_harness",
+                "scenario": "CASE_A"
+              },
+              "boundary_note": "EVE verifies the chain and evaluates it against customer-defined policy. The customer owns the policy and any enforcement decision. EVE does not execute, approve, block, pause or escalate the action as its own decision.",
+              "chain_id": "EVE-MCP-DEMO-A-2026-001",
+              "customer_policy_outcome": "allow",
+              "enforcement_owner": "customer_or_integrated_workflow",
+              "evaluated_at": "2026-09-30T12:20:50Z",
+              "inputs_hash": "bcda0bc4731a17b5a26263aa14a4058d4cb7b9ec04a63307df1749e9740d8780",
+              "policy_owner": "customer",
+              "policy_rule_id": "EMP-ALLOW-001",
+              "policy_rule_reason": "AI-agent chain fully supported: every required evidence step and every governance fact established",
+              "policy_rule_triggered": true,
+              "policy_version": "eve-mcp-demo-policy-v1",
+              "pre_action_status": "evaluated",
+              "verified_chain_outcome": "ACTION_CHAIN_SUPPORTED"
+            },
+            "eve_instance": {
+              "declared_tag": "eve-core-v1",
+              "declared_tree": "a698922c9fd740c4b114e572a626380abf1590a4",
+              "identity_basis": "OPERATOR_DECLARED"
+            },
+            "eve_record_id": "EVE-PAR-LOCAL-000003",
+            "mcp": {
+              "adapter_version": "0.1.0",
+              "contract_version": "eve-mcp-pre-action-1.0"
+            },
+            "policy": {
+              "policy_content_sha256": "e7a23e8c448ccff96f54ca7a449908e5707a2df5e7f37afcc61d712a285867aa",
+              "policy_ref": "eve-mcp-demo-policy-v1"
+            },
+            "transport": {
+              "elapsed_ms": 141,
+              "endpoint_path": "/api/chain/pre-action",
+              "http_status": 200
+            }
+          },
+          "tools": [
+            "eve_pre_action"
+          ]
+        },
+        "CASE_B": {
+          "mcp_server": {
+            "name": "eve-mcp",
+            "protocol": "2025-11-25",
+            "version": "0.1.0"
+          },
+          "result": {
+            "eve": {
+              "action_context": {
+                "agent_id": "eve-mcp-acceptance",
+                "requested_by": "operator_harness",
+                "scenario": "CASE_B"
+              },
+              "boundary_note": "EVE verifies the chain and evaluates it against customer-defined policy. The customer owns the policy and any enforcement decision. EVE does not execute, approve, block, pause or escalate the action as its own decision.",
+              "chain_id": "EVE-MCP-DEMO-B-2026-001",
+              "customer_policy_outcome": "escalate",
+              "enforcement_owner": "customer_or_integrated_workflow",
+              "evaluated_at": "2026-09-30T12:20:50Z",
+              "inputs_hash": "de9d4d038d1454dd523fa1af6596c139c54858f55c258162f70d20ef4297c539",
+              "policy_owner": "customer",
+              "policy_rule_id": "EMP-ESCALATE-001",
+              "policy_rule_reason": "Required evidence missing or contradicted: a human must decide",
+              "policy_rule_triggered": true,
+              "policy_version": "eve-mcp-demo-policy-v1",
+              "pre_action_status": "evaluated",
+              "verified_chain_outcome": "HUMAN_REVIEW_REQUIRED"
+            },
+            "eve_instance": {
+              "declared_tag": "eve-core-v1",
+              "declared_tree": "a698922c9fd740c4b114e572a626380abf1590a4",
+              "identity_basis": "OPERATOR_DECLARED"
+            },
+            "eve_record_id": "EVE-PAR-LOCAL-000004",
+            "mcp": {
+              "adapter_version": "0.1.0",
+              "contract_version": "eve-mcp-pre-action-1.0"
+            },
+            "policy": {
+              "policy_content_sha256": "e7a23e8c448ccff96f54ca7a449908e5707a2df5e7f37afcc61d712a285867aa",
+              "policy_ref": "eve-mcp-demo-policy-v1"
+            },
+            "transport": {
+              "elapsed_ms": 171,
+              "endpoint_path": "/api/chain/pre-action",
+              "http_status": 200
+            }
+          },
+          "tools": [
+            "eve_pre_action"
+          ]
+        }
+      },
+      "unknown_chain_404_passthrough": "chain_not_found"
+    },
+    "policy": {
+      "policy_content_sha256": "e7a23e8c448ccff96f54ca7a449908e5707a2df5e7f37afcc61d712a285867aa",
+      "policy_ref": "eve-mcp-demo-policy-v1",
+      "registry_file_sha256": "7d9cd6a72ff48673c58ed0973e228be6a73f87af0d9fb1f03176f3036a39609c"
+    },
+    "record_verification": {
+      "CASE_A": {
+        "correspondence": {
+          "record_chain_content_hash_matches_chain": true,
+          "record_chain_id_matches": true,
+          "record_id_matches_header": true,
+          "record_policy_hash_matches_mcp_policy_sha256": true,
+          "record_result_equals_mcp_envelope": true,
+          "record_schema_version": "par-1.2"
+        },
+        "record_id": "EVE-PAR-LOCAL-000003",
+        "seal": {
+          "content_hash": "1002dd049cc679cb35e29669e6a22c0a91531cdd6038b7b9963899d1133e1e59",
+          "manifest_hash": "8fa0ede045c5512086ad00b83e1b0c0eccafd4db7384cb79d0cb94f4398f4928",
+          "seal_id": "EVE-PAR-LOCAL-000003",
+          "seal_mode": "local",
+          "sealed_at": "2026-09-30T12:20:50Z"
+        },
+        "verify_status": "VALID"
+      },
+      "CASE_B": {
+        "correspondence": {
+          "record_chain_content_hash_matches_chain": true,
+          "record_chain_id_matches": true,
+          "record_id_matches_header": true,
+          "record_policy_hash_matches_mcp_policy_sha256": true,
+          "record_result_equals_mcp_envelope": true,
+          "record_schema_version": "par-1.2"
+        },
+        "record_id": "EVE-PAR-LOCAL-000004",
+        "seal": {
+          "content_hash": "9141ab6ff5dc34dcf98429f67502927261eee002fe110a3e298ed1669a913e7f",
+          "manifest_hash": "d3aae3d0f45260caba4e2abf0b13bf9b6fc93a1e0c441a14a85a9339a903ba81",
+          "seal_id": "EVE-PAR-LOCAL-000004",
+          "seal_mode": "local",
+          "sealed_at": "2026-09-30T12:20:50Z"
+        },
+        "verify_status": "VALID"
+      }
+    },
+    "runtime_store": {
+      "eve_process_env_claim": "OPERATOR_ASSERTED (process environment not readable from here)",
+      "external_to_checkout": true,
+      "root": "D:\\EVE_DEMO\\eve_store"
+    },
+    "scenarios_file": {
+      "path": "D:\\EVE11\\Projects\\051_eve_mcp\\scenarios\\scenarios_v1.json",
+      "sha256": "98bc8a5e7c9cf045afa7332fa6588fe5bee5dac9500b6708bc02eb0898d4a803"
+    }
+  }
+}

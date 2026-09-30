@@ -1,0 +1,11 @@
+# Byte identity is the proof property: keep every text file LF on every platform.
+* text=auto eol=lf
+*.py text eol=lf
+*.json text eol=lf
+*.md text eol=lf
+*.toml text eol=lf
+*.txt text eol=lf
+
+# The vendored EVE MCP v1 must stay byte-identical to tag eve-mcp-v1 (tree cbdcd191...):
+# no normalization of anything under vendor/ (its evidence records are CRLF by origin).
+vendor/** -text

@@ -1,0 +1,364 @@
+{
+  "acceptance_evidence": {
+    "file": "evidence/ACCEPTANCE_2026-09-30T122051Z.json",
+    "harness_sha256_at_run": "0c3732ba05143ccc57e72846904a7fc21a84c63b4d5895fa366ea765ab2d61cb",
+    "record_sha256": "79698509e0d2351e464e424a7b4266ffeb5a80c42590815a2fe387f0a4352635",
+    "status": "PHASE1_ACCEPTANCE_PASS",
+    "whole_file_sha256": "f1d1ded2fa3bf848429f5fc486b444cf848bffb29d738f6d615b782871f54781"
+  },
+  "accepted_utc": "2026-09-30T12:20:51Z",
+  "adapter_tests": {
+    "fake_eve_note": "tests/test_wire.py runs against a fake EVE fixture reproducing the measured contract; unit evidence only, never acceptance",
+    "linux_sandbox_after_freeze_packaging": "88 passed (rerun after README/lock/.gitignore/.gitattributes; no source change)",
+    "windows_accepted_env": "88 passed (tests/test_core.py 66 + tests/test_wire.py 22), .venv Python 3.11.9, 2026-09-30"
+  },
+  "case_a": {
+    "chain_content_hash": "4a972db7121f635494887510278304b50e6c12498a7aead4f8a2d8ded27d8402",
+    "chain_id": "EVE-MCP-DEMO-A-2026-001",
+    "chain_seal_id": "EVE-CHAIN-LOCAL-000001",
+    "correspondence": {
+      "record_chain_content_hash_matches_chain": true,
+      "record_chain_id_matches": true,
+      "record_id_matches_header": true,
+      "record_policy_hash_matches_mcp_policy_sha256": true,
+      "record_result_equals_mcp_envelope": true,
+      "record_schema_version": "par-1.2"
+    },
+    "customer_policy_outcome": "allow",
+    "engine": "SUPPORTED / ACTION_CHAIN_SUPPORTED / gaps []",
+    "policy_rule_id": "EMP-ALLOW-001",
+    "record_id": "EVE-PAR-LOCAL-000003",
+    "verified_chain_outcome": "ACTION_CHAIN_SUPPORTED",
+    "verify_status": "VALID"
+  },
+  "case_b": {
+    "chain_content_hash": "3246e4631f0fa87778ab55411a583d5dbb10048033f30057b5f1ce2e45308453",
+    "chain_id": "EVE-MCP-DEMO-B-2026-001",
+    "chain_seal_id": "EVE-CHAIN-LOCAL-000002",
+    "correspondence": {
+      "record_chain_content_hash_matches_chain": true,
+      "record_chain_id_matches": true,
+      "record_id_matches_header": true,
+      "record_policy_hash_matches_mcp_policy_sha256": true,
+      "record_result_equals_mcp_envelope": true,
+      "record_schema_version": "par-1.2"
+    },
+    "customer_policy_outcome": "escalate",
+    "engine": "PARTIAL / HUMAN_REVIEW_REQUIRED / gaps [MISSING_EVIDENCE]",
+    "policy_rule_id": "EMP-ESCALATE-001",
+    "record_id": "EVE-PAR-LOCAL-000004",
+    "verified_chain_outcome": "HUMAN_REVIEW_REQUIRED",
+    "verify_status": "VALID"
+  },
+  "dependencies": {
+    "cross_platform_note": "Linux sandbox (Python 3.12.3) resolved the same 34 packages at identical versions; colorama and pywin32 are Windows-only (markers in the lock).",
+    "direct": [
+      "mcp==1.30.0",
+      "httpx==0.28.1",
+      "uvicorn==0.54.0",
+      "starlette==1.7.0"
+    ],
+    "lock_file": "requirements.lock.txt",
+    "lock_file_sha256": "50054a77646cd402302ac7d133ccbdee30ab02ce1cc4f2edf9973837a9e0c4fd",
+    "python": "3.11.9 (CPython, Windows accepted environment; pyvenv.cfg)",
+    "resolved": [
+      "annotated-types==0.8.0",
+      "anyio==4.15.1",
+      "attrs==26.1.0",
+      "certifi==2026.7.22",
+      "cffi==2.1.1",
+      "click==8.5.0",
+      "colorama==0.4.6; sys_platform == \"win32\"",
+      "cryptography==50.0.1",
+      "h11==0.16.0",
+      "httpcore==1.0.9",
+      "httpx==0.28.1",
+      "httpx-sse==0.4.3",
+      "idna==3.20",
+      "iniconfig==2.3.0",
+      "jsonschema==4.26.0",
+      "jsonschema-specifications==2025.9.1",
+      "mcp==1.30.0",
+      "packaging==26.3",
+      "pluggy==1.6.0",
+      "pycparser==3.0",
+      "pydantic==2.13.5",
+      "pydantic-core==2.46.5",
+      "pydantic-settings==2.15.0",
+      "pygments==2.21.0",
+      "pyjwt==2.15.1",
+      "pytest==9.1.1",
+      "python-dotenv==1.2.3",
+      "python-multipart==0.0.32",
+      "pywin32==312; sys_platform == \"win32\"",
+      "referencing==0.37.0",
+      "rpds-py==2026.6.3",
+      "sse-starlette==3.5.0",
+      "starlette==1.7.0",
+      "typing-extensions==4.16.0",
+      "typing-inspection==0.4.4",
+      "uvicorn==0.54.0"
+    ],
+    "test": [
+      "pytest==9.1.1"
+    ]
+  },
+  "eve_regression": {
+    "exit_code": 0,
+    "python": "D:\\EVE11\\venv_gpu\\Scripts\\python.exe",
+    "result": "1293 passed, 1 warning in 100.95s",
+    "stdout_sha256": "bf90afff41bf6c9706fccb045100b8e8269da6045526a0ac262611ab68712236",
+    "where": "inside the demo clone, run by the acceptance harness"
+  },
+  "file_inventory": {
+    ".gitattributes": {
+      "ascii": true,
+      "bytes": 484,
+      "class": "packaging",
+      "line_endings": "LF",
+      "sha256": "6dde76ee1e9d01b25025463356d13045233df35dccc63d38c84405dfe445ab1e"
+    },
+    ".gitignore": {
+      "ascii": true,
+      "bytes": 206,
+      "class": "packaging",
+      "line_endings": "LF",
+      "sha256": "5dba8db0ccd5d7cec266c0d228a377c03b92f90a3936272ced6ece51548cce41"
+    },
+    "README.md": {
+      "ascii": true,
+      "bytes": 11392,
+      "class": "documentation",
+      "line_endings": "LF",
+      "sha256": "b817356caf599ffe58d57a2d8e661d0d25bca082770ff6a3a5cce703fcc4b30f"
+    },
+    "_HANDOVER_2026-09-30_PHASE1_ACCEPTED.md": {
+      "ascii": true,
+      "bytes": 5945,
+      "class": "documentation",
+      "line_endings": "LF",
+      "sha256": "b57649b1f5dd04dc4312224e9dbfcd7dc2b55e023e3ce45ab16476c6984508fe"
+    },
+    "acceptance/run_acceptance.py": {
+      "ascii": true,
+      "bytes": 15634,
+      "class": "instrumentation",
+      "line_endings": "LF",
+      "sha256": "0c3732ba05143ccc57e72846904a7fc21a84c63b4d5895fa366ea765ab2d61cb"
+    },
+    "eve_mcp/__init__.py": {
+      "ascii": true,
+      "bytes": 342,
+      "class": "product_runtime",
+      "line_endings": "LF",
+      "sha256": "74e2cc4781ed454c78c63cb80d2b932507ea76144a6cff2947099126ce0225c9"
+    },
+    "eve_mcp/core.py": {
+      "ascii": true,
+      "bytes": 21974,
+      "class": "product_runtime",
+      "line_endings": "LF",
+      "sha256": "07b3acad160d67797166d355b0f88b4a8c25a5a0c4549bb803874c1b8c4242f6"
+    },
+    "eve_mcp/server.py": {
+      "ascii": true,
+      "bytes": 9501,
+      "class": "product_runtime",
+      "line_endings": "LF",
+      "sha256": "c46556f0fb072066de98118785aafc8525ab72d06c7885d0aaad5805900e90d9"
+    },
+    "evidence/ACCEPTANCE_2026-09-30T122051Z.json": {
+      "ascii": true,
+      "bytes": 9964,
+      "class": "evidence",
+      "line_endings": "CRLF",
+      "sha256": "f1d1ded2fa3bf848429f5fc486b444cf848bffb29d738f6d615b782871f54781"
+    },
+    "evidence/SCENARIO_BUILD_2026-09-30T120122Z.json": {
+      "ascii": true,
+      "bytes": 2987,
+      "class": "evidence",
+      "line_endings": "CRLF",
+      "sha256": "49c1cef6c7536e5ceb8af6e14dbc21a4729a71eaa855c7fc40e927917721ef66"
+    },
+    "evidence/SCENARIO_BUILD_2026-09-30T120148Z.json": {
+      "ascii": true,
+      "bytes": 2979,
+      "class": "evidence",
+      "line_endings": "CRLF",
+      "sha256": "b213d4bcd89e365b6fada30ca23069443f8f60a2ac6cc5038dc3753f04cd11bc"
+    },
+    "policies/policy_registry_v1.json": {
+      "ascii": true,
+      "bytes": 2163,
+      "class": "product_runtime",
+      "line_endings": "LF",
+      "sha256": "7d9cd6a72ff48673c58ed0973e228be6a73f87af0d9fb1f03176f3036a39609c"
+    },
+    "pyproject.toml": {
+      "ascii": true,
+      "bytes": 535,
+      "class": "product_runtime",
+      "line_endings": "LF",
+      "sha256": "0b7eee1cd5dceef0f753f75573dbedcb1f9e192ec50c09aceca0844904420f94"
+    },
+    "requirements.lock.txt": {
+      "ascii": true,
+      "bytes": 1317,
+      "class": "product_runtime",
+      "line_endings": "LF",
+      "sha256": "50054a77646cd402302ac7d133ccbdee30ab02ce1cc4f2edf9973837a9e0c4fd"
+    },
+    "scenarios/build_scenario_chains.py": {
+      "ascii": true,
+      "bytes": 15431,
+      "class": "instrumentation",
+      "line_endings": "LF",
+      "sha256": "d11c248409609e7a29b82ad34db6a26b23989e1723025005796def8696ce8f4b"
+    },
+    "scenarios/scenarios_v1.json": {
+      "ascii": true,
+      "bytes": 6574,
+      "class": "instrumentation",
+      "line_endings": "LF",
+      "sha256": "98bc8a5e7c9cf045afa7332fa6588fe5bee5dac9500b6708bc02eb0898d4a803"
+    },
+    "tests/test_core.py": {
+      "ascii": true,
+      "bytes": 16228,
+      "class": "instrumentation",
+      "line_endings": "LF",
+      "sha256": "bc7503f733ee676f16251b8fddcdb97a60e6732c494dfd9b2f9a985fa895874c"
+    },
+    "tests/test_wire.py": {
+      "ascii": true,
+      "bytes": 13358,
+      "class": "instrumentation",
+      "line_endings": "LF",
+      "sha256": "a07a18f3b050aa6e14177c57408967a97200d1cf456908f85d89f9fa91246022"
+    }
+  },
+  "file_inventory_note": "Hashes are over the on-disk bytes at freeze. Evidence records are CRLF because the instruments wrote them with Windows Python text mode; .gitattributes marks evidence/*.json -text so Git preserves those bytes. _HANDOVER_CURRENT.md is a mutable navigation pointer, deliberately outside this hashed inventory; it references this manifest. .venv/, caches and any secrets are excluded from Git (.gitignore).",
+  "frozen_utc": "2026-09-30T13:00:37Z",
+  "git_plan": {
+    "excluded": [
+      ".venv/",
+      "__pycache__/",
+      ".pytest_cache/",
+      "*.egg-info",
+      ".env / *.env",
+      "runtime stores (none inside the project)",
+      "secrets (none inside the project)"
+    ],
+    "included_by_class": {
+      "documentation": [
+        "README.md",
+        "_HANDOVER_2026-09-30_PHASE1_ACCEPTED.md"
+      ],
+      "evidence": [
+        "evidence/ACCEPTANCE_2026-09-30T122051Z.json",
+        "evidence/SCENARIO_BUILD_2026-09-30T120122Z.json",
+        "evidence/SCENARIO_BUILD_2026-09-30T120148Z.json"
+      ],
+      "instrumentation": [
+        "scenarios/scenarios_v1.json",
+        "scenarios/build_scenario_chains.py",
+        "acceptance/run_acceptance.py",
+        "tests/test_core.py",
+        "tests/test_wire.py"
+      ],
+      "packaging": [
+        ".gitignore",
+        ".gitattributes"
+      ],
+      "product_runtime": [
+        "eve_mcp/__init__.py",
+        "eve_mcp/core.py",
+        "eve_mcp/server.py",
+        "pyproject.toml",
+        "requirements.lock.txt",
+        "policies/policy_registry_v1.json"
+      ]
+    },
+    "note": "staged explicitly by path, never add -A; FREEZE_MANIFEST_EVE_MCP_v1.json and _HANDOVER_CURRENT.md are committed alongside the inventory",
+    "remote": "private elekto-energy/eve-mcp (owner-created)",
+    "repository": "this directory as its own repository",
+    "tag": "eve-mcp-v1 (annotated)"
+  },
+  "known_acceptance_anomaly": {
+    "accepted_records": [
+      "EVE-PAR-LOCAL-000003",
+      "EVE-PAR-LOCAL-000004"
+    ],
+    "fix": "acceptance/run_acceptance.py now validates the token at step 0, before any EVE record can be minted",
+    "origin": "minted by the FIRST harness execution (2026-09-30), which aborted at the operator-verification step because PRE_ACTION_READ_TOKEN had been set to a non-ASCII placeholder",
+    "records": [
+      "EVE-PAR-LOCAL-000001",
+      "EVE-PAR-LOCAL-000002"
+    ],
+    "status": "real evaluated EVE records in D:\\EVE_DEMO\\eve_store; NOT accepted Case A/B records; referenced by no evidence record; deliberately left in place, never rewritten or deleted"
+  },
+  "known_limitations": [
+    "EVE installation identity is OPERATOR_DECLARED; EVE has no self-attesting identity endpoint",
+    "EVE pre-action route is ungated and accepts caller policy: deployment must keep EVE reachable only by the adapter (loopback in Phase 1)",
+    "no MCP authentication in Phase 1 (loopback only)",
+    "MCP protocol 2025-11-25 (mcp==1.30.0); 2026-07-28 not yet in the official Python SDK line",
+    "scenarios/build_scenario_chains.py mirrors core/eve_chain/resolver.resolve(); the equivalence gate fails closed on drift; retire when EVE core offers declared-scenario chain construction (ADR-018 s9)",
+    "instruments use git from PATH for the checkout identity, not the H6 protected verifier",
+    "the EVE process environment (store root) is OPERATOR_ASSERTED by the harness, not observed",
+    "Case A/B chains are synthetic declared data; the evaluation records are real"
+  ],
+  "mcp_protocol_version": "2025-11-25",
+  "not_claimed": [
+    "EVE attestation of the installation",
+    "Bridge anchoring of any record",
+    "that eve-verified-grc was modified (it was not)",
+    "any Amazon/Alexa capability"
+  ],
+  "pinned_eve": {
+    "commit": "ffe118c326e3d4ec4b194ddea0ba6c8d09d78f27",
+    "demo_clone": "D:\\EVE_DEMO\\eve-core-v1",
+    "identity_basis_in_adapter": "OPERATOR_DECLARED",
+    "remote": "https://github.com/elekto-energy/eve-verified-grc.git (refs/tags/eve-core-v1, ls-remote 2026-09-30)",
+    "runtime_store": "D:\\EVE_DEMO\\eve_store",
+    "tag": "eve-core-v1",
+    "tag_object": "be46c3c0309a7050c8eac23add7785826f40f4c1",
+    "tree": "a698922c9fd740c4b114e572a626380abf1590a4"
+  },
+  "policy": {
+    "policy_content_sha256": "e7a23e8c448ccff96f54ca7a449908e5707a2df5e7f37afcc61d712a285867aa",
+    "policy_ref": "eve-mcp-demo-policy-v1",
+    "registry_file_sha256": "7d9cd6a72ff48673c58ed0973e228be6a73f87af0d9fb1f03176f3036a39609c"
+  },
+  "product": {
+    "adapter_version": "0.1.0",
+    "contract_version": "eve-mcp-pre-action-1.0",
+    "name": "EVE MCP",
+    "package": "eve-mcp",
+    "planned_tag": "eve-mcp-v1",
+    "project_path": "D:\\EVE11\\Projects\\051_eve_mcp",
+    "tool": "eve_pre_action",
+    "version": "0.1.0"
+  },
+  "record_kind": "eve_mcp_freeze_manifest",
+  "record_schema_version": "eve-mcp-freeze-1.0",
+  "record_sha256": "dfedb266ad1bb7a3e7af257eb9dd761445efe328a66dee46cb2a1b74ff18128d",
+  "scenario_build_evidence": {
+    "print_only": {
+      "file": "evidence/SCENARIO_BUILD_2026-09-30T120122Z.json",
+      "record_sha256": "034c48c32c24f89957a75809aab8a882ba9bc56f94b8e7a321807dde66a3c39a",
+      "whole_file_sha256": "49c1cef6c7536e5ceb8af6e14dbc21a4729a71eaa855c7fc40e927917721ef66"
+    },
+    "save": {
+      "equivalence_gate": {
+        "reference_chain_id": "AI-ACTION-2026-001",
+        "reference_content_hash": "d05f220af3c8dc1a1f6d504605dc3e9f532d2218978d291b16685ef66f6f4287",
+        "status": "PASS"
+      },
+      "file": "evidence/SCENARIO_BUILD_2026-09-30T120148Z.json",
+      "instrument_sha256_at_run": "d11c248409609e7a29b82ad34db6a26b23989e1723025005796def8696ce8f4b",
+      "record_sha256": "f8443e983ff480fe8c627847f68c8ab69045d15059646e309756143e86823ed3",
+      "whole_file_sha256": "b213d4bcd89e365b6fada30ca23069443f8f60a2ac6cc5038dc3753f04cd11bc"
+    }
+  }
+}

@@ -1,0 +1,73 @@
+{
+  "scenario_schema_version": "eve-mcp-scenario-1.0",
+  "note": "Declared synthetic scenarios for the eve-mcp Phase 1 acceptance. Every actor is 'EVE Synthetic ... (Synthetic demo entity. Not a real company.)'. The verdict, gaps and action gate are NEVER declared here: they are derived by EVE's own engine functions over this declared data (see build_scenario_chains.py). 'expected' is an acceptance check, not an input to the engine.",
+  "chain_type": "ai_agent_action",
+  "scenarios": [
+    {
+      "scenario_id": "CASE_A",
+      "chain_id": "EVE-MCP-DEMO-A-2026-001",
+      "decision": "Allow AI agent to update supplier risk status",
+      "subject": "EVE Synthetic Procurement Agent Epsilon (Synthetic demo entity. Not a real company.)",
+      "expected_control_result": "The AI-driven action is supported when the agent's requested action is linked to the correct business scope, the agent has only the required system permissions, the relevant policy and evidence requirements are present, an accountable owner is confirmed, and an authorized human approval matches the exact action scope.",
+      "created_at": "2026-09-30T00:00:00Z",
+      "expected": {"overall_verdict": "SUPPORTED", "action_gate": "ACTION_CHAIN_SUPPORTED", "gap_codes": []},
+      "governance": {
+        "chain_authorisation_required": true,
+        "chain_authorisation_status": "authorised",
+        "chain_authorised_by": "EVE Synthetic AI Governance Owner Epsilon (Synthetic demo entity. Not a real company.)",
+        "chain_authorised_at": "2026-09-01T09:00:00Z",
+        "chain_authorisation_basis": "ai_agent_chain_authorisation_record",
+        "chain_authorisation_scope": "update_supplier_risk_status",
+        "chain_authorisation_expires_at": "2027-12-31T23:59:59Z",
+        "chain_current_scope": "update_supplier_risk_status",
+        "chain_owner": "EVE Synthetic Chain Owner Epsilon (Synthetic demo entity. Not a real company.)",
+        "chain_owner_confirmed": true,
+        "chain_monitoring_owner": "EVE Synthetic Monitoring Owner Epsilon (Synthetic demo entity. Not a real company.)",
+        "chain_monitoring_status": "monitored",
+        "chain_review_cycle": "quarterly"
+      },
+      "raw": {
+        "agent_action": {"action_request_created": true, "action_id": "AGT-ACT-EPS-0001", "action": "update supplier risk status", "timestamp": "2026-09-30T00:00:00Z"},
+        "tool_permission": {"permission_checked": true, "overscoped": false, "agent": "EVE Synthetic Procurement Agent Epsilon", "granted_scope": "update:supplier_risk_status", "required_scope": "update:supplier_risk_status", "permission_ref": "perm:agent:epsilon", "timestamp": "2026-09-30T00:00:10Z"},
+        "identity": {"owner_confirmed": true, "authority_in_scope": true, "subject": "accountable_owner", "evidence_ref": "identity:owner:epsilon", "timestamp": "2026-09-30T00:00:20Z"},
+        "ticketing": {"exists": true, "ticket_id": "CHG-EPS-0001", "timestamp": "2026-09-30T00:00:30Z"},
+        "policy_baseline": {"loaded": true, "baseline_id": "AI-ACT-POL-EPS-01", "timestamp": "2026-09-30T00:00:40Z"},
+        "documents": {"stored": true, "sha256": "0000000000000000000000000000000000000000000000000000000000000a01", "file": "action_evidence_package_epsilon.json", "timestamp": "2026-09-30T00:00:50Z"},
+        "approval": {"approved": true, "approval_id": "APR-EPS-0001", "approver": "EVE Synthetic Risk Owner Epsilon", "approved_scope": "update supplier risk status", "requested_scope": "update supplier risk status", "timestamp": "2026-09-30T00:01:00Z"}
+      }
+    },
+    {
+      "scenario_id": "CASE_B",
+      "chain_id": "EVE-MCP-DEMO-B-2026-001",
+      "decision": "Allow AI agent to update supplier risk status",
+      "subject": "EVE Synthetic Procurement Agent Zeta (Synthetic demo entity. Not a real company.)",
+      "expected_control_result": "The AI-driven action is supported when the agent's requested action is linked to the correct business scope, the agent has only the required system permissions, the relevant policy and evidence requirements are present, an accountable owner is confirmed, and an authorized human approval matches the exact action scope.",
+      "created_at": "2026-09-30T00:00:00Z",
+      "expected": {"overall_verdict": "PARTIAL", "action_gate": "HUMAN_REVIEW_REQUIRED", "gap_codes": ["MISSING_EVIDENCE"]},
+      "governance": {
+        "chain_authorisation_required": true,
+        "chain_authorisation_status": "authorised",
+        "chain_authorised_by": "EVE Synthetic AI Governance Owner Zeta (Synthetic demo entity. Not a real company.)",
+        "chain_authorised_at": "2026-09-01T09:00:00Z",
+        "chain_authorisation_basis": "ai_agent_chain_authorisation_record",
+        "chain_authorisation_scope": "update_supplier_risk_status",
+        "chain_authorisation_expires_at": "2027-12-31T23:59:59Z",
+        "chain_current_scope": "update_supplier_risk_status",
+        "chain_owner": "EVE Synthetic Chain Owner Zeta (Synthetic demo entity. Not a real company.)",
+        "chain_owner_confirmed": true,
+        "chain_monitoring_owner": "EVE Synthetic Monitoring Owner Zeta (Synthetic demo entity. Not a real company.)",
+        "chain_monitoring_status": "monitored",
+        "chain_review_cycle": "quarterly"
+      },
+      "raw": {
+        "agent_action": {"action_request_created": true, "action_id": "AGT-ACT-ZET-0001", "action": "update supplier risk status", "timestamp": "2026-09-30T00:00:00Z"},
+        "tool_permission": {"permission_checked": true, "overscoped": false, "agent": "EVE Synthetic Procurement Agent Zeta", "granted_scope": "update:supplier_risk_status", "required_scope": "update:supplier_risk_status", "permission_ref": "perm:agent:zeta", "timestamp": "2026-09-30T00:00:10Z"},
+        "identity": {"owner_confirmed": true, "authority_in_scope": true, "subject": "accountable_owner", "evidence_ref": "identity:owner:zeta", "timestamp": "2026-09-30T00:00:20Z"},
+        "ticketing": {"exists": true, "ticket_id": "CHG-ZET-0001", "timestamp": "2026-09-30T00:00:30Z"},
+        "policy_baseline": {"loaded": true, "baseline_id": "AI-ACT-POL-ZET-01", "timestamp": "2026-09-30T00:00:40Z"},
+        "documents": {"stored": true, "sha256": "0000000000000000000000000000000000000000000000000000000000000b01", "file": "action_evidence_package_zeta.json", "timestamp": "2026-09-30T00:00:50Z"},
+        "approval": {"approved": false, "approval_id": "", "approver": "EVE Synthetic Risk Owner Zeta", "approved_scope": "", "requested_scope": "update supplier risk status", "timestamp": "2026-09-30T00:01:00Z"}
+      }
+    }
+  ]
+}
