@@ -27,11 +27,20 @@ rule         neither is modified here; tools/verify_vendor.py must PASS before a
 ## State (measure before relying on it)
 
 ```
-phase            PHASE 1 (I1-I3) GO 2026-09-30 -- I1 IN PROGRESS
-I1               skeleton written; vendoring + verification + vendored tests + first commit PENDING OWNER commands
-I2               hosted demo backend on the VPS -- NOT STARTED (measure port/process/nginx first; existing EVE/GRC untouched)
+phase            PHASE 1 (I1-I3) GO 2026-09-30 -- I1 DONE, I2 GATES PASS (awaiting owner closure), I3 NOT STARTED
+I1               DONE 2026-09-30: root commit 2a106fd21d63133a7dee7913600c98de1afec3ce, tree 95e99aa13f1babb9a6bbd13e27ed382038cdc1c1,
+                 vendor/eve-mcp subtree == eve-mcp-v1 tree cbdcd191710c472f7706a9487f31eef3cfd1821d (git ls-tree HEAD),
+                 verify_vendor PASS (18/18, manifest dfedb266...), lock reproduced (36 pkgs), vendored tests 88 passed (.venv Python 3.11)
+                 remote: refs/heads/main = 2a106fd2... (ls-remote 2026-09-30)
+I2               GATES PASS 2026-09-30 -- evidence\i2\I2_CLOSURE_2026-09-30.json (record_sha256 be1fb1fd..., file d1148a6b...)
+                 VPS /opt/eva-demo: eve-core-v1 clone (tree a698922c...) systemd eva-eve 127.0.0.1:8012 + eva-mcp 127.0.0.1:8765;
+                 public surface ONLY https://grc.eveverified.com/eva/mcp (nginx bearer, root-0600 snippet); 8012/8765 externally unreachable
+                 suite on VPS = SUITE_QUALIFIED_PASS 1283 passed / 10 environment-bound H6 failures (NOT a full pass; workstation 1293 stays reference)
+                 local acceptance PHASE1_ACCEPTANCE_PASS (EVE-PAR-LOCAL-000001/2), remote probe REMOTE_PROBE_PASS (000003 allow / 000004 escalate)
+                 pm2 11 processes unchanged (before == after, byte-identical snapshot); existing GRC untouched
+                 SECURITY: X-Trinity-Key + X-Ctrl-Energy-Key (api.eveverified.com) exposed in chat output -> COMPROMISED, rotate in a separate owner act
 I3               EVA (Strands + Bedrock) + deterministic gate + CLI Case A/B -- NOT STARTED (Bedrock model access to be measured; STOP if none)
-repo             D:\EVE11\Projects\052_eva  ->  https://github.com/elekto-energy/eva (private; owner-created)
+repo             D:\EVE11\Projects\052_eva  ->  https://github.com/elekto-energy/eva (private; pushed 2026-09-30)
 devpost          New/Existing field UNTOUCHED; working default "Existing, but significantly updated", to be verified against the form text
 ```
 
