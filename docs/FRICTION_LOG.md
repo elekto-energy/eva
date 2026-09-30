@@ -7,6 +7,7 @@ evidence it rests on; where a statement is not backed by an EVA evidence record,
 Basis labels:
 - MEASURED       -- recorded by an EVA instrument; the record is named with its sha256
 - OWNER_OBSERVED -- read by the account owner in the AWS console; no EVA record exists for it
+- OWNER_STATED   -- confirmed by the account owner; not machine-verified and not observed in a record
 - NOT_ESTABLISHED -- not determined; stated so that it is not mistaken for a finding
 
 Evidence paths are relative to the repository root unless they start with `D:\` (tools kept outside the
@@ -116,7 +117,7 @@ resolution order `region_name or session.region_name or AWS_REGION or us-west-2`
 | Expected | An access key belonging to `user/eva-discovery` |
 | Actual | At least three access keys in succession were created on the **root** user, each one discovered only when the caller-ARN check returned `...:root`. The console header showed "eva-discovery" -- which was the **account name**, not an IAM user -- while IAM showed Users = 0. The same name for the account and the intended IAM user made it look as if one were already acting as that user. |
 | Severity | Medium -- a security risk (root access keys), not a functional block. Discovery ran once with root credentials before this was noticed; that run only read. |
-| Workaround | Created the IAM users `eva-discovery` and `eva-runtime` from CloudShell with `aws iam create-user` / `put-user-policy` / `create-access-key`, so the key could not land on the wrong principal. Verified each identity by its caller ARN only (`sts get-caller-identity`), never by displaying the key. Earlier root access keys deactivated and deleted (the last one: see NOT_ESTABLISHED below); MFA assigned to root. |
+| Workaround | Created the IAM users `eva-discovery` and `eva-runtime` from CloudShell with `aws iam create-user` / `put-user-policy` / `create-access-key`, so the key could not land on the wrong principal. Verified each identity by its caller ARN only (`sts get-caller-identity`), never by displaying the key. All root access keys deactivated and deleted (the last one confirmed by the owner, see below); MFA assigned to root. |
 | Suggestion | (1) When a user is about to create an access key on the root user, show an explicit interstitial ("You are creating a key for the ROOT user of this account"). (2) In the console header, label the account name as "Account:" distinct from the signed-in principal. |
 
 Evidence (MEASURED):
@@ -134,5 +135,5 @@ OWNER_OBSERVED: IAM dashboard showing Users = 0 while the header read "eva-disco
 recommendations ("Deactivate or delete access keys for root user", "Add MFA for root user"); MFA
 assigned to root (confirmation banner "MFA device assigned").
 
-NOT_ESTABLISHED at the time of writing: that the last remaining root access key has been deleted (the
-console last showed one root key with the Delete action open; deletion not yet confirmed).
+OWNER_STATED (2026-09-30): the last remaining root access key has been deleted; the root user now has no
+access keys. Confirmed by the account owner, not machine-verified.
