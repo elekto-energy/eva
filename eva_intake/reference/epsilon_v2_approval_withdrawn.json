@@ -1,0 +1,73 @@
+{
+  "action_class": "set_supplier_risk_status",
+  "decision": "Allow the agent to update the risk status of supplier SUP-EPSILON-001",
+  "declared_at": "2026-10-02T09:00:00Z",
+  "declared_by": "EVA reference operator (synthetic)",
+  "expected_control_result": "The agent may update the supplier risk status only with complete evidence",
+  "governance": {
+    "chain_authorisation_basis": "ai_agent_chain_authorisation_record",
+    "chain_authorisation_expires_at": "2027-12-31T23:59:59Z",
+    "chain_authorisation_required": true,
+    "chain_authorisation_scope": "update_supplier_risk_status",
+    "chain_authorisation_status": "authorised",
+    "chain_authorised_at": "2026-10-01T09:00:00Z",
+    "chain_authorised_by": "EVA Synthetic AI Governance Owner Epsilon (synthetic reference data, not a real company)",
+    "chain_current_scope": "update_supplier_risk_status",
+    "chain_monitoring_owner": "EVA Synthetic Monitoring Owner Epsilon (synthetic reference data, not a real company)",
+    "chain_monitoring_status": "monitored",
+    "chain_owner": "EVA Synthetic Chain Owner Epsilon (synthetic reference data, not a real company)",
+    "chain_owner_confirmed": true,
+    "chain_review_cycle": "quarterly"
+  },
+  "raw": {
+    "agent_action": {
+      "action": "update supplier risk status",
+      "action_id": "EVA-REF-ACT-EPS-0001",
+      "action_request_created": true,
+      "timestamp": "2026-10-01T10:00:00Z"
+    },
+    "approval": {
+      "approval_id": null,
+      "approved": false,
+      "approved_scope": "update supplier risk status",
+      "approver": null,
+      "requested_scope": "update supplier risk status",
+      "timestamp": "2026-10-02T08:55:00Z"
+    },
+    "documents": {
+      "file": "epsilon_audit_evidence_package.json",
+      "sha256": "0000000000000000000000000000000000000000000000000000000000000e01",
+      "stored": true,
+      "timestamp": "2026-10-01T10:00:50Z"
+    },
+    "identity": {
+      "authority_in_scope": true,
+      "evidence_ref": "identity:owner:epsilon",
+      "owner_confirmed": true,
+      "subject": "accountable_owner",
+      "timestamp": "2026-10-01T10:00:20Z"
+    },
+    "policy_baseline": {
+      "baseline_id": "EVA-REF-POL-EPS-01",
+      "loaded": true,
+      "timestamp": "2026-10-01T10:00:40Z"
+    },
+    "ticketing": {
+      "exists": true,
+      "ticket_id": "EVA-REF-CHG-EPS-0001",
+      "timestamp": "2026-10-01T10:00:30Z"
+    },
+    "tool_permission": {
+      "agent": "EVA Synthetic Procurement Agent",
+      "granted_scope": "update:supplier_risk_status",
+      "overscoped": false,
+      "permission_checked": true,
+      "permission_ref": "perm:eva:agent:epsilon",
+      "required_scope": "update:supplier_risk_status",
+      "timestamp": "2026-10-01T10:00:10Z"
+    }
+  },
+  "schema": "eva-evidence-declaration-1.0",
+  "subject": "SUP-EPSILON-001 (synthetic reference supplier, not a real company)",
+  "subject_ref": "SUP-EPSILON-001"
+}
