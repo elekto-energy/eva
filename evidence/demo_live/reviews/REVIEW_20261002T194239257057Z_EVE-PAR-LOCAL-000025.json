@@ -1,0 +1,37 @@
+{
+  "decision_d4_blob": "2869b55c09236ba91d0c23876803a9445b3479ad",
+  "effects": {
+    "authorizes_action": false,
+    "eva_execution": "NONE",
+    "is_evidence_of_permission": false,
+    "original_determination": "unchanged -- an escalate remains an escalate (D4 R1)"
+  },
+  "new_evidence": null,
+  "note": "Approval was withdrawn and no new evidence exists. The action is declined.",
+  "outcome": "DECLINED",
+  "record_kind": "eva_review",
+  "record_schema_version": "eva-review-1.0",
+  "record_sha256": "2f4f19c3716e951a2f7496e8651933a6bacc8fa776b547c4307e1a02725948b3",
+  "recorded_utc": "2026-10-02T19:42:39.257057Z",
+  "review_id": "EVA-RV-0d18e62139b998c538519347",
+  "reviewed": {
+    "args": {
+      "risk_status": "critical",
+      "supplier_id": "SUP-EPSILON-001"
+    },
+    "chain_id": "EVA-CH-995bf4a9f7c53e97719380c9",
+    "customer_policy_outcome": "escalate",
+    "eve_record_id": "EVE-PAR-LOCAL-000025",
+    "gate_decision": "DENY",
+    "pre_action_status": "evaluated",
+    "source": {
+      "file": "TURN_20261002T194116767481Z_1.json",
+      "file_sha256": "295683f7f41859b72e1703191d996a27d186902362dc5cd5db495e0cd55436f9",
+      "record_sha256": "0cb6d492a2f12cb2506456887ae295dedc3541bc32bf7f7b3c506003100e6991"
+    },
+    "tool_name": "set_supplier_risk_status",
+    "tool_use_id": "eva-web-20261002T194116767481Z-1",
+    "verified_chain_outcome": "HUMAN_REVIEW_REQUIRED"
+  },
+  "reviewer": "Joakim Eklund (owner)"
+}

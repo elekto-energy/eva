@@ -1,0 +1,99 @@
+{
+  "action": {
+    "eve_record_id": "EVE-PAR-LOCAL-000024",
+    "proposer": {
+      "kind": "scripted",
+      "label": "Scripted proposer (no LLM)"
+    },
+    "request_utterance": "Raise Epsilon to high",
+    "turn_record": {
+      "file": "TURN_20261002T193916833249Z_1.json",
+      "file_sha256": "6ebc416df3ed723f09858bbdd4a8f92ad5bf98031b13fb1097971c23fdf390e3",
+      "record_sha256": "2e70ec4986163a0e04b9fc61ba7fb54b8f3b78264c323bab0990f4c376cb7f08"
+    },
+    "turn_utc": "20261002T193916833249Z"
+  },
+  "decision_d4_blob": "2869b55c09236ba91d0c23876803a9445b3479ad",
+  "determination": {
+    "customer_policy_outcome": "allow",
+    "gate_decision": "ALLOW",
+    "gate_reason": "EVE_OUTCOME: allow",
+    "pre_action_status": "evaluated",
+    "verified_chain_outcome": "ACTION_CHAIN_SUPPORTED"
+  },
+  "evidence_chain": {
+    "binding": {
+      "file": "epsilon_v1.chain_map.json",
+      "intake_records": [
+        {
+          "chain_id": "EVA-CH-e8fcd04353baf54fab0d91d0",
+          "file": "INTAKE_20261002T183404278993Z_SAVE_EVA-CH-e8fcd04353baf54fab0d91d0.json",
+          "file_sha256": "e49c35781654d8a3beb9f162172a48897767c9d5946034631b3c0550c986bb8c",
+          "record_sha256": "4859915d46fa2b24e5f61c11e349157ac424756b3fdc8ce7c67a158110de5a8d"
+        }
+      ],
+      "sha256": "b6ad3c3153df5d4d0bc4f4c85084d8b8f26acbee5cecba7c2a06c1f99932dfcd",
+      "source": "external"
+    },
+    "chain_id": "EVA-CH-e8fcd04353baf54fab0d91d0",
+    "lineage": {
+      "chain_content_hash": "4c1392b7fcc8ed4e400858363e23817a40f5e296187e81ee6ec056028bf282db",
+      "declaration_sha256": "792bcf744de7b87668409b2ffc637b5255af1e5286904b41bd7c3821ecab8289",
+      "declared_at": "2026-10-01T10:05:00Z",
+      "declared_by": "EVA reference operator (synthetic)",
+      "equivalence_gate": "PASS",
+      "eve_tree": "a698922c9fd740c4b114e572a626380abf1590a4",
+      "intake_record": {
+        "file": "INTAKE_20261002T183404278993Z_SAVE_EVA-CH-e8fcd04353baf54fab0d91d0.json",
+        "file_sha256": "e49c35781654d8a3beb9f162172a48897767c9d5946034631b3c0550c986bb8c",
+        "record_sha256": "4859915d46fa2b24e5f61c11e349157ac424756b3fdc8ce7c67a158110de5a8d"
+      },
+      "supersedes": null
+    }
+  },
+  "execution": {
+    "executed_by_eva": true,
+    "execution_log": [
+      {
+        "chain_id": "EVA-CH-e8fcd04353baf54fab0d91d0",
+        "eve_record_id": "EVE-PAR-LOCAL-000024",
+        "executed": true,
+        "new": "high",
+        "old": "medium",
+        "supplier_id": "SUP-EPSILON-001",
+        "tool_use_id": "eva-web-20261002T193916833249Z-1"
+      }
+    ],
+    "register_after_sha256": "b7d4e0c6b12b513768ae1cea87d272196ed1531a92b76a45d26b94542c86c500",
+    "register_before_sha256": "2df927e7043fb8dd4419cfa2f00b2fc27bc6a9342dd2d52f8a3cb1c40bfc81c3",
+    "register_changed": true
+  },
+  "export_sha256": "0497fee6df786f8b7c4c4a898363874ec4e7f9e80f733a728e00f4b1f40ec38f",
+  "invariant": "Review may change the future evidence state; it can never change historical truth (D4).",
+  "policy": {
+    "observed_against_locked": "MATCH",
+    "policy_content_sha256": "e7a23e8c448ccff96f54ca7a449908e5707a2df5e7f37afcc61d712a285867aa",
+    "policy_ref": "eve-mcp-demo-policy-v1"
+  },
+  "proposal": {
+    "args": {
+      "risk_status": "high",
+      "supplier_id": "SUP-EPSILON-001"
+    },
+    "tool_name": "set_supplier_risk_status",
+    "tool_use_id": "eva-web-20261002T193916833249Z-1"
+  },
+  "record_kind": "eva_audit_export",
+  "record_schema_version": "eva-audit-export-1.0",
+  "review": "NOT_APPLICABLE: the determination did not require human review",
+  "sources": [
+    {
+      "file": "INTAKE_20261002T183404278993Z_SAVE_EVA-CH-e8fcd04353baf54fab0d91d0.json",
+      "sha256": "e49c35781654d8a3beb9f162172a48897767c9d5946034631b3c0550c986bb8c"
+    },
+    {
+      "file": "TURN_20261002T193916833249Z_1.json",
+      "sha256": "6ebc416df3ed723f09858bbdd4a8f92ad5bf98031b13fb1097971c23fdf390e3"
+    }
+  ]
+}

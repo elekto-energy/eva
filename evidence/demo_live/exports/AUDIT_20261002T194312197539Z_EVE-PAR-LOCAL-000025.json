@@ -1,0 +1,109 @@
+{
+  "action": {
+    "eve_record_id": "EVE-PAR-LOCAL-000025",
+    "proposer": {
+      "kind": "scripted",
+      "label": "Scripted proposer (no LLM)"
+    },
+    "request_utterance": "Raise Epsilon to critical",
+    "turn_record": {
+      "file": "TURN_20261002T194116767481Z_1.json",
+      "file_sha256": "295683f7f41859b72e1703191d996a27d186902362dc5cd5db495e0cd55436f9",
+      "record_sha256": "0cb6d492a2f12cb2506456887ae295dedc3541bc32bf7f7b3c506003100e6991"
+    },
+    "turn_utc": "20261002T194116767481Z"
+  },
+  "decision_d4_blob": "2869b55c09236ba91d0c23876803a9445b3479ad",
+  "determination": {
+    "customer_policy_outcome": "escalate",
+    "gate_decision": "DENY",
+    "gate_reason": "EVE_OUTCOME: escalate",
+    "pre_action_status": "evaluated",
+    "verified_chain_outcome": "HUMAN_REVIEW_REQUIRED"
+  },
+  "evidence_chain": {
+    "binding": {
+      "file": "epsilon_v2.chain_map.json",
+      "intake_records": [
+        {
+          "chain_id": "EVA-CH-995bf4a9f7c53e97719380c9",
+          "file": "INTAKE_20261002T183505508304Z_SAVE_EVA-CH-995bf4a9f7c53e97719380c9.json",
+          "file_sha256": "55743293396c9243c651bea989fe72eefec8ccb4dd0f6c2ae19483d61b09ab2d",
+          "record_sha256": "cb7463cad75defc1f6e63e2fd1a4e7c0308026f55eb0ae522f7b1bf04d40da94"
+        }
+      ],
+      "sha256": "7a5fb7972e3bb8cb2e64fb7576bd9bbfbb5d12c601f41a4bd3926e42db8c0870",
+      "source": "external"
+    },
+    "chain_id": "EVA-CH-995bf4a9f7c53e97719380c9",
+    "lineage": {
+      "chain_content_hash": "186ac9a6c5dd4276c541b9e5213d9fe31c2f3b6a3b6fcd7647fcd08aceca2b0c",
+      "declaration_sha256": "38cc8251f2cc4bb4a4ba2837e3eb598ab604a79ebbcdd3f1e052f67ed4018bcc",
+      "declared_at": "2026-10-02T09:00:00Z",
+      "declared_by": "EVA reference operator (synthetic)",
+      "equivalence_gate": "PASS",
+      "eve_tree": "a698922c9fd740c4b114e572a626380abf1590a4",
+      "intake_record": {
+        "file": "INTAKE_20261002T183505508304Z_SAVE_EVA-CH-995bf4a9f7c53e97719380c9.json",
+        "file_sha256": "55743293396c9243c651bea989fe72eefec8ccb4dd0f6c2ae19483d61b09ab2d",
+        "record_sha256": "cb7463cad75defc1f6e63e2fd1a4e7c0308026f55eb0ae522f7b1bf04d40da94"
+      },
+      "supersedes": "EVA-CH-e8fcd04353baf54fab0d91d0"
+    }
+  },
+  "execution": {
+    "executed_by_eva": false,
+    "execution_log": [],
+    "register_after_sha256": "2df927e7043fb8dd4419cfa2f00b2fc27bc6a9342dd2d52f8a3cb1c40bfc81c3",
+    "register_before_sha256": "2df927e7043fb8dd4419cfa2f00b2fc27bc6a9342dd2d52f8a3cb1c40bfc81c3",
+    "register_changed": false
+  },
+  "export_sha256": "ee7b06082bc007a84699f6b5d581370eb29560384666fc029be5bfb73ea4ed70",
+  "invariant": "Review may change the future evidence state; it can never change historical truth (D4).",
+  "policy": {
+    "observed_against_locked": "MATCH",
+    "policy_content_sha256": "e7a23e8c448ccff96f54ca7a449908e5707a2df5e7f37afcc61d712a285867aa",
+    "policy_ref": "eve-mcp-demo-policy-v1"
+  },
+  "proposal": {
+    "args": {
+      "risk_status": "critical",
+      "supplier_id": "SUP-EPSILON-001"
+    },
+    "tool_name": "set_supplier_risk_status",
+    "tool_use_id": "eva-web-20261002T194116767481Z-1"
+  },
+  "record_kind": "eva_audit_export",
+  "record_schema_version": "eva-audit-export-1.0",
+  "review": {
+    "effects": {
+      "authorizes_action": false,
+      "eva_execution": "NONE",
+      "is_evidence_of_permission": false,
+      "original_determination": "unchanged -- an escalate remains an escalate (D4 R1)"
+    },
+    "outcome": "DECLINED",
+    "recorded_utc": "2026-10-02T19:42:39.257057Z",
+    "review_id": "EVA-RV-0d18e62139b998c538519347",
+    "review_record": {
+      "file": "REVIEW_20261002T194239257057Z_EVE-PAR-LOCAL-000025.json",
+      "file_sha256": "a986a46c7e99099b80b6feac751085927d0782cf7530736cafb0b71fc0fc72a2",
+      "record_sha256": "2f4f19c3716e951a2f7496e8651933a6bacc8fa776b547c4307e1a02725948b3"
+    },
+    "reviewer": "Joakim Eklund (owner)"
+  },
+  "sources": [
+    {
+      "file": "INTAKE_20261002T183505508304Z_SAVE_EVA-CH-995bf4a9f7c53e97719380c9.json",
+      "sha256": "55743293396c9243c651bea989fe72eefec8ccb4dd0f6c2ae19483d61b09ab2d"
+    },
+    {
+      "file": "REVIEW_20261002T194239257057Z_EVE-PAR-LOCAL-000025.json",
+      "sha256": "a986a46c7e99099b80b6feac751085927d0782cf7530736cafb0b71fc0fc72a2"
+    },
+    {
+      "file": "TURN_20261002T194116767481Z_1.json",
+      "sha256": "295683f7f41859b72e1703191d996a27d186902362dc5cd5db495e0cd55436f9"
+    }
+  ]
+}
