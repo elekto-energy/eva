@@ -63,6 +63,36 @@ th{color:var(--muted);font-weight:500}
 tr.changed td{background:#E4F1EB}
 .small{color:var(--muted);font-size:.82rem;margin:.6rem 0 0}
 .error{color:var(--stop)}
+.act4{margin-top:3rem}
+.act4 h2.sect{font:600 1.35rem/1.2 var(--sans);margin:0 0 .3rem}
+.act4 .lead{color:var(--muted);margin:0 0 1rem;max-width:70ch}
+.hist{display:grid;gap:.6rem;margin:0 0 1.25rem}
+.hitem{background:var(--paper);border-left:6px solid var(--rule);padding:.75rem 1rem;display:flex;flex-wrap:wrap;gap:.4rem 1.2rem;align-items:baseline;cursor:pointer;border-top:0;border-right:0;border-bottom:0;text-align:left;font:inherit;color:inherit;width:100%}
+.hitem.done{border-left-color:var(--done)} .hitem.hold{border-left-color:var(--hold)} .hitem.stop{border-left-color:var(--stop)}
+.hitem[aria-current="true"]{outline:2px solid var(--eve)}
+.hitem b{font-weight:600}
+.flow{display:grid;gap:0;margin:.5rem 0 1rem}
+.card{background:var(--paper);border-left:6px solid var(--rule);padding:.8rem 1rem;position:relative}
+.card + .card{margin-top:1.4rem}
+.card + .card::before{content:"\2193";position:absolute;top:-1.35rem;left:1rem;color:var(--muted)}
+.card h3{font:600 .95rem var(--sans);margin:0 0 .35rem;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+.card .big{font:600 1.25rem/1.2 var(--sans);margin:0 0 .4rem}
+.card.locked{border-left-color:var(--eve)} .card.locked .big::after{content:"  immutable determination";font:400 .8rem var(--sans);color:var(--muted)}
+.card.appended{border-left-color:var(--hold);background:#FBF7EF}
+.card.done{border-left-color:var(--done)} .card.stop{border-left-color:var(--stop)}
+.card.verified{border-left-color:var(--done)}
+.failed{background:#FBECEC;border-left:6px solid var(--stop);padding:1rem;color:var(--stop);font-weight:600}
+.absent{color:var(--hold);font-style:italic}
+.hash summary{display:inline;cursor:pointer;font-family:var(--mono);font-size:.82rem;color:var(--ink)}
+.hash{display:inline;background:none;padding:0}
+.hash p{margin:.2rem 0 0;font-family:var(--mono);font-size:.78rem;overflow-wrap:anywhere}
+.bounds{list-style:none;padding:0;margin:0 0 1.25rem;display:grid;gap:.25rem;font-size:.88rem}
+.bounds .st{font-family:var(--mono);font-size:.8rem;padding:.05rem .35rem;border:1px solid var(--rule);border-radius:3px;margin-right:.4rem}
+.reviewbox{background:var(--paper);padding:1rem;border:1px dashed var(--hold);margin:1rem 0}
+.reviewbox label{display:block;margin:.4rem 0;color:var(--muted);font-size:.9rem}
+.reviewbox input,.reviewbox textarea{font:inherit;width:100%;padding:.45rem .6rem;border:1px solid var(--rule);border-radius:4px}
+.reviewbox .acts{display:flex;gap:.6rem;margin-top:.6rem;flex-wrap:wrap}
+.info{color:var(--muted);font-size:.88rem;margin:.6rem 0 0}
 @media (max-width:800px){.chain{grid-template-columns:1fr 1fr}.below{grid-template-columns:1fr}}
 @media (max-width:520px){.chain{grid-template-columns:1fr}.spoken blockquote{font-size:1.4rem}}
 @media (prefers-reduced-motion:no-preference){.stage{transition:border-color .25s,opacity .25s}}
@@ -116,6 +146,14 @@ tr.changed td{background:#E4F1EB}
     <p class="small" id="evidence"></p>
   </div>
 </div>
+
+<section class="act4" aria-label="History, review and audit">
+  <h2 class="sect">History, review and audit</h2>
+  <p class="lead">Every action EVA was asked to take, in the order the records say it happened. Select one to see the evidence, binding, policy and EVE determination behind it, verified against the source records.</p>
+  <ul class="bounds" id="bounds" aria-label="Evidence boundaries"></ul>
+  <div class="hist" id="hist" aria-live="polite"><p class="small">Loading history...</p></div>
+  <div id="audit"></div>
+</section>
 </main>
 <script>
 "use strict";
@@ -157,7 +195,8 @@ function render(t){
   $("spoken").className="spoken"+(k?" "+k:""); $("spokenText").textContent=t.spoken;
   $("modelText").textContent=t.model_text||"(none)";
   renderRegister(t.register.after, o.tool_executed?o.supplier_id:null);
-  $("evidence").textContent="Evidence: evidence/i4/"+t.evidence_file+"  sha256 "+t.record_sha256.slice(0,16)+"...";
+  $("evidence").textContent="Evidence: "+(t.evidence_dir||"")+"/"+t.evidence_file+"  sha256 "+t.record_sha256.slice(0,16)+"...";
+  loadHistory();
   if($("speak").checked && "speechSynthesis" in window){ speechSynthesis.cancel(); speechSynthesis.speak(new SpeechSynthesisUtterance(t.spoken)); }
 }
 let inFlight=false;
@@ -189,6 +228,77 @@ $("reset").onclick=async()=>{
   renderRegister(j,null); $("spokenText").textContent="Register reset to the demo seed.";
 };
 fetch("/api/register").then(r=>r.json()).then(reg=>renderRegister(reg,null));
+// ---- Act 4: history, review and audit (view over existing records; reads never call EVE) ----
+const isAbsent = v => typeof v === "string" && v.startsWith("NOT_ESTABLISHED");
+function val(v){ if(v==null) return el("span","NOT_ESTABLISHED: not present in the record","absent"); if(isAbsent(v)) return el("span",v,"absent"); return el("span",typeof v==="object"?JSON.stringify(v):v); }
+function hash(h){ if(isAbsent(h)||typeof h!=="string") return val(h); const d=el("details",null,"hash"); d.append(el("summary",h.slice(0,12)+"\u2026")); d.append(el("p",h)); return d; }
+function rows(pairs){ const d=el("dl"); for(const [k,v] of pairs){ d.append(el("dt",k)); const dd=el("dd"); dd.append(v instanceof Node?v:val(v)); d.append(dd);} return d; }
+function card(cls,title,big,content){ const c=el("article",null,"card"+(cls?" "+cls:"")); c.append(el("h3",title)); if(big) c.append(el("p",big,"big")); if(content) c.append(content); return c; }
+function htone(i){ if(i.executed) return "done"; if(i.customer_policy_outcome==="escalate"||i.customer_policy_outcome==="pause") return "hold"; return "stop"; }
+let histState=null, selected=null;
+function failure(j){ const f=el("div",null,"failed"); f.append(el("p",j.message||"SOURCE VERIFICATION FAILED.")); f.append(el("p",(j.error_code||"")+": "+(j.detail||""))); return f; }
+async function loadHistory(){
+  const r=await fetch("/api/history"); const j=await r.json(); const h=$("hist"); h.replaceChildren();
+  if(!r.ok){ histState=null; h.append(failure(j)); $("audit").replaceChildren(); return; }
+  histState=j; const b=$("bounds"); b.replaceChildren();
+  for(const x of j.boundaries){ const li=el("li"); li.append(el("span",x.status,"st")); li.append(el("span",x.item+": "+x.detail)); b.append(li); }
+  if(!j.items.length){ h.append(el("p","No actions recorded in "+j.evidence_dir+" yet.","small")); return; }
+  for(const i of j.items){
+    const bt=el("button",null,"hitem "+htone(i)); bt.type="button"; bt.setAttribute("aria-current",String(i.eve_record_id===selected));
+    bt.append(el("b",i.eve_record_id)); bt.append(el("span",i.turn_utc)); bt.append(el("span","\u201c"+i.request_utterance+"\u201d"));
+    bt.append(el("span","EVE "+String(i.customer_policy_outcome).toUpperCase()+" \u00b7 "+(i.executed?"EXECUTED "+i.risk_before+" \u2192 "+i.risk_after:"NOT EXECUTED")));
+    if(i.review) bt.append(el("span","Human review: "+i.review.outcome));
+    else if(i.requires_review) bt.append(el("span","Awaiting human review"));
+    bt.onclick=()=>{ selected=i.eve_record_id; loadHistory().then(()=>showAudit(i.eve_record_id)); };
+    h.append(bt);
+  }
+}
+async function showAudit(par){
+  const a=$("audit"); a.replaceChildren(el("p","Verifying "+par+" against the source records...","small"));
+  const r=await fetch("/api/audit/"+encodeURIComponent(par)); const j=await r.json(); a.replaceChildren();
+  if(!r.ok){ a.append(failure(j)); return; }
+  const x=j.export, ch=x.evidence_chain, lin=ch.lineage, pol=j.policy_comparison, det=x.determination, ex=x.execution;
+  const item=(histState&&histState.items||[]).find(i=>i.eve_record_id===par);
+  const flow=el("div",null,"flow");
+  flow.append(card("", "Request", "\u201c"+x.action.request_utterance+"\u201d", rows([["Recorded",x.action.turn_utc],["Proposed",x.proposal.tool_name+" "+JSON.stringify(x.proposal.args)],["Turn record",x.action.turn_record.file],["Record sha256",hash(x.action.turn_record.file_sha256)]])));
+  flow.append(card("", "Evidence and binding", ch.chain_id, rows([
+    ["Declaration sha256", isAbsent(lin)?val(lin):hash(lin.declaration_sha256)], ["Supersedes", isAbsent(lin)?val(lin):(lin.supersedes||"nothing (first version)")],
+    ["EVE engine tree", isAbsent(lin)?val(lin):hash(lin.eve_tree)],
+    ["Binding file", isAbsent(ch.binding)?val(ch.binding):ch.binding.file], ["Binding sha256", isAbsent(ch.binding)?val(ch.binding):hash(ch.binding.sha256)]])));
+  flow.append(card("", "Policy identity", isAbsent(pol)?null:"Observed vs locked: "+pol.result, isAbsent(pol)?rows([["Comparison",pol]]):rows([
+    ["Policy", x.policy.policy_ref], ["Observed sha256", isAbsent(pol.observed)?val(pol.observed):hash(pol.observed.policy_content_sha256)],
+    ["Locked sha256", isAbsent(pol.expected)?val(pol.expected):hash(pol.expected.policy_content_sha256)], ["Source", pol.source]])));
+  flow.append(card("locked", "EVE determination", String(det.customer_policy_outcome).toUpperCase()+" \u00b7 "+x.action.eve_record_id, rows([["Verified chain",det.verified_chain_outcome],["Status",det.pre_action_status],["Gate",det.gate_decision+(det.gate_reason?" ("+det.gate_reason+")":"")]])));
+  if(typeof x.review==="object"){
+    flow.append(card("appended", "Human review", x.review.outcome, rows([["Note",(item&&item.review&&item.review.note)||"Added after the determination. Does not change it. Authorizes nothing."],["Recorded",x.review.recorded_utc],["Reviewer",x.review.reviewer+" (declared, not authenticated)"],["Authorizes action",String(x.review.effects.authorizes_action)],["Review id",x.review.review_id]])));
+  } else flow.append(card("", "Human review", null, rows([["Review",x.review]])));
+  flow.append(card(ex.executed_by_eva?"done":"stop", "Execution", ex.executed_by_eva?"EXECUTED \u00b7 "+j.register.risk_before+" \u2192 "+j.register.risk_after:"NOT EXECUTED", rows([["Register changed",ex.register_changed]])));
+  const src=el("ul",null,"bounds"); for(const s of x.sources){ const li=el("li"); li.append(el("span",s.file+"  ")); li.append(hash(s.sha256)); src.append(li); }
+  flow.append(card("verified", "Audit verification", j.verification, src));
+  a.append(flow);
+  if(item&&item.requires_review&&!item.review) a.append(reviewBox(item));
+}
+function reviewBox(i){
+  const b=el("div",null,"reviewbox"); b.append(el("p","Human review of "+i.eve_record_id+" (EVE: "+String(i.customer_policy_outcome).toUpperCase()+")","big"));
+  if(!histState.review_enabled){ b.append(el("p","Reviews are written only when the demo runs with an explicit evidence directory. Closed evidence sets are never appended to.","info")); return b; }
+  const nl=el("label","Reviewer name"); const ni=el("input"); ni.maxLength=120; nl.append(ni);
+  const ql=el("label","Note (optional)"); const qi=el("textarea"); qi.rows=2; qi.maxLength=1000; ql.append(qi);
+  const acts=el("div",null,"acts"); const msg=el("p","","info");
+  for(const [o,label] of [["DECLINED","Decline"],["HANDLED_BY_HUMAN","Handled by a human"]]){
+    const btn=el("button",label,"quiet"); btn.type="button";
+    btn.onclick=async()=>{ if(!ni.value.trim()){ msg.textContent="Name the reviewer first."; return; }
+      const r=await fetch("/api/review",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({eve_record_id:i.eve_record_id,outcome:o,reviewer:ni.value.trim(),note:qi.value})});
+      const j=await r.json(); if(!r.ok){ msg.textContent=(j.message||"Refused.")+" "+(j.error_code||"")+": "+(j.detail||j.error||""); return; }
+      await loadHistory(); showAudit(i.eve_record_id); };
+    acts.append(btn);
+  }
+  b.append(nl,ql,acts,msg);
+  b.append(el("p",histState.new_evidence_note,"info"));
+  b.append(el("p","There is no approve option: a review is recorded after EVE's determination and never changes it.","info"));
+  return b;
+}
+loadHistory();
+
 const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
 if(SR){
   const rec=new SR(); rec.lang="en-US"; rec.interimResults=false; rec.maxAlternatives=1;

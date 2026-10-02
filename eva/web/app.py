@@ -19,6 +19,7 @@ import datetime as dt
 import hashlib
 import itertools
 import json
+import re
 import shutil
 import threading
 from pathlib import Path
@@ -38,6 +39,7 @@ from ..eve_client import EveMcpClient
 from ..frozen import FrozenBoundaryError, verify_frozen_boundary
 from ..gate import EveGate
 from ..policy_identity import PolicyObserver
+from . import act4
 from ..scripted_model import ScriptedModel
 from ..tools import SupplierRegister, build_tools
 from .proposer import scripted_turns
@@ -49,6 +51,8 @@ REPO = config.PACKAGE_DIR.parent
 STATIC = Path(__file__).parent / "static"
 PROPOSERS = ("scripted", "nova")
 MAX_UTTERANCE = 300
+PAR_RE = re.compile(r"^EVE-PAR-[A-Z]+-[0-9]{1,12}$")
+MAX_NOTE = 1000
 BUSY_MESSAGE = "EVA is still working on the previous request. Wait for it to finish, then try again."
 
 
@@ -67,7 +71,8 @@ def _default_nova_factory():
 
 def create_app(pre_action: Optional[Callable] = None, nova_factory: Optional[Callable] = None,
                runs_root: Path = REPO / "runs", evidence_root: Path = REPO / "evidence" / "i4",
-               binding: Optional[LockedBinding] = None, expected_policy: Optional[dict] = None) -> Starlette:
+               binding: Optional[LockedBinding] = None, expected_policy: Optional[dict] = None,
+               intake_dirs: tuple = (), review_enabled: bool = False) -> Starlette:
     locked = binding if binding is not None else lock_binding(None)     # D5 B4 / B10
     lock = threading.Lock()
     seq = itertools.count(1)
@@ -153,6 +158,7 @@ def create_app(pre_action: Optional[Callable] = None, nova_factory: Optional[Cal
                 json.dump(turn, fh, indent=2, sort_keys=True)
                 fh.write("\n")
             turn["evidence_file"] = out.name
+            turn["evidence_dir"] = ev.name
             return turn
         finally:
             lock.release()
@@ -198,8 +204,67 @@ def create_app(pre_action: Optional[Callable] = None, nova_factory: Optional[Cal
             return JSONResponse({"error": BUSY_MESSAGE}, status_code=409)
 
     reset_register()
+    # Act 4: review and audit as a view over existing records (eva.web.act4). Reads never call EVE.
+    def _read_failure(exc: "act4.Act4Error") -> JSONResponse:
+        return JSONResponse({"verification": "FAILED", "error_code": exc.code, "detail": exc.detail,
+                             "message": act4.VERIFICATION_FAILED}, status_code=409)
+
+    async def api_history(request: Request):
+        try:
+            h = await run_in_threadpool(act4.history, Path(evidence_root), intake_dirs)
+        except act4.Act4Error as exc:
+            return _read_failure(exc)
+        return JSONResponse({**h, "review_enabled": review_enabled, "evidence_dir": Path(evidence_root).name})
+
+    async def api_queue(request: Request):
+        try:
+            return JSONResponse({"items": await run_in_threadpool(act4.review_queue, Path(evidence_root), intake_dirs)})
+        except act4.Act4Error as exc:
+            return _read_failure(exc)
+
+    async def api_audit(request: Request):
+        par = request.path_params["par"]
+        if not PAR_RE.match(par):
+            return JSONResponse({"error_code": "BAD_PAR", "detail": "not an EVE record id"}, status_code=400)
+        try:
+            return JSONResponse(await run_in_threadpool(act4.audit_view, Path(evidence_root), intake_dirs, par))
+        except act4.Act4Error as exc:
+            return _read_failure(exc)
+
+    async def api_review(request: Request):
+        if not review_enabled:
+            return JSONResponse({"error_code": "REVIEW_DISABLED",
+                                 "detail": "Reviews are written only when the demo runs with an explicit --evidence-dir; "
+                                           "closed evidence sets are never appended to."}, status_code=403)
+        try:
+            body = await request.json()
+        except Exception:
+            return JSONResponse({"error_code": "BAD_REQUEST", "detail": "send JSON"}, status_code=400)
+        par, outcome = body.get("eve_record_id"), body.get("outcome")
+        reviewer, note = body.get("reviewer"), body.get("note", "")
+        if not (isinstance(par, str) and PAR_RE.match(par) and isinstance(outcome, str)
+                and isinstance(reviewer, str) and isinstance(note, str) and len(note) <= MAX_NOTE):
+            return JSONResponse({"error_code": "BAD_REQUEST", "detail": "eve_record_id, outcome and reviewer are required"},
+                                status_code=400)
+
+        def _w():
+            if not lock.acquire(blocking=False):
+                raise Busy()
+            try:
+                return act4.submit_review(Path(evidence_root), intake_dirs, par, outcome, reviewer.strip(), note)
+            finally:
+                lock.release()
+        try:
+            return JSONResponse(await run_in_threadpool(_w))
+        except Busy:
+            return JSONResponse({"error": BUSY_MESSAGE}, status_code=409)
+        except act4.Act4Error as exc:
+            return JSONResponse({"error_code": exc.code, "detail": exc.detail, "message": "Review refused."}, status_code=409)
+
     app = Starlette(routes=[Route("/", index), Route("/api/turn", api_turn, methods=["POST"]),
-                             Route("/api/register", api_register), Route("/api/reset", api_reset, methods=["POST"])])
+                             Route("/api/register", api_register), Route("/api/reset", api_reset, methods=["POST"]),
+                             Route("/api/history", api_history), Route("/api/review/queue", api_queue),
+                             Route("/api/audit/{par}", api_audit), Route("/api/review", api_review, methods=["POST"])])
     app.state.turn_lock = lock
     return app
 
@@ -227,11 +292,16 @@ def main(argv=None) -> None:
     verify_frozen_boundary()
     if a.binding and not a.evidence_dir:
         ap.error("--evidence-dir is required with --binding (closed evidence sets are never appended to)")
+    # A closed evidence package must never be used as a writable runtime evidence directory. The run index
+    # is the marker of the packages this project closes; finding one is a STOP before anything else runs.
+    if a.evidence_dir and any(Path(a.evidence_dir).glob("*_RUN_INDEX_*.json")):
+        ap.error(f"{a.evidence_dir} is a closed evidence package (it holds a run index); use a new directory")
     locked = lock_binding(Path(a.binding) if a.binding else None, tuple(a.intakes))
     expected = {"policy_ref": config.POLICY_REF, "policy_content_sha256": config.POLICY_CONTENT_SHA256}
     print(f"binding locked: {locked.source} {locked.path.name} sha256={locked.sha256}")
     print(f"policy locked:  {expected['policy_ref']} {expected['policy_content_sha256']}")
-    app = create_app(binding=locked, expected_policy=expected,
+    app = create_app(binding=locked, expected_policy=expected, intake_dirs=tuple(Path(d) for d in a.intakes),
+                     review_enabled=bool(a.evidence_dir),
                      evidence_root=Path(a.evidence_dir) if a.evidence_dir else REPO / "evidence" / "i4")
     uvicorn.run(app, host=HOST, port=PORT, log_level="warning")
 
