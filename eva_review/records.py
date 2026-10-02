@@ -7,6 +7,9 @@ from dataclasses import dataclass
 from pathlib import Path
 
 D4_BLOB = "2869b55c09236ba91d0c23876803a9445b3479ad"
+# Intake records are always named INTAKE_<timestamp>_<mode>_<chain>.json (eva_intake.intake); the
+# timestamp starts with a digit, so other files in the same directory (e.g. a run index) never match.
+INTAKE_RECORD_GLOB = "INTAKE_[0-9]*.json"
 
 
 class RecordError(ValueError):

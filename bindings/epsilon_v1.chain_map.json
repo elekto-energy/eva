@@ -1,0 +1,9 @@
+{
+  "bindings": {
+    "set_supplier_risk_status": {
+      "SUP-EPSILON-001": "EVA-CH-e8fcd04353baf54fab0d91d0"
+    }
+  },
+  "note": "Operator binding (decision D5), immutable: SUP-EPSILON-001 -> Epsilon evidence v1 (complete evidence). Binding selects evidence; it does not establish evidence. Unlisted (tool, supplier) pairs fail closed.",
+  "schema": "eva-chain-map-1.0"
+}

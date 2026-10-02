@@ -1,0 +1,9 @@
+{
+  "bindings": {
+    "set_supplier_risk_status": {
+      "SUP-EPSILON-001": "EVA-CH-995bf4a9f7c53e97719380c9"
+    }
+  },
+  "note": "Operator binding (decision D5), immutable: SUP-EPSILON-001 -> Epsilon evidence v2 (approval withdrawn). Binding selects evidence; it does not establish evidence. Unlisted (tool, supplier) pairs fail closed.",
+  "schema": "eva-chain-map-1.0"
+}

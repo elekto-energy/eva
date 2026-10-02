@@ -17,7 +17,7 @@ import sys
 from pathlib import Path
 
 from . import audit, review
-from .records import RecordError, load_dir, load_record
+from .records import INTAKE_RECORD_GLOB, RecordError, load_dir, load_record
 
 
 def _load(dirs, pattern, kinds):
@@ -60,7 +60,7 @@ def main(argv=None) -> int:
                                              reviewer=a.reviewer, note=a.note, intake=ik)
             print(f"REVIEW {body['outcome']} {body['review_id']} for {a.par}: {path} record_sha256={body['record_sha256']}")
         else:
-            intakes = _load(a.intakes, "INTAKE_*.json", ("eva_chain_intake",))
+            intakes = _load(a.intakes, INTAKE_RECORD_GLOB, ("eva_chain_intake",))
             bundle = audit.export_action(a.par, turns, intakes, reviews)
             out = Path(a.out)
             out.mkdir(parents=True, exist_ok=True)

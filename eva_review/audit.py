@@ -88,6 +88,23 @@ def export_action(eve_record_id: str, turns: list[Loaded], intakes: list[Loaded]
     if isinstance(lineage, dict):
         sources[lineage["intake_record"]["file"]] = lineage["intake_record"]["file_sha256"]
 
+    binding = t.get("binding")
+    if isinstance(binding, dict):
+        bound = (binding.get("bindings") or {}).get(det["tool_name"], {}).get((det["args"] or {}).get("supplier_id"))
+        if bound != det["chain_id"]:
+            raise AuditError("BINDING_DECISION_MISMATCH",
+                             f"the turn's recorded binding gives {bound!r}, but EVE was asked about {det['chain_id']!r}")
+        binding_part = {k: binding.get(k) for k in ("source", "file", "sha256", "intake_records")}
+    else:
+        binding_part = _not_established("the turn record predates binding recording (decision D5)")
+    observed = [o for o in ((t.get("policy") or {}).get("observations") or []) if o.get("tool_use_id") == det["tool_use_id"]]
+    if len(observed) == 1 and isinstance(observed[0].get("observed"), dict):
+        policy_hash = observed[0]["observed"].get("policy_content_sha256") or _not_established("EVE reported no policy hash")
+        policy_check = observed[0].get("result")
+    else:
+        policy_hash = _not_established("not recorded in the turn record")
+        policy_check = _not_established("no policy observation for this evaluation")
+
     executions = [e for e in t.get("tool_executions", []) if e.get("tool_use_id") == det["tool_use_id"]]
     reg = t.get("register") or {}
     bundle = {
@@ -96,9 +113,9 @@ def export_action(eve_record_id: str, turns: list[Loaded], intakes: list[Loaded]
         "action": {"eve_record_id": eve_record_id, "turn_record": turn.ref(), "turn_utc": t.get("turn_utc"),
                    "request_utterance": t.get("utterance"), "proposer": t.get("proposer")},
         "proposal": {"tool_name": det["tool_name"], "args": det["args"], "tool_use_id": det["tool_use_id"]},
-        "evidence_chain": {"chain_id": det["chain_id"], "lineage": lineage},
+        "evidence_chain": {"chain_id": det["chain_id"], "lineage": lineage, "binding": binding_part},
         "policy": {"policy_ref": (t.get("eve") or {}).get("policy_ref") or _not_established("no policy_ref in the turn record"),
-                   "policy_content_sha256": _not_established("not recorded in the turn record")},
+                   "policy_content_sha256": policy_hash, "observed_against_locked": policy_check},
         "determination": {k: det[k] for k in ("pre_action_status", "verified_chain_outcome", "customer_policy_outcome",
                                               "gate_decision", "gate_reason")},
         "review": review_part,

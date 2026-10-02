@@ -1,11 +1,17 @@
 """EVA I4 web server: simulated voice-assistant experience (not Alexa+), localhost only.
 
   python -m eva.web.app            ->  http://127.0.0.1:8770
+  python -m eva.web.app --binding FILE --intakes DIR [--intakes DIR ...] --evidence-dir DIR
+                                   ->  same, with an operator chain binding (decision D5)
 
 Each turn runs the same frozen boundary as the CLI: the proposer (scripted, or Amazon Nova when selected)
 proposes, EVE decides through the hosted EVE MCP endpoint, the gate enforces, and the register changes
 or does not. The spoken report is built from observed state only (eva.web.report). Every turn writes
-one self-hashed record to evidence/i4/ (exclusive create). Secrets are never recorded.
+one self-hashed record to the evidence directory (exclusive create). Secrets are never recorded.
+The chain binding is locked when the process starts and recorded in every turn; a changed binding file
+is a STOP before any action (D5 B4-B6). The policy identity EVE reports is observed for every
+evaluation and recorded as observed; when an expected identity is locked, a mismatch means no action
+(D5 B12-B13).
 """
 from __future__ import annotations
 
@@ -27,9 +33,11 @@ from starlette.routing import Route
 from .. import __version__, config
 from ..agent import build_agent
 from ..authorization import AuthorizationStore
+from ..binding import BindingError, LockedBinding, lock_binding
 from ..eve_client import EveMcpClient
 from ..frozen import FrozenBoundaryError, verify_frozen_boundary
 from ..gate import EveGate
+from ..policy_identity import PolicyObserver
 from ..scripted_model import ScriptedModel
 from ..tools import SupplierRegister, build_tools
 from .proposer import scripted_turns
@@ -58,7 +66,9 @@ def _default_nova_factory():
 
 
 def create_app(pre_action: Optional[Callable] = None, nova_factory: Optional[Callable] = None,
-               runs_root: Path = REPO / "runs", evidence_root: Path = REPO / "evidence" / "i4") -> Starlette:
+               runs_root: Path = REPO / "runs", evidence_root: Path = REPO / "evidence" / "i4",
+               binding: Optional[LockedBinding] = None, expected_policy: Optional[dict] = None) -> Starlette:
+    locked = binding if binding is not None else lock_binding(None)     # D5 B4 / B10
     lock = threading.Lock()
     seq = itertools.count(1)
     state: dict = {}
@@ -83,13 +93,19 @@ def create_app(pre_action: Optional[Callable] = None, nova_factory: Optional[Cal
             raise Busy()
         try:
             frozen = verify_frozen_boundary()
+            try:
+                locked.verify_unchanged()                                # D5 B5: before anything runs
+            except BindingError as exc:
+                _write_stop(Path(evidence_root), locked, exc)
+                raise
             n = next(seq)
             ts = _now()
             tool_use_id = f"eva-web-{ts}-{n}"
             register = state["register"]
             before_sha, before = _sha(register.path), snapshot()
             store, executions = AuthorizationStore(), []
-            gate = EveGate(pre_action or EveMcpClient().pre_action, store)
+            observer = PolicyObserver(pre_action or EveMcpClient().pre_action, expected_policy)
+            gate = EveGate(observer, store, chain_map=locked.bindings)
             proposer_error = None
             model_text = ""
             try:
@@ -107,7 +123,7 @@ def create_app(pre_action: Optional[Callable] = None, nova_factory: Optional[Cal
                 spoken = "The proposer failed, so nothing was proposed. Nothing was changed." \
                     if not outcome.proposed else spoken
             turn = {
-                "record_kind": "eva_i4_turn", "record_schema_version": "eva-i4-turn-1.0",
+                "record_kind": "eva_i4_turn", "record_schema_version": "eva-i4-turn-1.1",
                 "turn_utc": ts, "turn_seq": n, "eva_version": __version__,
                 "proposer": {"kind": proposer,
                              "label": "Scripted proposer (no LLM)" if proposer == "scripted"
@@ -125,6 +141,8 @@ def create_app(pre_action: Optional[Callable] = None, nova_factory: Optional[Cal
                 "model_text": model_text[:2000],
                 "frozen_i3a_boundary_verified": frozen,
                 "eve": {"policy_ref": config.POLICY_REF, "bearer": "PRESENT_NOT_RECORDED"},
+                "binding": locked.record(),
+                "policy": {"expected": expected_policy, "observations": observer.observations},
             }
             turn["record_sha256"] = hashlib.sha256(json.dumps(turn, sort_keys=True, separators=(",", ":"),
                                                               ensure_ascii=False).encode("utf-8")).hexdigest()
@@ -156,6 +174,8 @@ def create_app(pre_action: Optional[Callable] = None, nova_factory: Optional[Cal
             turn = await run_in_threadpool(run_turn, utterance.strip(), proposer)
         except FrozenBoundaryError as exc:
             return JSONResponse({"error": f"STOP: {exc}"}, status_code=503)
+        except BindingError as exc:
+            return JSONResponse({"error": f"STOP: {exc.code}: {exc.detail}"}, status_code=503)
         except Busy:
             return JSONResponse({"error": BUSY_MESSAGE}, status_code=409)
         return JSONResponse(turn)
@@ -184,10 +204,36 @@ def create_app(pre_action: Optional[Callable] = None, nova_factory: Optional[Cal
     return app
 
 
-def main() -> None:
+def _write_stop(evidence_root: Path, locked: LockedBinding, exc: BindingError) -> None:
+    rec = {"record_kind": "eva_i4_turn_stop", "record_schema_version": "eva-i4-turn-stop-1.0",
+           "stop_utc": _now(), "stop": {"code": exc.code, "detail": exc.detail},
+           "binding_locked": locked.record(), "action": "NONE"}
+    rec["record_sha256"] = hashlib.sha256(json.dumps(rec, sort_keys=True, separators=(",", ":"),
+                                                     ensure_ascii=False).encode("utf-8")).hexdigest()
+    evidence_root.mkdir(parents=True, exist_ok=True)
+    with open(evidence_root / f"STOP_{rec['stop_utc']}.json", "x", encoding="utf-8", newline="\n") as fh:
+        json.dump(rec, fh, indent=2, sort_keys=True)
+        fh.write("\n")
+
+
+def main(argv=None) -> None:
+    import argparse
     import uvicorn
+    ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    ap.add_argument("--binding", help="operator chain binding file (eva-chain-map-1.0); default: the frozen chain_map.json")
+    ap.add_argument("--intakes", action="append", default=[], help="directory of intake records backing EVA-CH-* bindings")
+    ap.add_argument("--evidence-dir", help="where turn records are written (required with --binding)")
+    a = ap.parse_args(argv)
     verify_frozen_boundary()
-    uvicorn.run(create_app(), host=HOST, port=PORT, log_level="warning")
+    if a.binding and not a.evidence_dir:
+        ap.error("--evidence-dir is required with --binding (closed evidence sets are never appended to)")
+    locked = lock_binding(Path(a.binding) if a.binding else None, tuple(a.intakes))
+    expected = {"policy_ref": config.POLICY_REF, "policy_content_sha256": config.POLICY_CONTENT_SHA256}
+    print(f"binding locked: {locked.source} {locked.path.name} sha256={locked.sha256}")
+    print(f"policy locked:  {expected['policy_ref']} {expected['policy_content_sha256']}")
+    app = create_app(binding=locked, expected_policy=expected,
+                     evidence_root=Path(a.evidence_dir) if a.evidence_dir else REPO / "evidence" / "i4")
+    uvicorn.run(app, host=HOST, port=PORT, log_level="warning")
 
 
 if __name__ == "__main__":
