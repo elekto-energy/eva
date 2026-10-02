@@ -1,0 +1,148 @@
+{
+  "baseline": {
+    "chain_ids": [
+      "EVE-MCP-DEMO-A-2026-001",
+      "EVE-MCP-DEMO-B-2026-001"
+    ],
+    "chains": 2,
+    "chains_json_sha256": "62928468a095b299e825e61871d3f158b20fded8225530ad585c171147bd0e46",
+    "last_record_id": "EVE-PAR-LOCAL-000020",
+    "pre_action_record_ids": 20,
+    "pre_action_records_sha256": "5c7caece0fefc2f6867890c0ae86f071e28437e4242cf221303b9e3fd3a7c529",
+    "store_files": [
+      "chains.json",
+      "pre_action_records.json"
+    ]
+  },
+  "chains_created": {
+    "v1": {
+      "action_gate": "ACTION_CHAIN_SUPPORTED",
+      "chain_id": "EVA-CH-e8fcd04353baf54fab0d91d0",
+      "declaration": "eva_intake/reference/epsilon_v1_complete.json",
+      "overall_verdict": "SUPPORTED"
+    },
+    "v2": {
+      "action_gate": "HUMAN_REVIEW_REQUIRED",
+      "chain_id": "EVA-CH-995bf4a9f7c53e97719380c9",
+      "declaration": "eva_intake/reference/epsilon_v2_approval_withdrawn.json",
+      "overall_verdict": "PARTIAL",
+      "supersedes": "EVA-CH-e8fcd04353baf54fab0d91d0"
+    }
+  },
+  "code": {
+    "builder_sha256": "d11c248409609e7a29b82ad34db6a26b23989e1723025005796def8696ce8f4b",
+    "commit": "1e0b77d5c5c64207405e30f0f8fdb797243415c9",
+    "intake_py_sha256": "eba9cc19d7034a2ff07f630214404a447055e390294cc7356273736a9343092f",
+    "probe_sha256": "a5c9a1fa303106162258696b21507e4cb95956d0c6a23b02a545872982cdd34c",
+    "repository": "elekto-energy/eva"
+  },
+  "eve": {
+    "checkout": "/opt/eva-demo/eve-core-v1",
+    "checkout_dirty_files_after_run": 0,
+    "policy_ref": "eve-mcp-demo-policy-v1",
+    "store": "/opt/eva-demo/eve_store",
+    "surface": "https://grc.eveverified.com/eva/mcp",
+    "tree": "a698922c9fd740c4b114e572a626380abf1590a4"
+  },
+  "final": {
+    "chains": 4,
+    "chains_json_sha256": "f58f8159b30b90a9c516b42f1e9b30eec9aecab15fad65ffe8ca2ce149a44906",
+    "final_state_source": "observed in the run output (step 6 and step 8); the final store files are not copied here",
+    "pre_action_record_ids": 23,
+    "pre_action_records_sha256": "38b5b520b5368d5d35297e0afd2386328cf9f75302cf9e30bb103655ea8b8995",
+    "store_files": [
+      "chains.json",
+      "pre_action_records.json"
+    ]
+  },
+  "final_check": {
+    "baseline_record_ids_missing": [],
+    "chains_added": [
+      "EVA-CH-995bf4a9f7c53e97719380c9",
+      "EVA-CH-e8fcd04353baf54fab0d91d0"
+    ],
+    "chains_changed": [],
+    "chains_lost": [],
+    "new_record_ids": [
+      "EVE-PAR-LOCAL-000021",
+      "EVE-PAR-LOCAL-000022",
+      "EVE-PAR-LOCAL-000023"
+    ],
+    "result": "BASELINE_CHECK_PASS",
+    "store_header_unchanged": true
+  },
+  "host": "VPS 185.20.15.189",
+  "nature": "INDEX / METADATA ONLY -- the nine raw files in this directory are the evidence; they were copied unchanged from the VPS and verified byte-identical (sha256) before this index was written",
+  "non_claims": [
+    "the declared evidence is synthetic reference data; EVE verifies the declared record, not that it is true",
+    "seals are local, not Bridge-anchored; the EVE installation identity is OPERATOR_DECLARED",
+    "EVE verifies the action class, not the exact value (F4); EVA binds the exact action separately"
+  ],
+  "owner_go": "steps 0-8 of the live-run plan, executed block by block with STOP at the first deviation; no deviation occurred",
+  "pre_action_sequence": [
+    {
+      "chain_id": "EVA-CH-e8fcd04353baf54fab0d91d0",
+      "customer_policy_outcome": "allow",
+      "eve_record_id": "EVE-PAR-LOCAL-000021",
+      "label": "v1",
+      "verified_chain_outcome": "ACTION_CHAIN_SUPPORTED"
+    },
+    {
+      "chain_id": "EVA-CH-995bf4a9f7c53e97719380c9",
+      "customer_policy_outcome": "escalate",
+      "eve_record_id": "EVE-PAR-LOCAL-000022",
+      "label": "v2",
+      "verified_chain_outcome": "HUMAN_REVIEW_REQUIRED"
+    },
+    {
+      "chain_id": "EVA-CH-e8fcd04353baf54fab0d91d0",
+      "customer_policy_outcome": "allow",
+      "eve_record_id": "EVE-PAR-LOCAL-000023",
+      "label": "v1_again",
+      "verified_chain_outcome": "ACTION_CHAIN_SUPPORTED"
+    }
+  ],
+  "raw_evidence_files": {
+    "BASELINE_chains.json": {
+      "bytes": 19218,
+      "sha256": "62928468a095b299e825e61871d3f158b20fded8225530ad585c171147bd0e46"
+    },
+    "BASELINE_pre_action_records.json": {
+      "bytes": 78026,
+      "sha256": "5c7caece0fefc2f6867890c0ae86f071e28437e4242cf221303b9e3fd3a7c529"
+    },
+    "BASELINE_record_ids.txt": {
+      "bytes": 420,
+      "sha256": "1f00956a62589e76cafefce552ea71b7072eb33a51f1700c54acea0ef1305d22"
+    },
+    "INTAKE_20261002T183404173779Z_PRINT_ONLY_EVA-CH-e8fcd04353baf54fab0d91d0.json": {
+      "bytes": 2445,
+      "sha256": "186ad5dccf9065a47dff23644049064763852cf3cc72f06fe09e7f4f057afd05"
+    },
+    "INTAKE_20261002T183404278993Z_SAVE_EVA-CH-e8fcd04353baf54fab0d91d0.json": {
+      "bytes": 2434,
+      "sha256": "e49c35781654d8a3beb9f162172a48897767c9d5946034631b3c0550c986bb8c"
+    },
+    "INTAKE_20261002T183505508304Z_SAVE_EVA-CH-995bf4a9f7c53e97719380c9.json": {
+      "bytes": 2652,
+      "sha256": "55743293396c9243c651bea989fe72eefec8ccb4dd0f6c2ae19483d61b09ab2d"
+    },
+    "INTAKE_20261002T183612562918Z_PRINT_ONLY_EVA-CH-e8fcd04353baf54fab0d91d0.json": {
+      "bytes": 2449,
+      "sha256": "779e6f23adc3b1dd53de8a8a7e12bdfeba0f7d80fca98d5c517f0a1e0748ad99"
+    },
+    "PROBE_20261002T183433162152Z.json": {
+      "bytes": 1373,
+      "sha256": "941635a289b81a210b4f4605789dd25bfb710cf0d18771919c0e8b5f498bd969"
+    },
+    "PROBE_20261002T183533543669Z.json": {
+      "bytes": 2146,
+      "sha256": "f6e441f2bc22807a17960a2a819d74b51865cc242b785b7b1c9c581918813117"
+    }
+  },
+  "record_kind": "eva_intake_live_run_index",
+  "record_schema_version": "eva-intake-live-run-index-1.0",
+  "record_sha256": "c9a5ba31001a269f673a4985abc84119e70e2821e5bddae987a987bc7f5f41d9",
+  "run_date_utc": "2026-10-02",
+  "v1_after_v2": "EXISTS_IDENTICAL (intake print-only: the stored v1 equals the chain composed from the v1 declaration)"
+}

@@ -1,0 +1,75 @@
+{
+  "bearer": "PRESENT_NOT_RECORDED",
+  "initialize": {
+    "protocolVersion": "2025-11-25",
+    "serverInfo_name": "eve-mcp",
+    "serverInfo_version": "0.1.0"
+  },
+  "policy_ref": "eve-mcp-demo-policy-v1",
+  "record_kind": "eva_i3_intake_live_probe",
+  "record_schema_version": "eva-intake-live-probe-1.0",
+  "record_sha256": "e426ba7b6bebea82bcb414ab62ab37619a28786930c122143bf10a8eeab9939f",
+  "requested_steps": [
+    {
+      "chain_id": "EVA-CH-995bf4a9f7c53e97719380c9",
+      "expected": [
+        "HUMAN_REVIEW_REQUIRED",
+        "escalate"
+      ],
+      "label": "v2"
+    },
+    {
+      "chain_id": "EVA-CH-e8fcd04353baf54fab0d91d0",
+      "expected": [
+        "ACTION_CHAIN_SUPPORTED",
+        "allow"
+      ],
+      "label": "v1_again"
+    }
+  ],
+  "result": "PROBE_PASS",
+  "run_utc": "20261002T183533543669Z",
+  "steps": [
+    {
+      "chain_id": "EVA-CH-995bf4a9f7c53e97719380c9",
+      "expected": [
+        "HUMAN_REVIEW_REQUIRED",
+        "escalate"
+      ],
+      "label": "v2",
+      "observed": {
+        "chain_id": "EVA-CH-995bf4a9f7c53e97719380c9",
+        "customer_policy_outcome": "escalate",
+        "eve_record_id": "EVE-PAR-LOCAL-000022",
+        "http_status": 200,
+        "policy_content_sha256": "e7a23e8c448ccff96f54ca7a449908e5707a2df5e7f37afcc61d712a285867aa",
+        "pre_action_status": "evaluated",
+        "verified_chain_outcome": "HUMAN_REVIEW_REQUIRED"
+      },
+      "ok": true
+    },
+    {
+      "chain_id": "EVA-CH-e8fcd04353baf54fab0d91d0",
+      "expected": [
+        "ACTION_CHAIN_SUPPORTED",
+        "allow"
+      ],
+      "label": "v1_again",
+      "observed": {
+        "chain_id": "EVA-CH-e8fcd04353baf54fab0d91d0",
+        "customer_policy_outcome": "allow",
+        "eve_record_id": "EVE-PAR-LOCAL-000023",
+        "http_status": 200,
+        "policy_content_sha256": "e7a23e8c448ccff96f54ca7a449908e5707a2df5e7f37afcc61d712a285867aa",
+        "pre_action_status": "evaluated",
+        "verified_chain_outcome": "ACTION_CHAIN_SUPPORTED"
+      },
+      "ok": true
+    }
+  ],
+  "stop": null,
+  "surface": "https://grc.eveverified.com/eva/mcp",
+  "tools_list": [
+    "eve_pre_action"
+  ]
+}

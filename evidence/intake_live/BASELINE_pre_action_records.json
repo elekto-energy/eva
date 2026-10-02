@@ -1,0 +1,1830 @@
+{
+  "par_seq": 20,
+  "records": {
+    "EVE-PAR-LOCAL-000001": {
+      "chain_content_hash": "4a972db7121f635494887510278304b50e6c12498a7aead4f8a2d8ded27d8402",
+      "chain_id": "EVE-MCP-DEMO-A-2026-001",
+      "chain_seal_ref": {
+        "content_hash": "4a972db7121f635494887510278304b50e6c12498a7aead4f8a2d8ded27d8402",
+        "seal_id": "EVE-CHAIN-LOCAL-000001",
+        "sealed_at": "2026-09-30T14:36:16Z"
+      },
+      "created_at": "2026-09-30T14:36:16Z",
+      "evaluated_at": "2026-09-30T14:36:16Z",
+      "inputs_hash": "bcda0bc4731a17b5a26263aa14a4058d4cb7b9ec04a63307df1749e9740d8780",
+      "policy_content_hash": "e7a23e8c448ccff96f54ca7a449908e5707a2df5e7f37afcc61d712a285867aa",
+      "policy_snapshot": {
+        "default_outcome": "pause",
+        "policy_id": "eve-mcp-demo-policy-v1",
+        "policy_version": "eve-mcp-demo-policy-v1",
+        "rules": [
+          {
+            "if": {
+              "chain_type": "ai_agent_action",
+              "derived_chain_outcome": "ACTION_CHAIN_SUPPORTED"
+            },
+            "priority": 10,
+            "reason": "AI-agent chain fully supported: every required evidence step and every governance fact established",
+            "rule_id": "EMP-ALLOW-001",
+            "then": "allow"
+          },
+          {
+            "if": {
+              "gap_codes_any": [
+                "MISSING_EVIDENCE",
+                "ACCOUNTABILITY_GAP",
+                "APPROVAL_SCOPE_MISMATCH",
+                "AGENT_PERMISSION_OVERSCOPED",
+                "ACTION_SCOPE_UNCONFIRMED",
+                "NO_ANSWER",
+                "STALE"
+              ]
+            },
+            "priority": 20,
+            "reason": "Required evidence missing or contradicted: a human must decide",
+            "rule_id": "EMP-ESCALATE-001",
+            "then": "escalate"
+          },
+          {
+            "if": {
+              "gap_codes_any": [
+                "CHAIN_SCOPE_CHANGED",
+                "CHAIN_AUTHORISATION_EXPIRED",
+                "CHAIN_AUTHORISATION_GAP"
+              ]
+            },
+            "priority": 30,
+            "reason": "Chain authorisation is missing, expired or no longer covers the current scope",
+            "rule_id": "EMP-BLOCK-001",
+            "then": "block"
+          }
+        ]
+      },
+      "policy_version": "eve-mcp-demo-policy-v1",
+      "record_id": "EVE-PAR-LOCAL-000001",
+      "record_schema_version": "par-1.2",
+      "result": {
+        "action_context": {
+          "agent_id": "eve-mcp-acceptance",
+          "requested_by": "operator_harness",
+          "scenario": "CASE_A"
+        },
+        "boundary_note": "EVE verifies the chain and evaluates it against customer-defined policy. The customer owns the policy and any enforcement decision. EVE does not execute, approve, block, pause or escalate the action as its own decision.",
+        "chain_id": "EVE-MCP-DEMO-A-2026-001",
+        "customer_policy_outcome": "allow",
+        "enforcement_owner": "customer_or_integrated_workflow",
+        "evaluated_at": "2026-09-30T14:36:16Z",
+        "inputs_hash": "bcda0bc4731a17b5a26263aa14a4058d4cb7b9ec04a63307df1749e9740d8780",
+        "policy_owner": "customer",
+        "policy_rule_id": "EMP-ALLOW-001",
+        "policy_rule_reason": "AI-agent chain fully supported: every required evidence step and every governance fact established",
+        "policy_rule_triggered": true,
+        "policy_version": "eve-mcp-demo-policy-v1",
+        "pre_action_status": "evaluated",
+        "verified_chain_outcome": "ACTION_CHAIN_SUPPORTED"
+      },
+      "seal": {
+        "content_hash": "00f75b758c085ad3a2094f922b45a131159fab5bda16c2526d594af372a98408",
+        "manifest_hash": "1cd5b9b70cf4fc8125714296d5cdd36b55106488b5c1bd73b0c79b21d8b69879",
+        "seal_id": "EVE-PAR-LOCAL-000001",
+        "seal_mode": "local",
+        "sealed_at": "2026-09-30T14:36:16Z"
+      }
+    },
+    "EVE-PAR-LOCAL-000002": {
+      "chain_content_hash": "3246e4631f0fa87778ab55411a583d5dbb10048033f30057b5f1ce2e45308453",
+      "chain_id": "EVE-MCP-DEMO-B-2026-001",
+      "chain_seal_ref": {
+        "content_hash": "3246e4631f0fa87778ab55411a583d5dbb10048033f30057b5f1ce2e45308453",
+        "seal_id": "EVE-CHAIN-LOCAL-000002",
+        "sealed_at": "2026-09-30T14:36:16Z"
+      },
+      "created_at": "2026-09-30T14:36:16Z",
+      "evaluated_at": "2026-09-30T14:36:16Z",
+      "inputs_hash": "de9d4d038d1454dd523fa1af6596c139c54858f55c258162f70d20ef4297c539",
+      "policy_content_hash": "e7a23e8c448ccff96f54ca7a449908e5707a2df5e7f37afcc61d712a285867aa",
+      "policy_snapshot": {
+        "default_outcome": "pause",
+        "policy_id": "eve-mcp-demo-policy-v1",
+        "policy_version": "eve-mcp-demo-policy-v1",
+        "rules": [
+          {
+            "if": {
+              "chain_type": "ai_agent_action",
+              "derived_chain_outcome": "ACTION_CHAIN_SUPPORTED"
+            },
+            "priority": 10,
+            "reason": "AI-agent chain fully supported: every required evidence step and every governance fact established",
+            "rule_id": "EMP-ALLOW-001",
+            "then": "allow"
+          },
+          {
+            "if": {
+              "gap_codes_any": [
+                "MISSING_EVIDENCE",
+                "ACCOUNTABILITY_GAP",
+                "APPROVAL_SCOPE_MISMATCH",
+                "AGENT_PERMISSION_OVERSCOPED",
+                "ACTION_SCOPE_UNCONFIRMED",
+                "NO_ANSWER",
+                "STALE"
+              ]
+            },
+            "priority": 20,
+            "reason": "Required evidence missing or contradicted: a human must decide",
+            "rule_id": "EMP-ESCALATE-001",
+            "then": "escalate"
+          },
+          {
+            "if": {
+              "gap_codes_any": [
+                "CHAIN_SCOPE_CHANGED",
+                "CHAIN_AUTHORISATION_EXPIRED",
+                "CHAIN_AUTHORISATION_GAP"
+              ]
+            },
+            "priority": 30,
+            "reason": "Chain authorisation is missing, expired or no longer covers the current scope",
+            "rule_id": "EMP-BLOCK-001",
+            "then": "block"
+          }
+        ]
+      },
+      "policy_version": "eve-mcp-demo-policy-v1",
+      "record_id": "EVE-PAR-LOCAL-000002",
+      "record_schema_version": "par-1.2",
+      "result": {
+        "action_context": {
+          "agent_id": "eve-mcp-acceptance",
+          "requested_by": "operator_harness",
+          "scenario": "CASE_B"
+        },
+        "boundary_note": "EVE verifies the chain and evaluates it against customer-defined policy. The customer owns the policy and any enforcement decision. EVE does not execute, approve, block, pause or escalate the action as its own decision.",
+        "chain_id": "EVE-MCP-DEMO-B-2026-001",
+        "customer_policy_outcome": "escalate",
+        "enforcement_owner": "customer_or_integrated_workflow",
+        "evaluated_at": "2026-09-30T14:36:16Z",
+        "inputs_hash": "de9d4d038d1454dd523fa1af6596c139c54858f55c258162f70d20ef4297c539",
+        "policy_owner": "customer",
+        "policy_rule_id": "EMP-ESCALATE-001",
+        "policy_rule_reason": "Required evidence missing or contradicted: a human must decide",
+        "policy_rule_triggered": true,
+        "policy_version": "eve-mcp-demo-policy-v1",
+        "pre_action_status": "evaluated",
+        "verified_chain_outcome": "HUMAN_REVIEW_REQUIRED"
+      },
+      "seal": {
+        "content_hash": "c485fb6d96f242c770119ac57a6d10f353c0ba4cd7a06beb4ecb869a5e4e1672",
+        "manifest_hash": "54134ae0b8ade65cfef86464ca84b5ff6f64832141e723af5cd34c90f075a7c3",
+        "seal_id": "EVE-PAR-LOCAL-000002",
+        "seal_mode": "local",
+        "sealed_at": "2026-09-30T14:36:16Z"
+      }
+    },
+    "EVE-PAR-LOCAL-000003": {
+      "chain_content_hash": "4a972db7121f635494887510278304b50e6c12498a7aead4f8a2d8ded27d8402",
+      "chain_id": "EVE-MCP-DEMO-A-2026-001",
+      "chain_seal_ref": {
+        "content_hash": "4a972db7121f635494887510278304b50e6c12498a7aead4f8a2d8ded27d8402",
+        "seal_id": "EVE-CHAIN-LOCAL-000001",
+        "sealed_at": "2026-09-30T14:36:16Z"
+      },
+      "created_at": "2026-09-30T14:44:52Z",
+      "evaluated_at": "2026-09-30T14:44:52Z",
+      "inputs_hash": "bcda0bc4731a17b5a26263aa14a4058d4cb7b9ec04a63307df1749e9740d8780",
+      "policy_content_hash": "e7a23e8c448ccff96f54ca7a449908e5707a2df5e7f37afcc61d712a285867aa",
+      "policy_snapshot": {
+        "default_outcome": "pause",
+        "policy_id": "eve-mcp-demo-policy-v1",
+        "policy_version": "eve-mcp-demo-policy-v1",
+        "rules": [
+          {
+            "if": {
+              "chain_type": "ai_agent_action",
+              "derived_chain_outcome": "ACTION_CHAIN_SUPPORTED"
+            },
+            "priority": 10,
+            "reason": "AI-agent chain fully supported: every required evidence step and every governance fact established",
+            "rule_id": "EMP-ALLOW-001",
+            "then": "allow"
+          },
+          {
+            "if": {
+              "gap_codes_any": [
+                "MISSING_EVIDENCE",
+                "ACCOUNTABILITY_GAP",
+                "APPROVAL_SCOPE_MISMATCH",
+                "AGENT_PERMISSION_OVERSCOPED",
+                "ACTION_SCOPE_UNCONFIRMED",
+                "NO_ANSWER",
+                "STALE"
+              ]
+            },
+            "priority": 20,
+            "reason": "Required evidence missing or contradicted: a human must decide",
+            "rule_id": "EMP-ESCALATE-001",
+            "then": "escalate"
+          },
+          {
+            "if": {
+              "gap_codes_any": [
+                "CHAIN_SCOPE_CHANGED",
+                "CHAIN_AUTHORISATION_EXPIRED",
+                "CHAIN_AUTHORISATION_GAP"
+              ]
+            },
+            "priority": 30,
+            "reason": "Chain authorisation is missing, expired or no longer covers the current scope",
+            "rule_id": "EMP-BLOCK-001",
+            "then": "block"
+          }
+        ]
+      },
+      "policy_version": "eve-mcp-demo-policy-v1",
+      "record_id": "EVE-PAR-LOCAL-000003",
+      "record_schema_version": "par-1.2",
+      "result": {
+        "action_context": {},
+        "boundary_note": "EVE verifies the chain and evaluates it against customer-defined policy. The customer owns the policy and any enforcement decision. EVE does not execute, approve, block, pause or escalate the action as its own decision.",
+        "chain_id": "EVE-MCP-DEMO-A-2026-001",
+        "customer_policy_outcome": "allow",
+        "enforcement_owner": "customer_or_integrated_workflow",
+        "evaluated_at": "2026-09-30T14:44:52Z",
+        "inputs_hash": "bcda0bc4731a17b5a26263aa14a4058d4cb7b9ec04a63307df1749e9740d8780",
+        "policy_owner": "customer",
+        "policy_rule_id": "EMP-ALLOW-001",
+        "policy_rule_reason": "AI-agent chain fully supported: every required evidence step and every governance fact established",
+        "policy_rule_triggered": true,
+        "policy_version": "eve-mcp-demo-policy-v1",
+        "pre_action_status": "evaluated",
+        "verified_chain_outcome": "ACTION_CHAIN_SUPPORTED"
+      },
+      "seal": {
+        "content_hash": "77041edd8fdec470e1e80c401b434c600e28e6da554ea17420bc1ac2fa34495e",
+        "manifest_hash": "8d7b3108702978c6741756c2db0c5c1288eda9f917e099101ee622c550d7c0b6",
+        "seal_id": "EVE-PAR-LOCAL-000003",
+        "seal_mode": "local",
+        "sealed_at": "2026-09-30T14:44:52Z"
+      }
+    },
+    "EVE-PAR-LOCAL-000004": {
+      "chain_content_hash": "3246e4631f0fa87778ab55411a583d5dbb10048033f30057b5f1ce2e45308453",
+      "chain_id": "EVE-MCP-DEMO-B-2026-001",
+      "chain_seal_ref": {
+        "content_hash": "3246e4631f0fa87778ab55411a583d5dbb10048033f30057b5f1ce2e45308453",
+        "seal_id": "EVE-CHAIN-LOCAL-000002",
+        "sealed_at": "2026-09-30T14:36:16Z"
+      },
+      "created_at": "2026-09-30T14:44:52Z",
+      "evaluated_at": "2026-09-30T14:44:52Z",
+      "inputs_hash": "de9d4d038d1454dd523fa1af6596c139c54858f55c258162f70d20ef4297c539",
+      "policy_content_hash": "e7a23e8c448ccff96f54ca7a449908e5707a2df5e7f37afcc61d712a285867aa",
+      "policy_snapshot": {
+        "default_outcome": "pause",
+        "policy_id": "eve-mcp-demo-policy-v1",
+        "policy_version": "eve-mcp-demo-policy-v1",
+        "rules": [
+          {
+            "if": {
+              "chain_type": "ai_agent_action",
+              "derived_chain_outcome": "ACTION_CHAIN_SUPPORTED"
+            },
+            "priority": 10,
+            "reason": "AI-agent chain fully supported: every required evidence step and every governance fact established",
+            "rule_id": "EMP-ALLOW-001",
+            "then": "allow"
+          },
+          {
+            "if": {
+              "gap_codes_any": [
+                "MISSING_EVIDENCE",
+                "ACCOUNTABILITY_GAP",
+                "APPROVAL_SCOPE_MISMATCH",
+                "AGENT_PERMISSION_OVERSCOPED",
+                "ACTION_SCOPE_UNCONFIRMED",
+                "NO_ANSWER",
+                "STALE"
+              ]
+            },
+            "priority": 20,
+            "reason": "Required evidence missing or contradicted: a human must decide",
+            "rule_id": "EMP-ESCALATE-001",
+            "then": "escalate"
+          },
+          {
+            "if": {
+              "gap_codes_any": [
+                "CHAIN_SCOPE_CHANGED",
+                "CHAIN_AUTHORISATION_EXPIRED",
+                "CHAIN_AUTHORISATION_GAP"
+              ]
+            },
+            "priority": 30,
+            "reason": "Chain authorisation is missing, expired or no longer covers the current scope",
+            "rule_id": "EMP-BLOCK-001",
+            "then": "block"
+          }
+        ]
+      },
+      "policy_version": "eve-mcp-demo-policy-v1",
+      "record_id": "EVE-PAR-LOCAL-000004",
+      "record_schema_version": "par-1.2",
+      "result": {
+        "action_context": {},
+        "boundary_note": "EVE verifies the chain and evaluates it against customer-defined policy. The customer owns the policy and any enforcement decision. EVE does not execute, approve, block, pause or escalate the action as its own decision.",
+        "chain_id": "EVE-MCP-DEMO-B-2026-001",
+        "customer_policy_outcome": "escalate",
+        "enforcement_owner": "customer_or_integrated_workflow",
+        "evaluated_at": "2026-09-30T14:44:52Z",
+        "inputs_hash": "de9d4d038d1454dd523fa1af6596c139c54858f55c258162f70d20ef4297c539",
+        "policy_owner": "customer",
+        "policy_rule_id": "EMP-ESCALATE-001",
+        "policy_rule_reason": "Required evidence missing or contradicted: a human must decide",
+        "policy_rule_triggered": true,
+        "policy_version": "eve-mcp-demo-policy-v1",
+        "pre_action_status": "evaluated",
+        "verified_chain_outcome": "HUMAN_REVIEW_REQUIRED"
+      },
+      "seal": {
+        "content_hash": "9e5c6bcac76a65f32f90ef993872639e3d0819f6d97ba6d085f8cd2118aa511a",
+        "manifest_hash": "2ae5b51a23985a23b6a3d876131a1804097dcab11319a967d602452e7792f6bd",
+        "seal_id": "EVE-PAR-LOCAL-000004",
+        "seal_mode": "local",
+        "sealed_at": "2026-09-30T14:44:52Z"
+      }
+    },
+    "EVE-PAR-LOCAL-000005": {
+      "chain_content_hash": "4a972db7121f635494887510278304b50e6c12498a7aead4f8a2d8ded27d8402",
+      "chain_id": "EVE-MCP-DEMO-A-2026-001",
+      "chain_seal_ref": {
+        "content_hash": "4a972db7121f635494887510278304b50e6c12498a7aead4f8a2d8ded27d8402",
+        "seal_id": "EVE-CHAIN-LOCAL-000001",
+        "sealed_at": "2026-09-30T14:36:16Z"
+      },
+      "created_at": "2026-09-30T17:26:19Z",
+      "evaluated_at": "2026-09-30T17:26:19Z",
+      "inputs_hash": "bcda0bc4731a17b5a26263aa14a4058d4cb7b9ec04a63307df1749e9740d8780",
+      "policy_content_hash": "e7a23e8c448ccff96f54ca7a449908e5707a2df5e7f37afcc61d712a285867aa",
+      "policy_snapshot": {
+        "default_outcome": "pause",
+        "policy_id": "eve-mcp-demo-policy-v1",
+        "policy_version": "eve-mcp-demo-policy-v1",
+        "rules": [
+          {
+            "if": {
+              "chain_type": "ai_agent_action",
+              "derived_chain_outcome": "ACTION_CHAIN_SUPPORTED"
+            },
+            "priority": 10,
+            "reason": "AI-agent chain fully supported: every required evidence step and every governance fact established",
+            "rule_id": "EMP-ALLOW-001",
+            "then": "allow"
+          },
+          {
+            "if": {
+              "gap_codes_any": [
+                "MISSING_EVIDENCE",
+                "ACCOUNTABILITY_GAP",
+                "APPROVAL_SCOPE_MISMATCH",
+                "AGENT_PERMISSION_OVERSCOPED",
+                "ACTION_SCOPE_UNCONFIRMED",
+                "NO_ANSWER",
+                "STALE"
+              ]
+            },
+            "priority": 20,
+            "reason": "Required evidence missing or contradicted: a human must decide",
+            "rule_id": "EMP-ESCALATE-001",
+            "then": "escalate"
+          },
+          {
+            "if": {
+              "gap_codes_any": [
+                "CHAIN_SCOPE_CHANGED",
+                "CHAIN_AUTHORISATION_EXPIRED",
+                "CHAIN_AUTHORISATION_GAP"
+              ]
+            },
+            "priority": 30,
+            "reason": "Chain authorisation is missing, expired or no longer covers the current scope",
+            "rule_id": "EMP-BLOCK-001",
+            "then": "block"
+          }
+        ]
+      },
+      "policy_version": "eve-mcp-demo-policy-v1",
+      "record_id": "EVE-PAR-LOCAL-000005",
+      "record_schema_version": "par-1.2",
+      "result": {
+        "action_context": {
+          "agent_id": "eva",
+          "requested_risk_status": "high",
+          "supplier_id": "SUP-EPSILON-001",
+          "tool": "set_supplier_risk_status",
+          "tool_use_id": "eva-20260930T172618Z-A"
+        },
+        "boundary_note": "EVE verifies the chain and evaluates it against customer-defined policy. The customer owns the policy and any enforcement decision. EVE does not execute, approve, block, pause or escalate the action as its own decision.",
+        "chain_id": "EVE-MCP-DEMO-A-2026-001",
+        "customer_policy_outcome": "allow",
+        "enforcement_owner": "customer_or_integrated_workflow",
+        "evaluated_at": "2026-09-30T17:26:19Z",
+        "inputs_hash": "bcda0bc4731a17b5a26263aa14a4058d4cb7b9ec04a63307df1749e9740d8780",
+        "policy_owner": "customer",
+        "policy_rule_id": "EMP-ALLOW-001",
+        "policy_rule_reason": "AI-agent chain fully supported: every required evidence step and every governance fact established",
+        "policy_rule_triggered": true,
+        "policy_version": "eve-mcp-demo-policy-v1",
+        "pre_action_status": "evaluated",
+        "verified_chain_outcome": "ACTION_CHAIN_SUPPORTED"
+      },
+      "seal": {
+        "content_hash": "dc7998bfe27b10586d21ac36e4b9acf220c55f2ba7dd86b6d42b7fe7cee93355",
+        "manifest_hash": "96b84e2a263108b5290847ab6c96877b43b225c9b120697886b77561f39d1c0f",
+        "seal_id": "EVE-PAR-LOCAL-000005",
+        "seal_mode": "local",
+        "sealed_at": "2026-09-30T17:26:19Z"
+      }
+    },
+    "EVE-PAR-LOCAL-000006": {
+      "chain_content_hash": "3246e4631f0fa87778ab55411a583d5dbb10048033f30057b5f1ce2e45308453",
+      "chain_id": "EVE-MCP-DEMO-B-2026-001",
+      "chain_seal_ref": {
+        "content_hash": "3246e4631f0fa87778ab55411a583d5dbb10048033f30057b5f1ce2e45308453",
+        "seal_id": "EVE-CHAIN-LOCAL-000002",
+        "sealed_at": "2026-09-30T14:36:16Z"
+      },
+      "created_at": "2026-09-30T17:26:32Z",
+      "evaluated_at": "2026-09-30T17:26:32Z",
+      "inputs_hash": "de9d4d038d1454dd523fa1af6596c139c54858f55c258162f70d20ef4297c539",
+      "policy_content_hash": "e7a23e8c448ccff96f54ca7a449908e5707a2df5e7f37afcc61d712a285867aa",
+      "policy_snapshot": {
+        "default_outcome": "pause",
+        "policy_id": "eve-mcp-demo-policy-v1",
+        "policy_version": "eve-mcp-demo-policy-v1",
+        "rules": [
+          {
+            "if": {
+              "chain_type": "ai_agent_action",
+              "derived_chain_outcome": "ACTION_CHAIN_SUPPORTED"
+            },
+            "priority": 10,
+            "reason": "AI-agent chain fully supported: every required evidence step and every governance fact established",
+            "rule_id": "EMP-ALLOW-001",
+            "then": "allow"
+          },
+          {
+            "if": {
+              "gap_codes_any": [
+                "MISSING_EVIDENCE",
+                "ACCOUNTABILITY_GAP",
+                "APPROVAL_SCOPE_MISMATCH",
+                "AGENT_PERMISSION_OVERSCOPED",
+                "ACTION_SCOPE_UNCONFIRMED",
+                "NO_ANSWER",
+                "STALE"
+              ]
+            },
+            "priority": 20,
+            "reason": "Required evidence missing or contradicted: a human must decide",
+            "rule_id": "EMP-ESCALATE-001",
+            "then": "escalate"
+          },
+          {
+            "if": {
+              "gap_codes_any": [
+                "CHAIN_SCOPE_CHANGED",
+                "CHAIN_AUTHORISATION_EXPIRED",
+                "CHAIN_AUTHORISATION_GAP"
+              ]
+            },
+            "priority": 30,
+            "reason": "Chain authorisation is missing, expired or no longer covers the current scope",
+            "rule_id": "EMP-BLOCK-001",
+            "then": "block"
+          }
+        ]
+      },
+      "policy_version": "eve-mcp-demo-policy-v1",
+      "record_id": "EVE-PAR-LOCAL-000006",
+      "record_schema_version": "par-1.2",
+      "result": {
+        "action_context": {
+          "agent_id": "eva",
+          "requested_risk_status": "high",
+          "supplier_id": "SUP-ZETA-002",
+          "tool": "set_supplier_risk_status",
+          "tool_use_id": "eva-20260930T172631Z-B"
+        },
+        "boundary_note": "EVE verifies the chain and evaluates it against customer-defined policy. The customer owns the policy and any enforcement decision. EVE does not execute, approve, block, pause or escalate the action as its own decision.",
+        "chain_id": "EVE-MCP-DEMO-B-2026-001",
+        "customer_policy_outcome": "escalate",
+        "enforcement_owner": "customer_or_integrated_workflow",
+        "evaluated_at": "2026-09-30T17:26:32Z",
+        "inputs_hash": "de9d4d038d1454dd523fa1af6596c139c54858f55c258162f70d20ef4297c539",
+        "policy_owner": "customer",
+        "policy_rule_id": "EMP-ESCALATE-001",
+        "policy_rule_reason": "Required evidence missing or contradicted: a human must decide",
+        "policy_rule_triggered": true,
+        "policy_version": "eve-mcp-demo-policy-v1",
+        "pre_action_status": "evaluated",
+        "verified_chain_outcome": "HUMAN_REVIEW_REQUIRED"
+      },
+      "seal": {
+        "content_hash": "ed07c33c9dc85743aa3577f567ac36bac2359b95f5dd6ae093712b31d8138dcc",
+        "manifest_hash": "481ffa267a2dcc145a245cadaa1fcd19706155f295f4a67ba281de0473825975",
+        "seal_id": "EVE-PAR-LOCAL-000006",
+        "seal_mode": "local",
+        "sealed_at": "2026-09-30T17:26:32Z"
+      }
+    },
+    "EVE-PAR-LOCAL-000007": {
+      "chain_content_hash": "4a972db7121f635494887510278304b50e6c12498a7aead4f8a2d8ded27d8402",
+      "chain_id": "EVE-MCP-DEMO-A-2026-001",
+      "chain_seal_ref": {
+        "content_hash": "4a972db7121f635494887510278304b50e6c12498a7aead4f8a2d8ded27d8402",
+        "seal_id": "EVE-CHAIN-LOCAL-000001",
+        "sealed_at": "2026-09-30T14:36:16Z"
+      },
+      "created_at": "2026-09-30T19:00:43Z",
+      "evaluated_at": "2026-09-30T19:00:43Z",
+      "inputs_hash": "bcda0bc4731a17b5a26263aa14a4058d4cb7b9ec04a63307df1749e9740d8780",
+      "policy_content_hash": "e7a23e8c448ccff96f54ca7a449908e5707a2df5e7f37afcc61d712a285867aa",
+      "policy_snapshot": {
+        "default_outcome": "pause",
+        "policy_id": "eve-mcp-demo-policy-v1",
+        "policy_version": "eve-mcp-demo-policy-v1",
+        "rules": [
+          {
+            "if": {
+              "chain_type": "ai_agent_action",
+              "derived_chain_outcome": "ACTION_CHAIN_SUPPORTED"
+            },
+            "priority": 10,
+            "reason": "AI-agent chain fully supported: every required evidence step and every governance fact established",
+            "rule_id": "EMP-ALLOW-001",
+            "then": "allow"
+          },
+          {
+            "if": {
+              "gap_codes_any": [
+                "MISSING_EVIDENCE",
+                "ACCOUNTABILITY_GAP",
+                "APPROVAL_SCOPE_MISMATCH",
+                "AGENT_PERMISSION_OVERSCOPED",
+                "ACTION_SCOPE_UNCONFIRMED",
+                "NO_ANSWER",
+                "STALE"
+              ]
+            },
+            "priority": 20,
+            "reason": "Required evidence missing or contradicted: a human must decide",
+            "rule_id": "EMP-ESCALATE-001",
+            "then": "escalate"
+          },
+          {
+            "if": {
+              "gap_codes_any": [
+                "CHAIN_SCOPE_CHANGED",
+                "CHAIN_AUTHORISATION_EXPIRED",
+                "CHAIN_AUTHORISATION_GAP"
+              ]
+            },
+            "priority": 30,
+            "reason": "Chain authorisation is missing, expired or no longer covers the current scope",
+            "rule_id": "EMP-BLOCK-001",
+            "then": "block"
+          }
+        ]
+      },
+      "policy_version": "eve-mcp-demo-policy-v1",
+      "record_id": "EVE-PAR-LOCAL-000007",
+      "record_schema_version": "par-1.2",
+      "result": {
+        "action_context": {
+          "agent_id": "eva",
+          "requested_risk_status": "high",
+          "supplier_id": "SUP-EPSILON-001",
+          "tool": "set_supplier_risk_status",
+          "tool_use_id": "eva-web-20260930T190043163032Z-1"
+        },
+        "boundary_note": "EVE verifies the chain and evaluates it against customer-defined policy. The customer owns the policy and any enforcement decision. EVE does not execute, approve, block, pause or escalate the action as its own decision.",
+        "chain_id": "EVE-MCP-DEMO-A-2026-001",
+        "customer_policy_outcome": "allow",
+        "enforcement_owner": "customer_or_integrated_workflow",
+        "evaluated_at": "2026-09-30T19:00:43Z",
+        "inputs_hash": "bcda0bc4731a17b5a26263aa14a4058d4cb7b9ec04a63307df1749e9740d8780",
+        "policy_owner": "customer",
+        "policy_rule_id": "EMP-ALLOW-001",
+        "policy_rule_reason": "AI-agent chain fully supported: every required evidence step and every governance fact established",
+        "policy_rule_triggered": true,
+        "policy_version": "eve-mcp-demo-policy-v1",
+        "pre_action_status": "evaluated",
+        "verified_chain_outcome": "ACTION_CHAIN_SUPPORTED"
+      },
+      "seal": {
+        "content_hash": "34e163aa651fda0dcaf344fdb86a49b74abc71f3afb5c29a121073f9f4f1fff8",
+        "manifest_hash": "91236fd167ecf034374a80579d0f1c84baabcc9991608645a14a247496035dfa",
+        "seal_id": "EVE-PAR-LOCAL-000007",
+        "seal_mode": "local",
+        "sealed_at": "2026-09-30T19:00:43Z"
+      }
+    },
+    "EVE-PAR-LOCAL-000008": {
+      "chain_content_hash": "3246e4631f0fa87778ab55411a583d5dbb10048033f30057b5f1ce2e45308453",
+      "chain_id": "EVE-MCP-DEMO-B-2026-001",
+      "chain_seal_ref": {
+        "content_hash": "3246e4631f0fa87778ab55411a583d5dbb10048033f30057b5f1ce2e45308453",
+        "seal_id": "EVE-CHAIN-LOCAL-000002",
+        "sealed_at": "2026-09-30T14:36:16Z"
+      },
+      "created_at": "2026-09-30T19:00:46Z",
+      "evaluated_at": "2026-09-30T19:00:46Z",
+      "inputs_hash": "de9d4d038d1454dd523fa1af6596c139c54858f55c258162f70d20ef4297c539",
+      "policy_content_hash": "e7a23e8c448ccff96f54ca7a449908e5707a2df5e7f37afcc61d712a285867aa",
+      "policy_snapshot": {
+        "default_outcome": "pause",
+        "policy_id": "eve-mcp-demo-policy-v1",
+        "policy_version": "eve-mcp-demo-policy-v1",
+        "rules": [
+          {
+            "if": {
+              "chain_type": "ai_agent_action",
+              "derived_chain_outcome": "ACTION_CHAIN_SUPPORTED"
+            },
+            "priority": 10,
+            "reason": "AI-agent chain fully supported: every required evidence step and every governance fact established",
+            "rule_id": "EMP-ALLOW-001",
+            "then": "allow"
+          },
+          {
+            "if": {
+              "gap_codes_any": [
+                "MISSING_EVIDENCE",
+                "ACCOUNTABILITY_GAP",
+                "APPROVAL_SCOPE_MISMATCH",
+                "AGENT_PERMISSION_OVERSCOPED",
+                "ACTION_SCOPE_UNCONFIRMED",
+                "NO_ANSWER",
+                "STALE"
+              ]
+            },
+            "priority": 20,
+            "reason": "Required evidence missing or contradicted: a human must decide",
+            "rule_id": "EMP-ESCALATE-001",
+            "then": "escalate"
+          },
+          {
+            "if": {
+              "gap_codes_any": [
+                "CHAIN_SCOPE_CHANGED",
+                "CHAIN_AUTHORISATION_EXPIRED",
+                "CHAIN_AUTHORISATION_GAP"
+              ]
+            },
+            "priority": 30,
+            "reason": "Chain authorisation is missing, expired or no longer covers the current scope",
+            "rule_id": "EMP-BLOCK-001",
+            "then": "block"
+          }
+        ]
+      },
+      "policy_version": "eve-mcp-demo-policy-v1",
+      "record_id": "EVE-PAR-LOCAL-000008",
+      "record_schema_version": "par-1.2",
+      "result": {
+        "action_context": {
+          "agent_id": "eva",
+          "requested_risk_status": "high",
+          "supplier_id": "SUP-ZETA-002",
+          "tool": "set_supplier_risk_status",
+          "tool_use_id": "eva-web-20260930T190046446689Z-2"
+        },
+        "boundary_note": "EVE verifies the chain and evaluates it against customer-defined policy. The customer owns the policy and any enforcement decision. EVE does not execute, approve, block, pause or escalate the action as its own decision.",
+        "chain_id": "EVE-MCP-DEMO-B-2026-001",
+        "customer_policy_outcome": "escalate",
+        "enforcement_owner": "customer_or_integrated_workflow",
+        "evaluated_at": "2026-09-30T19:00:46Z",
+        "inputs_hash": "de9d4d038d1454dd523fa1af6596c139c54858f55c258162f70d20ef4297c539",
+        "policy_owner": "customer",
+        "policy_rule_id": "EMP-ESCALATE-001",
+        "policy_rule_reason": "Required evidence missing or contradicted: a human must decide",
+        "policy_rule_triggered": true,
+        "policy_version": "eve-mcp-demo-policy-v1",
+        "pre_action_status": "evaluated",
+        "verified_chain_outcome": "HUMAN_REVIEW_REQUIRED"
+      },
+      "seal": {
+        "content_hash": "c51e64af6bcc714ed5612a64c79b2babee206761e3aada6b2c6f41d63eda8c18",
+        "manifest_hash": "10f5bc7fa6ff539544b91015cb7ed17a513389d0b9b8802a2fe5835d91341c40",
+        "seal_id": "EVE-PAR-LOCAL-000008",
+        "seal_mode": "local",
+        "sealed_at": "2026-09-30T19:00:46Z"
+      }
+    },
+    "EVE-PAR-LOCAL-000009": {
+      "chain_content_hash": "4a972db7121f635494887510278304b50e6c12498a7aead4f8a2d8ded27d8402",
+      "chain_id": "EVE-MCP-DEMO-A-2026-001",
+      "chain_seal_ref": {
+        "content_hash": "4a972db7121f635494887510278304b50e6c12498a7aead4f8a2d8ded27d8402",
+        "seal_id": "EVE-CHAIN-LOCAL-000001",
+        "sealed_at": "2026-09-30T14:36:16Z"
+      },
+      "created_at": "2026-09-30T19:00:50Z",
+      "evaluated_at": "2026-09-30T19:00:50Z",
+      "inputs_hash": "bcda0bc4731a17b5a26263aa14a4058d4cb7b9ec04a63307df1749e9740d8780",
+      "policy_content_hash": "e7a23e8c448ccff96f54ca7a449908e5707a2df5e7f37afcc61d712a285867aa",
+      "policy_snapshot": {
+        "default_outcome": "pause",
+        "policy_id": "eve-mcp-demo-policy-v1",
+        "policy_version": "eve-mcp-demo-policy-v1",
+        "rules": [
+          {
+            "if": {
+              "chain_type": "ai_agent_action",
+              "derived_chain_outcome": "ACTION_CHAIN_SUPPORTED"
+            },
+            "priority": 10,
+            "reason": "AI-agent chain fully supported: every required evidence step and every governance fact established",
+            "rule_id": "EMP-ALLOW-001",
+            "then": "allow"
+          },
+          {
+            "if": {
+              "gap_codes_any": [
+                "MISSING_EVIDENCE",
+                "ACCOUNTABILITY_GAP",
+                "APPROVAL_SCOPE_MISMATCH",
+                "AGENT_PERMISSION_OVERSCOPED",
+                "ACTION_SCOPE_UNCONFIRMED",
+                "NO_ANSWER",
+                "STALE"
+              ]
+            },
+            "priority": 20,
+            "reason": "Required evidence missing or contradicted: a human must decide",
+            "rule_id": "EMP-ESCALATE-001",
+            "then": "escalate"
+          },
+          {
+            "if": {
+              "gap_codes_any": [
+                "CHAIN_SCOPE_CHANGED",
+                "CHAIN_AUTHORISATION_EXPIRED",
+                "CHAIN_AUTHORISATION_GAP"
+              ]
+            },
+            "priority": 30,
+            "reason": "Chain authorisation is missing, expired or no longer covers the current scope",
+            "rule_id": "EMP-BLOCK-001",
+            "then": "block"
+          }
+        ]
+      },
+      "policy_version": "eve-mcp-demo-policy-v1",
+      "record_id": "EVE-PAR-LOCAL-000009",
+      "record_schema_version": "par-1.2",
+      "result": {
+        "action_context": {
+          "agent_id": "eva",
+          "requested_risk_status": "high",
+          "supplier_id": "SUP-EPSILON-001",
+          "tool": "set_supplier_risk_status",
+          "tool_use_id": "eva-web-20260930T190050530659Z-3"
+        },
+        "boundary_note": "EVE verifies the chain and evaluates it against customer-defined policy. The customer owns the policy and any enforcement decision. EVE does not execute, approve, block, pause or escalate the action as its own decision.",
+        "chain_id": "EVE-MCP-DEMO-A-2026-001",
+        "customer_policy_outcome": "allow",
+        "enforcement_owner": "customer_or_integrated_workflow",
+        "evaluated_at": "2026-09-30T19:00:50Z",
+        "inputs_hash": "bcda0bc4731a17b5a26263aa14a4058d4cb7b9ec04a63307df1749e9740d8780",
+        "policy_owner": "customer",
+        "policy_rule_id": "EMP-ALLOW-001",
+        "policy_rule_reason": "AI-agent chain fully supported: every required evidence step and every governance fact established",
+        "policy_rule_triggered": true,
+        "policy_version": "eve-mcp-demo-policy-v1",
+        "pre_action_status": "evaluated",
+        "verified_chain_outcome": "ACTION_CHAIN_SUPPORTED"
+      },
+      "seal": {
+        "content_hash": "aa0eebdbe573d94e44d100c42dedec43c8f6985ebd5e019943f028f0307fe8e1",
+        "manifest_hash": "4249385ce134b536569012246c529e6a5727900eecdbd02750877125e6360f0e",
+        "seal_id": "EVE-PAR-LOCAL-000009",
+        "seal_mode": "local",
+        "sealed_at": "2026-09-30T19:00:50Z"
+      }
+    },
+    "EVE-PAR-LOCAL-000010": {
+      "chain_content_hash": "3246e4631f0fa87778ab55411a583d5dbb10048033f30057b5f1ce2e45308453",
+      "chain_id": "EVE-MCP-DEMO-B-2026-001",
+      "chain_seal_ref": {
+        "content_hash": "3246e4631f0fa87778ab55411a583d5dbb10048033f30057b5f1ce2e45308453",
+        "seal_id": "EVE-CHAIN-LOCAL-000002",
+        "sealed_at": "2026-09-30T14:36:16Z"
+      },
+      "created_at": "2026-09-30T19:00:52Z",
+      "evaluated_at": "2026-09-30T19:00:52Z",
+      "inputs_hash": "de9d4d038d1454dd523fa1af6596c139c54858f55c258162f70d20ef4297c539",
+      "policy_content_hash": "e7a23e8c448ccff96f54ca7a449908e5707a2df5e7f37afcc61d712a285867aa",
+      "policy_snapshot": {
+        "default_outcome": "pause",
+        "policy_id": "eve-mcp-demo-policy-v1",
+        "policy_version": "eve-mcp-demo-policy-v1",
+        "rules": [
+          {
+            "if": {
+              "chain_type": "ai_agent_action",
+              "derived_chain_outcome": "ACTION_CHAIN_SUPPORTED"
+            },
+            "priority": 10,
+            "reason": "AI-agent chain fully supported: every required evidence step and every governance fact established",
+            "rule_id": "EMP-ALLOW-001",
+            "then": "allow"
+          },
+          {
+            "if": {
+              "gap_codes_any": [
+                "MISSING_EVIDENCE",
+                "ACCOUNTABILITY_GAP",
+                "APPROVAL_SCOPE_MISMATCH",
+                "AGENT_PERMISSION_OVERSCOPED",
+                "ACTION_SCOPE_UNCONFIRMED",
+                "NO_ANSWER",
+                "STALE"
+              ]
+            },
+            "priority": 20,
+            "reason": "Required evidence missing or contradicted: a human must decide",
+            "rule_id": "EMP-ESCALATE-001",
+            "then": "escalate"
+          },
+          {
+            "if": {
+              "gap_codes_any": [
+                "CHAIN_SCOPE_CHANGED",
+                "CHAIN_AUTHORISATION_EXPIRED",
+                "CHAIN_AUTHORISATION_GAP"
+              ]
+            },
+            "priority": 30,
+            "reason": "Chain authorisation is missing, expired or no longer covers the current scope",
+            "rule_id": "EMP-BLOCK-001",
+            "then": "block"
+          }
+        ]
+      },
+      "policy_version": "eve-mcp-demo-policy-v1",
+      "record_id": "EVE-PAR-LOCAL-000010",
+      "record_schema_version": "par-1.2",
+      "result": {
+        "action_context": {
+          "agent_id": "eva",
+          "requested_risk_status": "high",
+          "supplier_id": "SUP-ZETA-002",
+          "tool": "set_supplier_risk_status",
+          "tool_use_id": "eva-web-20260930T190052543425Z-4"
+        },
+        "boundary_note": "EVE verifies the chain and evaluates it against customer-defined policy. The customer owns the policy and any enforcement decision. EVE does not execute, approve, block, pause or escalate the action as its own decision.",
+        "chain_id": "EVE-MCP-DEMO-B-2026-001",
+        "customer_policy_outcome": "escalate",
+        "enforcement_owner": "customer_or_integrated_workflow",
+        "evaluated_at": "2026-09-30T19:00:52Z",
+        "inputs_hash": "de9d4d038d1454dd523fa1af6596c139c54858f55c258162f70d20ef4297c539",
+        "policy_owner": "customer",
+        "policy_rule_id": "EMP-ESCALATE-001",
+        "policy_rule_reason": "Required evidence missing or contradicted: a human must decide",
+        "policy_rule_triggered": true,
+        "policy_version": "eve-mcp-demo-policy-v1",
+        "pre_action_status": "evaluated",
+        "verified_chain_outcome": "HUMAN_REVIEW_REQUIRED"
+      },
+      "seal": {
+        "content_hash": "872673b950d89dfc272b8ddeb182e3a48424e25e3516711fc6baa222ac0550e1",
+        "manifest_hash": "3d964b3375bf41136a35923e50e632b8a54217facf2a8d99dd4129cbec7db2ff",
+        "seal_id": "EVE-PAR-LOCAL-000010",
+        "seal_mode": "local",
+        "sealed_at": "2026-09-30T19:00:52Z"
+      }
+    },
+    "EVE-PAR-LOCAL-000011": {
+      "chain_content_hash": "4a972db7121f635494887510278304b50e6c12498a7aead4f8a2d8ded27d8402",
+      "chain_id": "EVE-MCP-DEMO-A-2026-001",
+      "chain_seal_ref": {
+        "content_hash": "4a972db7121f635494887510278304b50e6c12498a7aead4f8a2d8ded27d8402",
+        "seal_id": "EVE-CHAIN-LOCAL-000001",
+        "sealed_at": "2026-09-30T14:36:16Z"
+      },
+      "created_at": "2026-09-30T19:00:54Z",
+      "evaluated_at": "2026-09-30T19:00:54Z",
+      "inputs_hash": "bcda0bc4731a17b5a26263aa14a4058d4cb7b9ec04a63307df1749e9740d8780",
+      "policy_content_hash": "e7a23e8c448ccff96f54ca7a449908e5707a2df5e7f37afcc61d712a285867aa",
+      "policy_snapshot": {
+        "default_outcome": "pause",
+        "policy_id": "eve-mcp-demo-policy-v1",
+        "policy_version": "eve-mcp-demo-policy-v1",
+        "rules": [
+          {
+            "if": {
+              "chain_type": "ai_agent_action",
+              "derived_chain_outcome": "ACTION_CHAIN_SUPPORTED"
+            },
+            "priority": 10,
+            "reason": "AI-agent chain fully supported: every required evidence step and every governance fact established",
+            "rule_id": "EMP-ALLOW-001",
+            "then": "allow"
+          },
+          {
+            "if": {
+              "gap_codes_any": [
+                "MISSING_EVIDENCE",
+                "ACCOUNTABILITY_GAP",
+                "APPROVAL_SCOPE_MISMATCH",
+                "AGENT_PERMISSION_OVERSCOPED",
+                "ACTION_SCOPE_UNCONFIRMED",
+                "NO_ANSWER",
+                "STALE"
+              ]
+            },
+            "priority": 20,
+            "reason": "Required evidence missing or contradicted: a human must decide",
+            "rule_id": "EMP-ESCALATE-001",
+            "then": "escalate"
+          },
+          {
+            "if": {
+              "gap_codes_any": [
+                "CHAIN_SCOPE_CHANGED",
+                "CHAIN_AUTHORISATION_EXPIRED",
+                "CHAIN_AUTHORISATION_GAP"
+              ]
+            },
+            "priority": 30,
+            "reason": "Chain authorisation is missing, expired or no longer covers the current scope",
+            "rule_id": "EMP-BLOCK-001",
+            "then": "block"
+          }
+        ]
+      },
+      "policy_version": "eve-mcp-demo-policy-v1",
+      "record_id": "EVE-PAR-LOCAL-000011",
+      "record_schema_version": "par-1.2",
+      "result": {
+        "action_context": {
+          "agent_id": "eva",
+          "requested_risk_status": "high",
+          "supplier_id": "SUP-EPSILON-001",
+          "tool": "set_supplier_risk_status",
+          "tool_use_id": "eva-web-20260930T190053854619Z-5"
+        },
+        "boundary_note": "EVE verifies the chain and evaluates it against customer-defined policy. The customer owns the policy and any enforcement decision. EVE does not execute, approve, block, pause or escalate the action as its own decision.",
+        "chain_id": "EVE-MCP-DEMO-A-2026-001",
+        "customer_policy_outcome": "allow",
+        "enforcement_owner": "customer_or_integrated_workflow",
+        "evaluated_at": "2026-09-30T19:00:54Z",
+        "inputs_hash": "bcda0bc4731a17b5a26263aa14a4058d4cb7b9ec04a63307df1749e9740d8780",
+        "policy_owner": "customer",
+        "policy_rule_id": "EMP-ALLOW-001",
+        "policy_rule_reason": "AI-agent chain fully supported: every required evidence step and every governance fact established",
+        "policy_rule_triggered": true,
+        "policy_version": "eve-mcp-demo-policy-v1",
+        "pre_action_status": "evaluated",
+        "verified_chain_outcome": "ACTION_CHAIN_SUPPORTED"
+      },
+      "seal": {
+        "content_hash": "74f46896776f5f0c09f8074a37a5ea4d065688e48cf662e1b6b724adf5610c86",
+        "manifest_hash": "9e4a39dfe4f68f20bd8c79666717fee0c2e1b76c1c1be1198eb3c8f547d82a60",
+        "seal_id": "EVE-PAR-LOCAL-000011",
+        "seal_mode": "local",
+        "sealed_at": "2026-09-30T19:00:54Z"
+      }
+    },
+    "EVE-PAR-LOCAL-000012": {
+      "chain_content_hash": "3246e4631f0fa87778ab55411a583d5dbb10048033f30057b5f1ce2e45308453",
+      "chain_id": "EVE-MCP-DEMO-B-2026-001",
+      "chain_seal_ref": {
+        "content_hash": "3246e4631f0fa87778ab55411a583d5dbb10048033f30057b5f1ce2e45308453",
+        "seal_id": "EVE-CHAIN-LOCAL-000002",
+        "sealed_at": "2026-09-30T14:36:16Z"
+      },
+      "created_at": "2026-09-30T19:15:11Z",
+      "evaluated_at": "2026-09-30T19:15:11Z",
+      "inputs_hash": "de9d4d038d1454dd523fa1af6596c139c54858f55c258162f70d20ef4297c539",
+      "policy_content_hash": "e7a23e8c448ccff96f54ca7a449908e5707a2df5e7f37afcc61d712a285867aa",
+      "policy_snapshot": {
+        "default_outcome": "pause",
+        "policy_id": "eve-mcp-demo-policy-v1",
+        "policy_version": "eve-mcp-demo-policy-v1",
+        "rules": [
+          {
+            "if": {
+              "chain_type": "ai_agent_action",
+              "derived_chain_outcome": "ACTION_CHAIN_SUPPORTED"
+            },
+            "priority": 10,
+            "reason": "AI-agent chain fully supported: every required evidence step and every governance fact established",
+            "rule_id": "EMP-ALLOW-001",
+            "then": "allow"
+          },
+          {
+            "if": {
+              "gap_codes_any": [
+                "MISSING_EVIDENCE",
+                "ACCOUNTABILITY_GAP",
+                "APPROVAL_SCOPE_MISMATCH",
+                "AGENT_PERMISSION_OVERSCOPED",
+                "ACTION_SCOPE_UNCONFIRMED",
+                "NO_ANSWER",
+                "STALE"
+              ]
+            },
+            "priority": 20,
+            "reason": "Required evidence missing or contradicted: a human must decide",
+            "rule_id": "EMP-ESCALATE-001",
+            "then": "escalate"
+          },
+          {
+            "if": {
+              "gap_codes_any": [
+                "CHAIN_SCOPE_CHANGED",
+                "CHAIN_AUTHORISATION_EXPIRED",
+                "CHAIN_AUTHORISATION_GAP"
+              ]
+            },
+            "priority": 30,
+            "reason": "Chain authorisation is missing, expired or no longer covers the current scope",
+            "rule_id": "EMP-BLOCK-001",
+            "then": "block"
+          }
+        ]
+      },
+      "policy_version": "eve-mcp-demo-policy-v1",
+      "record_id": "EVE-PAR-LOCAL-000012",
+      "record_schema_version": "par-1.2",
+      "result": {
+        "action_context": {
+          "agent_id": "eva",
+          "requested_risk_status": "high",
+          "supplier_id": "SUP-ZETA-002",
+          "tool": "set_supplier_risk_status",
+          "tool_use_id": "eva-web-20260930T191510901507Z-11"
+        },
+        "boundary_note": "EVE verifies the chain and evaluates it against customer-defined policy. The customer owns the policy and any enforcement decision. EVE does not execute, approve, block, pause or escalate the action as its own decision.",
+        "chain_id": "EVE-MCP-DEMO-B-2026-001",
+        "customer_policy_outcome": "escalate",
+        "enforcement_owner": "customer_or_integrated_workflow",
+        "evaluated_at": "2026-09-30T19:15:11Z",
+        "inputs_hash": "de9d4d038d1454dd523fa1af6596c139c54858f55c258162f70d20ef4297c539",
+        "policy_owner": "customer",
+        "policy_rule_id": "EMP-ESCALATE-001",
+        "policy_rule_reason": "Required evidence missing or contradicted: a human must decide",
+        "policy_rule_triggered": true,
+        "policy_version": "eve-mcp-demo-policy-v1",
+        "pre_action_status": "evaluated",
+        "verified_chain_outcome": "HUMAN_REVIEW_REQUIRED"
+      },
+      "seal": {
+        "content_hash": "b96c818b922d8db099b8ee5cc6cc9026d401443d8212ec776d8b64d2879df777",
+        "manifest_hash": "8b396108793ad43584fbad9dee174e12c7e2b3a644ba7f36bf3687f81854701a",
+        "seal_id": "EVE-PAR-LOCAL-000012",
+        "seal_mode": "local",
+        "sealed_at": "2026-09-30T19:15:11Z"
+      }
+    },
+    "EVE-PAR-LOCAL-000013": {
+      "chain_content_hash": "4a972db7121f635494887510278304b50e6c12498a7aead4f8a2d8ded27d8402",
+      "chain_id": "EVE-MCP-DEMO-A-2026-001",
+      "chain_seal_ref": {
+        "content_hash": "4a972db7121f635494887510278304b50e6c12498a7aead4f8a2d8ded27d8402",
+        "seal_id": "EVE-CHAIN-LOCAL-000001",
+        "sealed_at": "2026-09-30T14:36:16Z"
+      },
+      "created_at": "2026-09-30T19:15:11Z",
+      "evaluated_at": "2026-09-30T19:15:11Z",
+      "inputs_hash": "bcda0bc4731a17b5a26263aa14a4058d4cb7b9ec04a63307df1749e9740d8780",
+      "policy_content_hash": "e7a23e8c448ccff96f54ca7a449908e5707a2df5e7f37afcc61d712a285867aa",
+      "policy_snapshot": {
+        "default_outcome": "pause",
+        "policy_id": "eve-mcp-demo-policy-v1",
+        "policy_version": "eve-mcp-demo-policy-v1",
+        "rules": [
+          {
+            "if": {
+              "chain_type": "ai_agent_action",
+              "derived_chain_outcome": "ACTION_CHAIN_SUPPORTED"
+            },
+            "priority": 10,
+            "reason": "AI-agent chain fully supported: every required evidence step and every governance fact established",
+            "rule_id": "EMP-ALLOW-001",
+            "then": "allow"
+          },
+          {
+            "if": {
+              "gap_codes_any": [
+                "MISSING_EVIDENCE",
+                "ACCOUNTABILITY_GAP",
+                "APPROVAL_SCOPE_MISMATCH",
+                "AGENT_PERMISSION_OVERSCOPED",
+                "ACTION_SCOPE_UNCONFIRMED",
+                "NO_ANSWER",
+                "STALE"
+              ]
+            },
+            "priority": 20,
+            "reason": "Required evidence missing or contradicted: a human must decide",
+            "rule_id": "EMP-ESCALATE-001",
+            "then": "escalate"
+          },
+          {
+            "if": {
+              "gap_codes_any": [
+                "CHAIN_SCOPE_CHANGED",
+                "CHAIN_AUTHORISATION_EXPIRED",
+                "CHAIN_AUTHORISATION_GAP"
+              ]
+            },
+            "priority": 30,
+            "reason": "Chain authorisation is missing, expired or no longer covers the current scope",
+            "rule_id": "EMP-BLOCK-001",
+            "then": "block"
+          }
+        ]
+      },
+      "policy_version": "eve-mcp-demo-policy-v1",
+      "record_id": "EVE-PAR-LOCAL-000013",
+      "record_schema_version": "par-1.2",
+      "result": {
+        "action_context": {
+          "agent_id": "eva",
+          "requested_risk_status": "high",
+          "supplier_id": "SUP-EPSILON-001",
+          "tool": "set_supplier_risk_status",
+          "tool_use_id": "eva-web-20260930T191511429208Z-12"
+        },
+        "boundary_note": "EVE verifies the chain and evaluates it against customer-defined policy. The customer owns the policy and any enforcement decision. EVE does not execute, approve, block, pause or escalate the action as its own decision.",
+        "chain_id": "EVE-MCP-DEMO-A-2026-001",
+        "customer_policy_outcome": "allow",
+        "enforcement_owner": "customer_or_integrated_workflow",
+        "evaluated_at": "2026-09-30T19:15:11Z",
+        "inputs_hash": "bcda0bc4731a17b5a26263aa14a4058d4cb7b9ec04a63307df1749e9740d8780",
+        "policy_owner": "customer",
+        "policy_rule_id": "EMP-ALLOW-001",
+        "policy_rule_reason": "AI-agent chain fully supported: every required evidence step and every governance fact established",
+        "policy_rule_triggered": true,
+        "policy_version": "eve-mcp-demo-policy-v1",
+        "pre_action_status": "evaluated",
+        "verified_chain_outcome": "ACTION_CHAIN_SUPPORTED"
+      },
+      "seal": {
+        "content_hash": "706df7a50f2ce046eff255cb37b29f3f800cf0aa1c30f305758f730732ec217a",
+        "manifest_hash": "d688976babb44684b98a4492e0f9ad0a91f60e2e4f9f21ddf89752e371a136a5",
+        "seal_id": "EVE-PAR-LOCAL-000013",
+        "seal_mode": "local",
+        "sealed_at": "2026-09-30T19:15:11Z"
+      }
+    },
+    "EVE-PAR-LOCAL-000014": {
+      "chain_content_hash": "3246e4631f0fa87778ab55411a583d5dbb10048033f30057b5f1ce2e45308453",
+      "chain_id": "EVE-MCP-DEMO-B-2026-001",
+      "chain_seal_ref": {
+        "content_hash": "3246e4631f0fa87778ab55411a583d5dbb10048033f30057b5f1ce2e45308453",
+        "seal_id": "EVE-CHAIN-LOCAL-000002",
+        "sealed_at": "2026-09-30T14:36:16Z"
+      },
+      "created_at": "2026-09-30T19:15:12Z",
+      "evaluated_at": "2026-09-30T19:15:12Z",
+      "inputs_hash": "de9d4d038d1454dd523fa1af6596c139c54858f55c258162f70d20ef4297c539",
+      "policy_content_hash": "e7a23e8c448ccff96f54ca7a449908e5707a2df5e7f37afcc61d712a285867aa",
+      "policy_snapshot": {
+        "default_outcome": "pause",
+        "policy_id": "eve-mcp-demo-policy-v1",
+        "policy_version": "eve-mcp-demo-policy-v1",
+        "rules": [
+          {
+            "if": {
+              "chain_type": "ai_agent_action",
+              "derived_chain_outcome": "ACTION_CHAIN_SUPPORTED"
+            },
+            "priority": 10,
+            "reason": "AI-agent chain fully supported: every required evidence step and every governance fact established",
+            "rule_id": "EMP-ALLOW-001",
+            "then": "allow"
+          },
+          {
+            "if": {
+              "gap_codes_any": [
+                "MISSING_EVIDENCE",
+                "ACCOUNTABILITY_GAP",
+                "APPROVAL_SCOPE_MISMATCH",
+                "AGENT_PERMISSION_OVERSCOPED",
+                "ACTION_SCOPE_UNCONFIRMED",
+                "NO_ANSWER",
+                "STALE"
+              ]
+            },
+            "priority": 20,
+            "reason": "Required evidence missing or contradicted: a human must decide",
+            "rule_id": "EMP-ESCALATE-001",
+            "then": "escalate"
+          },
+          {
+            "if": {
+              "gap_codes_any": [
+                "CHAIN_SCOPE_CHANGED",
+                "CHAIN_AUTHORISATION_EXPIRED",
+                "CHAIN_AUTHORISATION_GAP"
+              ]
+            },
+            "priority": 30,
+            "reason": "Chain authorisation is missing, expired or no longer covers the current scope",
+            "rule_id": "EMP-BLOCK-001",
+            "then": "block"
+          }
+        ]
+      },
+      "policy_version": "eve-mcp-demo-policy-v1",
+      "record_id": "EVE-PAR-LOCAL-000014",
+      "record_schema_version": "par-1.2",
+      "result": {
+        "action_context": {
+          "agent_id": "eva",
+          "requested_risk_status": "high",
+          "supplier_id": "SUP-ZETA-002",
+          "tool": "set_supplier_risk_status",
+          "tool_use_id": "eva-web-20260930T191511834284Z-13"
+        },
+        "boundary_note": "EVE verifies the chain and evaluates it against customer-defined policy. The customer owns the policy and any enforcement decision. EVE does not execute, approve, block, pause or escalate the action as its own decision.",
+        "chain_id": "EVE-MCP-DEMO-B-2026-001",
+        "customer_policy_outcome": "escalate",
+        "enforcement_owner": "customer_or_integrated_workflow",
+        "evaluated_at": "2026-09-30T19:15:12Z",
+        "inputs_hash": "de9d4d038d1454dd523fa1af6596c139c54858f55c258162f70d20ef4297c539",
+        "policy_owner": "customer",
+        "policy_rule_id": "EMP-ESCALATE-001",
+        "policy_rule_reason": "Required evidence missing or contradicted: a human must decide",
+        "policy_rule_triggered": true,
+        "policy_version": "eve-mcp-demo-policy-v1",
+        "pre_action_status": "evaluated",
+        "verified_chain_outcome": "HUMAN_REVIEW_REQUIRED"
+      },
+      "seal": {
+        "content_hash": "c5a9720aa4514725a4eb4fe58dffb60aca767e5ec2d065c0027f2e3ec62eaaa4",
+        "manifest_hash": "2e5d8b8828c3c84dea3e455057d3c633aa2ab25c8ffce204caccb0a7ef40e611",
+        "seal_id": "EVE-PAR-LOCAL-000014",
+        "seal_mode": "local",
+        "sealed_at": "2026-09-30T19:15:12Z"
+      }
+    },
+    "EVE-PAR-LOCAL-000015": {
+      "chain_content_hash": "3246e4631f0fa87778ab55411a583d5dbb10048033f30057b5f1ce2e45308453",
+      "chain_id": "EVE-MCP-DEMO-B-2026-001",
+      "chain_seal_ref": {
+        "content_hash": "3246e4631f0fa87778ab55411a583d5dbb10048033f30057b5f1ce2e45308453",
+        "seal_id": "EVE-CHAIN-LOCAL-000002",
+        "sealed_at": "2026-09-30T14:36:16Z"
+      },
+      "created_at": "2026-09-30T19:15:12Z",
+      "evaluated_at": "2026-09-30T19:15:12Z",
+      "inputs_hash": "de9d4d038d1454dd523fa1af6596c139c54858f55c258162f70d20ef4297c539",
+      "policy_content_hash": "e7a23e8c448ccff96f54ca7a449908e5707a2df5e7f37afcc61d712a285867aa",
+      "policy_snapshot": {
+        "default_outcome": "pause",
+        "policy_id": "eve-mcp-demo-policy-v1",
+        "policy_version": "eve-mcp-demo-policy-v1",
+        "rules": [
+          {
+            "if": {
+              "chain_type": "ai_agent_action",
+              "derived_chain_outcome": "ACTION_CHAIN_SUPPORTED"
+            },
+            "priority": 10,
+            "reason": "AI-agent chain fully supported: every required evidence step and every governance fact established",
+            "rule_id": "EMP-ALLOW-001",
+            "then": "allow"
+          },
+          {
+            "if": {
+              "gap_codes_any": [
+                "MISSING_EVIDENCE",
+                "ACCOUNTABILITY_GAP",
+                "APPROVAL_SCOPE_MISMATCH",
+                "AGENT_PERMISSION_OVERSCOPED",
+                "ACTION_SCOPE_UNCONFIRMED",
+                "NO_ANSWER",
+                "STALE"
+              ]
+            },
+            "priority": 20,
+            "reason": "Required evidence missing or contradicted: a human must decide",
+            "rule_id": "EMP-ESCALATE-001",
+            "then": "escalate"
+          },
+          {
+            "if": {
+              "gap_codes_any": [
+                "CHAIN_SCOPE_CHANGED",
+                "CHAIN_AUTHORISATION_EXPIRED",
+                "CHAIN_AUTHORISATION_GAP"
+              ]
+            },
+            "priority": 30,
+            "reason": "Chain authorisation is missing, expired or no longer covers the current scope",
+            "rule_id": "EMP-BLOCK-001",
+            "then": "block"
+          }
+        ]
+      },
+      "policy_version": "eve-mcp-demo-policy-v1",
+      "record_id": "EVE-PAR-LOCAL-000015",
+      "record_schema_version": "par-1.2",
+      "result": {
+        "action_context": {
+          "agent_id": "eva",
+          "requested_risk_status": "high",
+          "supplier_id": "SUP-ZETA-002",
+          "tool": "set_supplier_risk_status",
+          "tool_use_id": "eva-web-20260930T191512285574Z-14"
+        },
+        "boundary_note": "EVE verifies the chain and evaluates it against customer-defined policy. The customer owns the policy and any enforcement decision. EVE does not execute, approve, block, pause or escalate the action as its own decision.",
+        "chain_id": "EVE-MCP-DEMO-B-2026-001",
+        "customer_policy_outcome": "escalate",
+        "enforcement_owner": "customer_or_integrated_workflow",
+        "evaluated_at": "2026-09-30T19:15:12Z",
+        "inputs_hash": "de9d4d038d1454dd523fa1af6596c139c54858f55c258162f70d20ef4297c539",
+        "policy_owner": "customer",
+        "policy_rule_id": "EMP-ESCALATE-001",
+        "policy_rule_reason": "Required evidence missing or contradicted: a human must decide",
+        "policy_rule_triggered": true,
+        "policy_version": "eve-mcp-demo-policy-v1",
+        "pre_action_status": "evaluated",
+        "verified_chain_outcome": "HUMAN_REVIEW_REQUIRED"
+      },
+      "seal": {
+        "content_hash": "a9916c33ffbec24bdfa2de41961ef32abc5a93cfbc9209a23c4a6b34ec990524",
+        "manifest_hash": "f5079536f5ee7f91e1c34c258a0308fe52cda2fa86bc9e25db06f80186259140",
+        "seal_id": "EVE-PAR-LOCAL-000015",
+        "seal_mode": "local",
+        "sealed_at": "2026-09-30T19:15:12Z"
+      }
+    },
+    "EVE-PAR-LOCAL-000016": {
+      "chain_content_hash": "3246e4631f0fa87778ab55411a583d5dbb10048033f30057b5f1ce2e45308453",
+      "chain_id": "EVE-MCP-DEMO-B-2026-001",
+      "chain_seal_ref": {
+        "content_hash": "3246e4631f0fa87778ab55411a583d5dbb10048033f30057b5f1ce2e45308453",
+        "seal_id": "EVE-CHAIN-LOCAL-000002",
+        "sealed_at": "2026-09-30T14:36:16Z"
+      },
+      "created_at": "2026-09-30T19:15:13Z",
+      "evaluated_at": "2026-09-30T19:15:13Z",
+      "inputs_hash": "de9d4d038d1454dd523fa1af6596c139c54858f55c258162f70d20ef4297c539",
+      "policy_content_hash": "e7a23e8c448ccff96f54ca7a449908e5707a2df5e7f37afcc61d712a285867aa",
+      "policy_snapshot": {
+        "default_outcome": "pause",
+        "policy_id": "eve-mcp-demo-policy-v1",
+        "policy_version": "eve-mcp-demo-policy-v1",
+        "rules": [
+          {
+            "if": {
+              "chain_type": "ai_agent_action",
+              "derived_chain_outcome": "ACTION_CHAIN_SUPPORTED"
+            },
+            "priority": 10,
+            "reason": "AI-agent chain fully supported: every required evidence step and every governance fact established",
+            "rule_id": "EMP-ALLOW-001",
+            "then": "allow"
+          },
+          {
+            "if": {
+              "gap_codes_any": [
+                "MISSING_EVIDENCE",
+                "ACCOUNTABILITY_GAP",
+                "APPROVAL_SCOPE_MISMATCH",
+                "AGENT_PERMISSION_OVERSCOPED",
+                "ACTION_SCOPE_UNCONFIRMED",
+                "NO_ANSWER",
+                "STALE"
+              ]
+            },
+            "priority": 20,
+            "reason": "Required evidence missing or contradicted: a human must decide",
+            "rule_id": "EMP-ESCALATE-001",
+            "then": "escalate"
+          },
+          {
+            "if": {
+              "gap_codes_any": [
+                "CHAIN_SCOPE_CHANGED",
+                "CHAIN_AUTHORISATION_EXPIRED",
+                "CHAIN_AUTHORISATION_GAP"
+              ]
+            },
+            "priority": 30,
+            "reason": "Chain authorisation is missing, expired or no longer covers the current scope",
+            "rule_id": "EMP-BLOCK-001",
+            "then": "block"
+          }
+        ]
+      },
+      "policy_version": "eve-mcp-demo-policy-v1",
+      "record_id": "EVE-PAR-LOCAL-000016",
+      "record_schema_version": "par-1.2",
+      "result": {
+        "action_context": {
+          "agent_id": "eva",
+          "requested_risk_status": "high",
+          "supplier_id": "SUP-ZETA-002",
+          "tool": "set_supplier_risk_status",
+          "tool_use_id": "eva-web-20260930T191512705901Z-15"
+        },
+        "boundary_note": "EVE verifies the chain and evaluates it against customer-defined policy. The customer owns the policy and any enforcement decision. EVE does not execute, approve, block, pause or escalate the action as its own decision.",
+        "chain_id": "EVE-MCP-DEMO-B-2026-001",
+        "customer_policy_outcome": "escalate",
+        "enforcement_owner": "customer_or_integrated_workflow",
+        "evaluated_at": "2026-09-30T19:15:13Z",
+        "inputs_hash": "de9d4d038d1454dd523fa1af6596c139c54858f55c258162f70d20ef4297c539",
+        "policy_owner": "customer",
+        "policy_rule_id": "EMP-ESCALATE-001",
+        "policy_rule_reason": "Required evidence missing or contradicted: a human must decide",
+        "policy_rule_triggered": true,
+        "policy_version": "eve-mcp-demo-policy-v1",
+        "pre_action_status": "evaluated",
+        "verified_chain_outcome": "HUMAN_REVIEW_REQUIRED"
+      },
+      "seal": {
+        "content_hash": "a40854de4cb322f129ed6b3270cafa0cc513ef8447bbbb24920082345ceee8a1",
+        "manifest_hash": "b723e553f98d45c3a06ea3584a2db56ce09f439af74fdc92321a16589e18aba8",
+        "seal_id": "EVE-PAR-LOCAL-000016",
+        "seal_mode": "local",
+        "sealed_at": "2026-09-30T19:15:13Z"
+      }
+    },
+    "EVE-PAR-LOCAL-000017": {
+      "chain_content_hash": "4a972db7121f635494887510278304b50e6c12498a7aead4f8a2d8ded27d8402",
+      "chain_id": "EVE-MCP-DEMO-A-2026-001",
+      "chain_seal_ref": {
+        "content_hash": "4a972db7121f635494887510278304b50e6c12498a7aead4f8a2d8ded27d8402",
+        "seal_id": "EVE-CHAIN-LOCAL-000001",
+        "sealed_at": "2026-09-30T14:36:16Z"
+      },
+      "created_at": "2026-09-30T19:15:13Z",
+      "evaluated_at": "2026-09-30T19:15:13Z",
+      "inputs_hash": "bcda0bc4731a17b5a26263aa14a4058d4cb7b9ec04a63307df1749e9740d8780",
+      "policy_content_hash": "e7a23e8c448ccff96f54ca7a449908e5707a2df5e7f37afcc61d712a285867aa",
+      "policy_snapshot": {
+        "default_outcome": "pause",
+        "policy_id": "eve-mcp-demo-policy-v1",
+        "policy_version": "eve-mcp-demo-policy-v1",
+        "rules": [
+          {
+            "if": {
+              "chain_type": "ai_agent_action",
+              "derived_chain_outcome": "ACTION_CHAIN_SUPPORTED"
+            },
+            "priority": 10,
+            "reason": "AI-agent chain fully supported: every required evidence step and every governance fact established",
+            "rule_id": "EMP-ALLOW-001",
+            "then": "allow"
+          },
+          {
+            "if": {
+              "gap_codes_any": [
+                "MISSING_EVIDENCE",
+                "ACCOUNTABILITY_GAP",
+                "APPROVAL_SCOPE_MISMATCH",
+                "AGENT_PERMISSION_OVERSCOPED",
+                "ACTION_SCOPE_UNCONFIRMED",
+                "NO_ANSWER",
+                "STALE"
+              ]
+            },
+            "priority": 20,
+            "reason": "Required evidence missing or contradicted: a human must decide",
+            "rule_id": "EMP-ESCALATE-001",
+            "then": "escalate"
+          },
+          {
+            "if": {
+              "gap_codes_any": [
+                "CHAIN_SCOPE_CHANGED",
+                "CHAIN_AUTHORISATION_EXPIRED",
+                "CHAIN_AUTHORISATION_GAP"
+              ]
+            },
+            "priority": 30,
+            "reason": "Chain authorisation is missing, expired or no longer covers the current scope",
+            "rule_id": "EMP-BLOCK-001",
+            "then": "block"
+          }
+        ]
+      },
+      "policy_version": "eve-mcp-demo-policy-v1",
+      "record_id": "EVE-PAR-LOCAL-000017",
+      "record_schema_version": "par-1.2",
+      "result": {
+        "action_context": {
+          "agent_id": "eva",
+          "requested_risk_status": "high",
+          "supplier_id": "SUP-EPSILON-001",
+          "tool": "set_supplier_risk_status",
+          "tool_use_id": "eva-web-20260930T191513127986Z-16"
+        },
+        "boundary_note": "EVE verifies the chain and evaluates it against customer-defined policy. The customer owns the policy and any enforcement decision. EVE does not execute, approve, block, pause or escalate the action as its own decision.",
+        "chain_id": "EVE-MCP-DEMO-A-2026-001",
+        "customer_policy_outcome": "allow",
+        "enforcement_owner": "customer_or_integrated_workflow",
+        "evaluated_at": "2026-09-30T19:15:13Z",
+        "inputs_hash": "bcda0bc4731a17b5a26263aa14a4058d4cb7b9ec04a63307df1749e9740d8780",
+        "policy_owner": "customer",
+        "policy_rule_id": "EMP-ALLOW-001",
+        "policy_rule_reason": "AI-agent chain fully supported: every required evidence step and every governance fact established",
+        "policy_rule_triggered": true,
+        "policy_version": "eve-mcp-demo-policy-v1",
+        "pre_action_status": "evaluated",
+        "verified_chain_outcome": "ACTION_CHAIN_SUPPORTED"
+      },
+      "seal": {
+        "content_hash": "e07713696a441fded92fefe283d9b6b67ad8718a35684c530a6ccca226f9e695",
+        "manifest_hash": "719d1d6b94a1b1f3d9b053e32365c973fe4a8c84931bf56d0d7bed9172179781",
+        "seal_id": "EVE-PAR-LOCAL-000017",
+        "seal_mode": "local",
+        "sealed_at": "2026-09-30T19:15:13Z"
+      }
+    },
+    "EVE-PAR-LOCAL-000018": {
+      "chain_content_hash": "3246e4631f0fa87778ab55411a583d5dbb10048033f30057b5f1ce2e45308453",
+      "chain_id": "EVE-MCP-DEMO-B-2026-001",
+      "chain_seal_ref": {
+        "content_hash": "3246e4631f0fa87778ab55411a583d5dbb10048033f30057b5f1ce2e45308453",
+        "seal_id": "EVE-CHAIN-LOCAL-000002",
+        "sealed_at": "2026-09-30T14:36:16Z"
+      },
+      "created_at": "2026-09-30T19:15:14Z",
+      "evaluated_at": "2026-09-30T19:15:14Z",
+      "inputs_hash": "de9d4d038d1454dd523fa1af6596c139c54858f55c258162f70d20ef4297c539",
+      "policy_content_hash": "e7a23e8c448ccff96f54ca7a449908e5707a2df5e7f37afcc61d712a285867aa",
+      "policy_snapshot": {
+        "default_outcome": "pause",
+        "policy_id": "eve-mcp-demo-policy-v1",
+        "policy_version": "eve-mcp-demo-policy-v1",
+        "rules": [
+          {
+            "if": {
+              "chain_type": "ai_agent_action",
+              "derived_chain_outcome": "ACTION_CHAIN_SUPPORTED"
+            },
+            "priority": 10,
+            "reason": "AI-agent chain fully supported: every required evidence step and every governance fact established",
+            "rule_id": "EMP-ALLOW-001",
+            "then": "allow"
+          },
+          {
+            "if": {
+              "gap_codes_any": [
+                "MISSING_EVIDENCE",
+                "ACCOUNTABILITY_GAP",
+                "APPROVAL_SCOPE_MISMATCH",
+                "AGENT_PERMISSION_OVERSCOPED",
+                "ACTION_SCOPE_UNCONFIRMED",
+                "NO_ANSWER",
+                "STALE"
+              ]
+            },
+            "priority": 20,
+            "reason": "Required evidence missing or contradicted: a human must decide",
+            "rule_id": "EMP-ESCALATE-001",
+            "then": "escalate"
+          },
+          {
+            "if": {
+              "gap_codes_any": [
+                "CHAIN_SCOPE_CHANGED",
+                "CHAIN_AUTHORISATION_EXPIRED",
+                "CHAIN_AUTHORISATION_GAP"
+              ]
+            },
+            "priority": 30,
+            "reason": "Chain authorisation is missing, expired or no longer covers the current scope",
+            "rule_id": "EMP-BLOCK-001",
+            "then": "block"
+          }
+        ]
+      },
+      "policy_version": "eve-mcp-demo-policy-v1",
+      "record_id": "EVE-PAR-LOCAL-000018",
+      "record_schema_version": "par-1.2",
+      "result": {
+        "action_context": {
+          "agent_id": "eva",
+          "requested_risk_status": "high",
+          "supplier_id": "SUP-ZETA-002",
+          "tool": "set_supplier_risk_status",
+          "tool_use_id": "eva-web-20260930T191513621349Z-17"
+        },
+        "boundary_note": "EVE verifies the chain and evaluates it against customer-defined policy. The customer owns the policy and any enforcement decision. EVE does not execute, approve, block, pause or escalate the action as its own decision.",
+        "chain_id": "EVE-MCP-DEMO-B-2026-001",
+        "customer_policy_outcome": "escalate",
+        "enforcement_owner": "customer_or_integrated_workflow",
+        "evaluated_at": "2026-09-30T19:15:14Z",
+        "inputs_hash": "de9d4d038d1454dd523fa1af6596c139c54858f55c258162f70d20ef4297c539",
+        "policy_owner": "customer",
+        "policy_rule_id": "EMP-ESCALATE-001",
+        "policy_rule_reason": "Required evidence missing or contradicted: a human must decide",
+        "policy_rule_triggered": true,
+        "policy_version": "eve-mcp-demo-policy-v1",
+        "pre_action_status": "evaluated",
+        "verified_chain_outcome": "HUMAN_REVIEW_REQUIRED"
+      },
+      "seal": {
+        "content_hash": "e1ac97083e68da96a1daeeb8d6129de118a8f7a0a8cf5f902dfc8c272fcc6db5",
+        "manifest_hash": "4d5fd3fbd89525c50f215249a2fe4a1e6473c22fc0e7d1653a04fc59d319162d",
+        "seal_id": "EVE-PAR-LOCAL-000018",
+        "seal_mode": "local",
+        "sealed_at": "2026-09-30T19:15:14Z"
+      }
+    },
+    "EVE-PAR-LOCAL-000019": {
+      "chain_content_hash": "4a972db7121f635494887510278304b50e6c12498a7aead4f8a2d8ded27d8402",
+      "chain_id": "EVE-MCP-DEMO-A-2026-001",
+      "chain_seal_ref": {
+        "content_hash": "4a972db7121f635494887510278304b50e6c12498a7aead4f8a2d8ded27d8402",
+        "seal_id": "EVE-CHAIN-LOCAL-000001",
+        "sealed_at": "2026-09-30T14:36:16Z"
+      },
+      "created_at": "2026-09-30T19:25:18Z",
+      "evaluated_at": "2026-09-30T19:25:18Z",
+      "inputs_hash": "bcda0bc4731a17b5a26263aa14a4058d4cb7b9ec04a63307df1749e9740d8780",
+      "policy_content_hash": "e7a23e8c448ccff96f54ca7a449908e5707a2df5e7f37afcc61d712a285867aa",
+      "policy_snapshot": {
+        "default_outcome": "pause",
+        "policy_id": "eve-mcp-demo-policy-v1",
+        "policy_version": "eve-mcp-demo-policy-v1",
+        "rules": [
+          {
+            "if": {
+              "chain_type": "ai_agent_action",
+              "derived_chain_outcome": "ACTION_CHAIN_SUPPORTED"
+            },
+            "priority": 10,
+            "reason": "AI-agent chain fully supported: every required evidence step and every governance fact established",
+            "rule_id": "EMP-ALLOW-001",
+            "then": "allow"
+          },
+          {
+            "if": {
+              "gap_codes_any": [
+                "MISSING_EVIDENCE",
+                "ACCOUNTABILITY_GAP",
+                "APPROVAL_SCOPE_MISMATCH",
+                "AGENT_PERMISSION_OVERSCOPED",
+                "ACTION_SCOPE_UNCONFIRMED",
+                "NO_ANSWER",
+                "STALE"
+              ]
+            },
+            "priority": 20,
+            "reason": "Required evidence missing or contradicted: a human must decide",
+            "rule_id": "EMP-ESCALATE-001",
+            "then": "escalate"
+          },
+          {
+            "if": {
+              "gap_codes_any": [
+                "CHAIN_SCOPE_CHANGED",
+                "CHAIN_AUTHORISATION_EXPIRED",
+                "CHAIN_AUTHORISATION_GAP"
+              ]
+            },
+            "priority": 30,
+            "reason": "Chain authorisation is missing, expired or no longer covers the current scope",
+            "rule_id": "EMP-BLOCK-001",
+            "then": "block"
+          }
+        ]
+      },
+      "policy_version": "eve-mcp-demo-policy-v1",
+      "record_id": "EVE-PAR-LOCAL-000019",
+      "record_schema_version": "par-1.2",
+      "result": {
+        "action_context": {
+          "agent_id": "eva",
+          "requested_risk_status": "high",
+          "supplier_id": "SUP-EPSILON-001",
+          "tool": "set_supplier_risk_status",
+          "tool_use_id": "eva-web-20260930T192518345317Z-1"
+        },
+        "boundary_note": "EVE verifies the chain and evaluates it against customer-defined policy. The customer owns the policy and any enforcement decision. EVE does not execute, approve, block, pause or escalate the action as its own decision.",
+        "chain_id": "EVE-MCP-DEMO-A-2026-001",
+        "customer_policy_outcome": "allow",
+        "enforcement_owner": "customer_or_integrated_workflow",
+        "evaluated_at": "2026-09-30T19:25:18Z",
+        "inputs_hash": "bcda0bc4731a17b5a26263aa14a4058d4cb7b9ec04a63307df1749e9740d8780",
+        "policy_owner": "customer",
+        "policy_rule_id": "EMP-ALLOW-001",
+        "policy_rule_reason": "AI-agent chain fully supported: every required evidence step and every governance fact established",
+        "policy_rule_triggered": true,
+        "policy_version": "eve-mcp-demo-policy-v1",
+        "pre_action_status": "evaluated",
+        "verified_chain_outcome": "ACTION_CHAIN_SUPPORTED"
+      },
+      "seal": {
+        "content_hash": "d87e6d8e4d1cb261b5b501c23caf59db7f93e904dd27a6dd562db061212c5008",
+        "manifest_hash": "890522e5285126f31920745980a260938413bb7c5aa83c9052bedaf8402e215f",
+        "seal_id": "EVE-PAR-LOCAL-000019",
+        "seal_mode": "local",
+        "sealed_at": "2026-09-30T19:25:18Z"
+      }
+    },
+    "EVE-PAR-LOCAL-000020": {
+      "chain_content_hash": "3246e4631f0fa87778ab55411a583d5dbb10048033f30057b5f1ce2e45308453",
+      "chain_id": "EVE-MCP-DEMO-B-2026-001",
+      "chain_seal_ref": {
+        "content_hash": "3246e4631f0fa87778ab55411a583d5dbb10048033f30057b5f1ce2e45308453",
+        "seal_id": "EVE-CHAIN-LOCAL-000002",
+        "sealed_at": "2026-09-30T14:36:16Z"
+      },
+      "created_at": "2026-09-30T19:25:41Z",
+      "evaluated_at": "2026-09-30T19:25:41Z",
+      "inputs_hash": "de9d4d038d1454dd523fa1af6596c139c54858f55c258162f70d20ef4297c539",
+      "policy_content_hash": "e7a23e8c448ccff96f54ca7a449908e5707a2df5e7f37afcc61d712a285867aa",
+      "policy_snapshot": {
+        "default_outcome": "pause",
+        "policy_id": "eve-mcp-demo-policy-v1",
+        "policy_version": "eve-mcp-demo-policy-v1",
+        "rules": [
+          {
+            "if": {
+              "chain_type": "ai_agent_action",
+              "derived_chain_outcome": "ACTION_CHAIN_SUPPORTED"
+            },
+            "priority": 10,
+            "reason": "AI-agent chain fully supported: every required evidence step and every governance fact established",
+            "rule_id": "EMP-ALLOW-001",
+            "then": "allow"
+          },
+          {
+            "if": {
+              "gap_codes_any": [
+                "MISSING_EVIDENCE",
+                "ACCOUNTABILITY_GAP",
+                "APPROVAL_SCOPE_MISMATCH",
+                "AGENT_PERMISSION_OVERSCOPED",
+                "ACTION_SCOPE_UNCONFIRMED",
+                "NO_ANSWER",
+                "STALE"
+              ]
+            },
+            "priority": 20,
+            "reason": "Required evidence missing or contradicted: a human must decide",
+            "rule_id": "EMP-ESCALATE-001",
+            "then": "escalate"
+          },
+          {
+            "if": {
+              "gap_codes_any": [
+                "CHAIN_SCOPE_CHANGED",
+                "CHAIN_AUTHORISATION_EXPIRED",
+                "CHAIN_AUTHORISATION_GAP"
+              ]
+            },
+            "priority": 30,
+            "reason": "Chain authorisation is missing, expired or no longer covers the current scope",
+            "rule_id": "EMP-BLOCK-001",
+            "then": "block"
+          }
+        ]
+      },
+      "policy_version": "eve-mcp-demo-policy-v1",
+      "record_id": "EVE-PAR-LOCAL-000020",
+      "record_schema_version": "par-1.2",
+      "result": {
+        "action_context": {
+          "agent_id": "eva",
+          "requested_risk_status": "high",
+          "supplier_id": "SUP-ZETA-002",
+          "tool": "set_supplier_risk_status",
+          "tool_use_id": "eva-web-20260930T192541253230Z-2"
+        },
+        "boundary_note": "EVE verifies the chain and evaluates it against customer-defined policy. The customer owns the policy and any enforcement decision. EVE does not execute, approve, block, pause or escalate the action as its own decision.",
+        "chain_id": "EVE-MCP-DEMO-B-2026-001",
+        "customer_policy_outcome": "escalate",
+        "enforcement_owner": "customer_or_integrated_workflow",
+        "evaluated_at": "2026-09-30T19:25:41Z",
+        "inputs_hash": "de9d4d038d1454dd523fa1af6596c139c54858f55c258162f70d20ef4297c539",
+        "policy_owner": "customer",
+        "policy_rule_id": "EMP-ESCALATE-001",
+        "policy_rule_reason": "Required evidence missing or contradicted: a human must decide",
+        "policy_rule_triggered": true,
+        "policy_version": "eve-mcp-demo-policy-v1",
+        "pre_action_status": "evaluated",
+        "verified_chain_outcome": "HUMAN_REVIEW_REQUIRED"
+      },
+      "seal": {
+        "content_hash": "0ba1cc49ba2bed9b1add922222739d31ec0b10f374d8ab7e243491bf291d3d5d",
+        "manifest_hash": "98179a66ccf989b1dc96e4f513eb0488c431d14455458db563d0eff15ecab4a7",
+        "seal_id": "EVE-PAR-LOCAL-000020",
+        "seal_mode": "local",
+        "sealed_at": "2026-09-30T19:25:41Z"
+      }
+    }
+  },
+  "store_schema_version": "1.0"
+}

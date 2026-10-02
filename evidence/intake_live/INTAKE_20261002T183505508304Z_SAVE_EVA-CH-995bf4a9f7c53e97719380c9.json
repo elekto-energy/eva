@@ -1,0 +1,62 @@
+{
+  "action_class": "set_supplier_risk_status",
+  "chain": {
+    "action_gate": "HUMAN_REVIEW_REQUIRED",
+    "chain_id": "EVA-CH-995bf4a9f7c53e97719380c9",
+    "content_hash": "186ac9a6c5dd4276c541b9e5213d9fe31c2f3b6a3b6fcd7647fcd08aceca2b0c",
+    "gaps": [
+      {
+        "code": "MISSING_EVIDENCE",
+        "source_system": "Human Approval",
+        "step_id": "human_approval",
+        "text": "No human approval on record"
+      }
+    ],
+    "human_review_required": true,
+    "overall_verdict": "PARTIAL"
+  },
+  "declaration_canonical_sha256": "995bf4a9f7c53e97719380c95f435580be75483220424bb9001b8ecdc148685b",
+  "declaration_file": "/opt/eva-demo/eva-intake/eva_intake/reference/epsilon_v2_approval_withdrawn.json",
+  "declaration_sha256": "38cc8251f2cc4bb4a4ba2837e3eb598ab604a79ebbcdd3f1e052f67ed4018bcc",
+  "declared_at": "2026-10-02T09:00:00Z",
+  "declared_by": "EVA reference operator (synthetic)",
+  "equivalence_gate": {
+    "reference_chain_id": "AI-ACTION-2026-001",
+    "reference_content_hash": "d05f220af3c8dc1a1f6d504605dc3e9f532d2218978d291b16685ef66f6f4287",
+    "status": "PASS"
+  },
+  "eve_checkout": {
+    "git_executable": "/usr/bin/git",
+    "head": "ffe118c326e3d4ec4b194ddea0ba6c8d09d78f27",
+    "path": "/opt/eva-demo/eve-core-v1",
+    "tree": "a698922c9fd740c4b114e572a626380abf1590a4"
+  },
+  "evidence_truth": "DECLARED -- EVE composes and verifies the declared record; it does not establish that the declared evidence is true",
+  "external_store": "/opt/eva-demo/eve_store",
+  "instrument": {
+    "builder_sha256": "d11c248409609e7a29b82ad34db6a26b23989e1723025005796def8696ce8f4b",
+    "declaration_module_sha256": "683c8010c4529be1d568e87fe71a8a5ae7f24f0983850ed56b8d800c9e8e33dc",
+    "intake_module_sha256": "eba9cc19d7034a2ff07f630214404a447055e390294cc7356273736a9343092f",
+    "version": "eva-chain-intake-0.1.0"
+  },
+  "mode": "SAVE",
+  "placement": "CREATED",
+  "proposed_chain_map_binding": {
+    "set_supplier_risk_status": {
+      "SUP-EPSILON-001": "EVA-CH-995bf4a9f7c53e97719380c9"
+    }
+  },
+  "record_kind": "eva_chain_intake",
+  "record_schema_version": "eva-chain-intake-1.0",
+  "record_sha256": "cb7463cad75defc1f6e63e2fd1a4e7c0308026f55eb0ae522f7b1bf04d40da94",
+  "recorded_utc": "20261002T183505508304Z",
+  "store_guard": {
+    "after_sha256": "f58f8159b30b90a9c516b42f1e9b30eec9aecab15fad65ffe8ca2ce149a44906",
+    "before_sha256": "972a976ca89bb64ba6b15ce3d6772a0aeb095310f2c81fbfd7ee79c65e1433a5",
+    "chains_after": 4,
+    "chains_before": 3,
+    "store_file": "/opt/eva-demo/eve_store/chains.json"
+  },
+  "subject_ref": "SUP-EPSILON-001",
+  "supersedes": "EVA-CH-e8fcd04353baf54fab0d91d0"
+}
