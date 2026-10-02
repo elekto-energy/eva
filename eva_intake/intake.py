@@ -12,8 +12,10 @@ Steps, in order, all fail-closed:
   4. equivalence gate: compose() must reproduce resolve("ai_agent_action") exactly;
   5. the declaration is validated strictly (eva_intake.declaration);
   6. the chain is composed by EVE's engine with a content-addressed chain id;
-  7. an existing chain with the same id is never overwritten: identical content -> EXISTS_IDENTICAL,
-     different content -> STOP; only --save writes, and the write is read back and hash-checked;
+  7. the store is read strictly (an unreadable store is a STOP, never treated as empty); an existing
+     chain with the same id is never overwritten: identical content -> EXISTS_IDENTICAL, different
+     content -> STOP; only --save writes, and afterwards the store must differ from before by exactly
+     one added chain equal to the composed one (no chain lost or changed), otherwise STOP;
   8. one self-hashed intake record is written (exclusive create).
 """
 from __future__ import annotations
@@ -107,22 +109,66 @@ def compose_chain(builder, eve: dict, decl: dict):
     return chain
 
 
-def place_chain(eve: dict, chain, *, save: bool) -> str:
-    """Never overwrite. Returns WOULD_CREATE | CREATED | EXISTS_IDENTICAL; raises on a conflict."""
-    storage = eve["storage"]
-    existing = storage.get_chain(chain.chain_id)
-    if existing is not None:
-        if existing.content_hash == chain.content_hash and existing.to_dict() == chain.to_dict():
-            return "EXISTS_IDENTICAL"
+def read_store_strict(store_file: Path) -> tuple:
+    """Read chains.json without EVE's lenient loader (which turns an unreadable file into an empty store).
+
+    Returns (sha256 | None, chains dict, other top-level fields). A missing file is an empty store.
+    Anything that is not a readable JSON object with a "chains" object is a STOP."""
+    if not store_file.exists():
+        return None, {}, {}
+    try:
+        raw = store_file.read_bytes()
+        data = json.loads(raw.decode("utf-8"))
+    except (OSError, UnicodeDecodeError, json.JSONDecodeError) as exc:
+        raise IntakeError(7, "STORE_UNREADABLE", f"{store_file}: {type(exc).__name__}; nothing was written") from None
+    if type(data) is not dict or type(data.get("chains")) is not dict:
+        raise IntakeError(7, "STORE_UNREADABLE", f"{store_file}: not an EVE store object; nothing was written")
+    others = {k: v for k, v in data.items() if k != "chains"}
+    return hashlib.sha256(raw).hexdigest(), data["chains"], others
+
+
+def store_file_of(eve: dict) -> Path:
+    path = Path(eve["store_dir"]) / "chains.json"
+    module_path = getattr(eve["storage"], "_STORE_FILE", None)
+    if module_path is None or Path(module_path).resolve() != path.resolve():
+        raise IntakeError(3, "STORE_PATH_MISMATCH", f"EVE storage writes {module_path}, intake guards {path}")
+    return path
+
+
+def place_chain(eve: dict, chain, *, save: bool) -> tuple:
+    """Never overwrite, never lose a chain. Returns (placement, guard).
+
+    placement: WOULD_CREATE | CREATED | EXISTS_IDENTICAL. Raises on a conflict, an unreadable store, or
+    any change to the store other than exactly one added chain equal to `chain`."""
+    store_file = store_file_of(eve)
+    before_sha, before, before_other = read_store_strict(store_file)
+    guard = {"store_file": str(store_file), "before_sha256": before_sha, "chains_before": len(before)}
+    new = chain.to_dict()
+    if chain.chain_id in before:
+        if before[chain.chain_id] == new:
+            guard.update(after_sha256=before_sha, chains_after=len(before))
+            return "EXISTS_IDENTICAL", guard
         raise IntakeError(5, "CHAIN_ID_CONFLICT",
                           f"{chain.chain_id} exists with different content; nothing was written")
     if not save:
-        return "WOULD_CREATE"
-    storage.save_chain(chain)
-    back = storage.get_chain(chain.chain_id)
-    if back is None or back.content_hash != chain.content_hash or back.to_dict() != chain.to_dict():
-        raise IntakeError(5, "READBACK_MISMATCH", f"{chain.chain_id} did not read back identically")
-    return "CREATED"
+        guard.update(after_sha256=before_sha, chains_after=len(before))
+        return "WOULD_CREATE", guard
+
+    eve["storage"].save_chain(chain)
+
+    after_sha, after, after_other = read_store_strict(store_file)
+    guard.update(after_sha256=after_sha, chains_after=len(after))
+    if before_sha is None:   # store created by this write: header must be exactly EVE's own empty-store header
+        before_other = {k: v for k, v in eve["storage"]._empty().items() if k != "chains"}
+    lost = sorted(k for k in before if k not in after)
+    changed = sorted(k for k in before if k in after and after[k] != before[k])
+    added = sorted(k for k in after if k not in before)
+    if lost or changed or added != [chain.chain_id] or after[chain.chain_id] != new or after_other != before_other:
+        raise IntakeError(8, "STORE_INTEGRITY_VIOLATION",
+                          f"store changed beyond one added chain: lost={lost} changed={changed} added={added} "
+                          f"other_fields_changed={after_other != before_other}; "
+                          f"before_sha256={before_sha} after_sha256={after_sha}")
+    return "CREATED", guard
 
 
 def prepare_intake(builder, eve: dict, decl_bytes: bytes, *, supersedes: str | None,
@@ -163,7 +209,8 @@ def run_intake(builder, eve: dict, decl_bytes: bytes, *, save: bool, supersedes:
     chain, result = prepare_intake(builder, eve, decl_bytes, supersedes=supersedes,
                                    authorisation_statuses=authorisation_statuses,
                                    monitoring_statuses=monitoring_statuses)
-    return {"placement": place_chain(eve, chain, save=save), **result}
+    placement, guard = place_chain(eve, chain, save=save)
+    return {"placement": placement, "store_guard": guard, **result}
 
 
 def main(argv=None) -> int:
@@ -225,7 +272,7 @@ def main(argv=None) -> int:
     exit_code = 0
     with fh:
         try:
-            record["placement"] = place_chain(eve, chain, save=a.save)
+            record["placement"], record["store_guard"] = place_chain(eve, chain, save=a.save)
             record.update(result)
         except IntakeError as exc:
             exit_code = exc.exit_code

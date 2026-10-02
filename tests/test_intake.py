@@ -320,3 +320,98 @@ def test_store_on_another_windows_drive_is_never_inside_the_checkout():
     assert I.is_inside(r"C:\Users\x\AppData\Local\Temp\store", r"D:\EVE11\staging\core", ntpath) is False
     assert I.is_inside(r"D:\EVE11\staging\core\inside", r"D:\EVE11\staging\core", ntpath) is True
     assert I.is_inside(r"D:\EVE11\store", r"D:\EVE11\staging\core", ntpath) is False
+
+
+# ------------------------------------------------------------------ P0: the store is never lost or rewritten
+
+def test_missing_store_reads_as_empty_and_garbage_is_refused(tmp_path):
+    assert I.read_store_strict(tmp_path / "chains.json") == (None, {}, {})
+    for content in (b"{not json", b"[]", b'{"store_schema_version": "1.0"}', b'{"chains": []}', b"\xff\xfe"):
+        p = tmp_path / "chains.json"
+        p.write_bytes(content)
+        with pytest.raises(I.IntakeError) as e:
+            I.read_store_strict(p)
+        assert e.value.exit_code == 7 and e.value.code == "STORE_UNREADABLE"
+
+
+class _StoreBackup:
+    """Restore the session store byte-for-byte after a test that deliberately damages it."""
+    def __init__(self, store_file):
+        self.f = store_file
+
+    def __enter__(self):
+        self.saved = self.f.read_bytes()
+        return self
+
+    def __exit__(self, *exc):
+        self.f.write_bytes(self.saved)
+
+
+@needs_eve
+def test_eve_core_itself_treats_an_unreadable_store_as_empty(engine):
+    """Why P0 exists: the frozen loader returns an empty store for a damaged file, so a plain save_chain
+    would silently drop every existing chain."""
+    _, eve, *_, store_file = engine
+    intake(engine, variant("SUP-P0-SEED-001"))
+    with _StoreBackup(store_file):
+        store_file.write_bytes(b"{damaged")
+        assert eve["storage"].get_chain(D.chain_id_for(variant("SUP-P0-SEED-001"))) is None
+
+
+@needs_eve
+def test_unreadable_store_stops_the_intake_and_nothing_is_written(engine):
+    *_, store_file = engine
+    intake(engine, variant("SUP-P0-SEED-002"))
+    with _StoreBackup(store_file):
+        store_file.write_bytes(b"{damaged")
+        with pytest.raises(I.IntakeError) as e:
+            intake(engine, variant("SUP-P0-NEW-001"))
+        assert e.value.code == "STORE_UNREADABLE" and store_file.read_bytes() == b"{damaged"
+
+
+@needs_eve
+@pytest.mark.parametrize("damage", ["drop_existing", "change_existing", "extra_chain", "header"])
+def test_any_store_change_beyond_one_added_chain_is_a_stop(engine, monkeypatch, damage):
+    _, eve, *_, store_file = engine
+    seed = variant("SUP-P0-SEED-003")
+    intake(engine, seed)
+    seed_id = D.chain_id_for(seed)
+    storage = eve["storage"]
+    real_save = storage.save_chain
+
+    def misbehaving_save(chain):
+        real_save(chain)
+        data = json.loads(store_file.read_text(encoding="utf-8"))
+        if damage == "drop_existing":
+            del data["chains"][seed_id]
+        elif damage == "change_existing":
+            data["chains"][seed_id]["subject"] = "rewritten"
+        elif damage == "extra_chain":
+            data["chains"]["EVA-CH-000000000000000000000000"] = data["chains"][chain.chain_id]
+        else:
+            data["seal_seq"] = data["seal_seq"] + 1
+        store_file.write_text(json.dumps(data), encoding="utf-8")
+
+    with _StoreBackup(store_file):
+        monkeypatch.setattr(storage, "save_chain", misbehaving_save)
+        with pytest.raises(I.IntakeError) as e:
+            intake(engine, variant(f"SUP-P0-{damage.upper().replace('_', '-')}"))
+        assert e.value.exit_code == 8 and e.value.code == "STORE_INTEGRITY_VIOLATION"
+        if damage == "drop_existing":
+            assert f"lost=['{seed_id}']" in e.value.detail
+        if damage == "change_existing":
+            assert f"changed=['{seed_id}']" in e.value.detail
+
+
+@needs_eve
+def test_a_normal_save_adds_exactly_one_chain_and_reports_it(engine):
+    *_, store_file = engine
+    intake(engine, variant("SUP-P0-SEED-004"))
+    before = json.loads(store_file.read_text(encoding="utf-8"))["chains"]
+    r = intake(engine, variant("SUP-P0-NORMAL-001"))
+    after = json.loads(store_file.read_text(encoding="utf-8"))["chains"]
+    g = r["store_guard"]
+    assert r["placement"] == "CREATED" and g["chains_after"] == g["chains_before"] + 1
+    assert g["before_sha256"] != g["after_sha256"]
+    assert {k: v for k, v in after.items() if k in before} == before          # every earlier chain unchanged
+    assert set(after) - set(before) == {r["chain"]["chain_id"]}
