@@ -1,0 +1,12 @@
+{
+  "schema": "eva-service-offers-1.0",
+  "note": "Synthetic demo data. The provider is a synthetic demo entity, not a real company. No real booking, payment or contact takes place.",
+  "offers": {
+    "DW-OFFER-001": {
+      "service": "dishwasher_repair",
+      "provider": "EVE Synthetic Appliance Repair Co. (Synthetic demo entity. Not a real company.)",
+      "price_usd": 275,
+      "slot": "this week"
+    }
+  }
+}
