@@ -1,0 +1,16 @@
+{
+  "facts": [
+    {
+      "fact": "manufacturer_warranty",
+      "purchase_date": "2023-03-14",
+      "record_sha256": "f6c645e32cfeb6c62cbb008bf8a7287bc4e2d98cbfe71fd21c8c32709c2d00be",
+      "schema": "eva-coverage-fact-1.0",
+      "source": "synthetic purchase record (demo data)",
+      "synthetic": true,
+      "target_id": "APPLIANCE-001",
+      "warranty_end": "2025-03-14"
+    }
+  ],
+  "note": "Synthetic demo data. Not a real household, product registration, purchase or warranty. Only facts listed here exist as evidence; anything not listed is NOT ESTABLISHED, never absent.",
+  "schema": "eva-coverage-facts-1.0"
+}

@@ -42,6 +42,7 @@ from .explain import why
 from .gate_booking import GATE_VERSION, BookingGate
 from .mandate import MandateError, confirm_authorization, confirm_mandate
 from .proposer import scripted_turns
+from .targets import load_targets
 from .tools import BookingRegister, build_tools, load_offers
 
 PROPOSERS = ("scripted", "nova")
@@ -70,8 +71,8 @@ def compose_spoken(observed: dict, proposals: list[dict]) -> str:
     """Built from observed state only, never from the model's text."""
     if observed["booking_proposed"]:
         if observed["booked"]:
-            return (f"EVE allowed the booking. {observed['offer_id']} is booked at ${observed['price_usd']} "
-                    f"(synthetic). Evidence record {observed['eve_record_id']}.")
+            return (f"EVE allowed the booking. {observed['offer_id']} for {observed['target_id']} is booked at "
+                    f"${observed['price_usd']} (synthetic). Evidence record {observed['eve_record_id']}.")
         if observed["customer_policy_outcome"] == "escalate":
             return f"EVE required human review. Nothing was booked. Evidence record {observed['eve_record_id']}."
         return f"The booking was not made. Reason: {observed['gate_reason']}. Nothing was booked."
@@ -90,6 +91,11 @@ def create_delegation_app(*, evidence_root: Path, pre_action: Optional[Callable]
     if unknown:
         raise BindingError("BINDING_INVALID", f"bound offers not in the offer register: {unknown}")
     prices = {oid: offers[oid]["price_usd"] for oid in chain_bindings}
+    targets = load_targets()
+    evidence_targets = {oid: offers[oid]["target_id"] for oid in chain_bindings}
+    unestablished = sorted(t for t in evidence_targets.values() if t not in targets)
+    if unestablished:
+        raise BindingError("BINDING_INVALID", f"bound offers concern targets that are not established: {unestablished}")
     lock = threading.Lock()
     seq = itertools.count(1)
     state: dict = {"pending": []}
@@ -116,12 +122,14 @@ def create_delegation_app(*, evidence_root: Path, pre_action: Optional[Callable]
             before_sha, before = _sha_bytes(register.path.read_bytes()), bookings()
             store, executions, proposals = AuthorizationStore(), [], []
             observer = PolicyObserver(pre_action or EveMcpClient().pre_action, expected_policy)
-            gate = BookingGate(observer, store, chain_bindings=chain_bindings, evidence_prices=prices)
+            gate = BookingGate(observer, store, chain_bindings=chain_bindings, evidence_prices=prices,
+                               evidence_targets=evidence_targets)
             proposer_error, model_text = None, ""
             try:
                 model = ScriptedModel(scripted_turns(utterance, tool_use_id)) if proposer == "scripted" \
                     else (nova_factory or _default_nova_factory)()
-                agent = build_delegation_agent(model, gate, build_tools(store, register, offers, executions, proposals))
+                agent = build_delegation_agent(model, gate, build_tools(store, register, offers, targets, executions,
+                                                                        proposals))
                 model_text = str(agent(utterance)).strip()
             except Exception as exc:                              # shown verbatim; never a silent fallback
                 proposer_error = f"{type(exc).__name__}: {exc}"[:600]
@@ -132,6 +140,7 @@ def create_delegation_app(*, evidence_root: Path, pre_action: Optional[Callable]
             booked = [e for e in executions if e.get("executed")]
             observed = {"booking_proposed": bool(book), "eve_called": bool(last.get("eve_called")),
                         "offer_id": (last.get("args") or {}).get("offer_id"),
+                        "target_id": (last.get("args") or {}).get("target_id"),
                         "price_usd": (last.get("args") or {}).get("price_usd"),
                         "pre_action_status": last.get("pre_action_status"),
                         "customer_policy_outcome": last.get("customer_policy_outcome"),
@@ -159,7 +168,8 @@ def create_delegation_app(*, evidence_root: Path, pre_action: Optional[Callable]
                 "eve": {"policy_ref": config.POLICY_REF, "bearer": "PRESENT_NOT_RECORDED"},
                 "binding": binding.record() if binding is not None else None,
                 "policy": {"expected": expected_policy, "observations": observer.observations},
-                "offer_prices_source": {"file": "eva_delegation/data/service_offers_seed.json", "prices": prices},
+                "offer_prices_source": {"file": "eva_delegation/data/service_offers_seed.json", "prices": prices,
+                                        "targets": evidence_targets},
             }
             _seal(turn)
             out = evidence_root / f"TURN_{ts}_{n}.json"
@@ -190,7 +200,7 @@ def create_delegation_app(*, evidence_root: Path, pre_action: Optional[Callable]
 
     async def api_mode(request: Request):
         return JSONResponse({"mode": "delegation", "flow": FLOW, "evidence_dir": evidence_root.name,
-                             "bound_offers": sorted(chain_bindings),
+                             "bound_offers": sorted(chain_bindings), "bound_targets": evidence_targets,
                              "binding": binding.record() if binding is not None else None})
 
     async def api_turn(request: Request):

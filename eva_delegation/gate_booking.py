@@ -6,8 +6,10 @@ the frozen gate itself is not modified and not subclassed. Decision order, all f
   * a tool outside the delegation ALLOWED_TOOLS                      -> DENY TOOL_NOT_ALLOWED
   * a non-consequential allowed tool                                 -> PASS, EVE not called
   * book_service_visit:
-      arguments other than exactly {offer_id, price_usd}             -> DENY UNEXPECTED_ARGUMENTS
+      arguments other than exactly {offer_id, price_usd, target_id}  -> DENY UNEXPECTED_ARGUMENTS
       offer_id with no operator chain binding                        -> DENY NO_OPERATOR_CHAIN_BINDING
+      target_id different from the target in the bound evidence      -> DENY TARGET_NOT_IN_EVIDENCE
+        (stable identity only; two objects of the same type are never equivalent)
       price_usd different from the price in the bound evidence       -> DENY PRICE_NOT_IN_EVIDENCE
       EVE error / timeout / malformed / not evaluated / not allow    -> DENY (EVE fields copied verbatim)
       otherwise                                                      -> ONE single-use authorization bound to
@@ -29,18 +31,21 @@ from eva.gate import GateDecision, PreActionFn, evaluate_eve_result
 from . import dconfig
 from .consequence_registry import check_gate_config
 
-GATE_VERSION = "eva-booking-gate-1.0"
+GATE_VERSION = "eva-booking-gate-1.1"
 
 
 class BookingGate(HookProvider):
     def __init__(self, pre_action: PreActionFn, store: AuthorizationStore, *,
-                 chain_bindings: dict[str, str], evidence_prices: dict[str, int],
+                 chain_bindings: dict[str, str], evidence_prices: dict[str, int], evidence_targets: dict[str, str],
                  allowed_tools: frozenset[str] = dconfig.ALLOWED_TOOLS,
                  consequential_tools: frozenset[str] = dconfig.CONSEQUENTIAL_TOOLS,
                  timeout_seconds: float = eva_config.GATE_TIMEOUT_SECONDS, agent_id: str = "eva") -> None:
         check_gate_config(allowed_tools, consequential_tools)        # refuse to start on a leaking config
-        if set(chain_bindings) != set(evidence_prices):
-            raise ValueError("every bound offer needs exactly one evidence price, and vice versa")
+        if not set(chain_bindings) == set(evidence_prices) == set(evidence_targets):
+            raise ValueError("every bound offer needs exactly one evidence price and one evidence target, and vice versa")
+        for oid, tid in evidence_targets.items():
+            if not isinstance(tid, str) or not tid:
+                raise ValueError(f"evidence target for {oid} must be a non-empty target_id")
         for oid, price in evidence_prices.items():
             if isinstance(price, bool) or not isinstance(price, int) or price <= 0:
                 raise ValueError(f"evidence price for {oid} must be a positive whole-dollar int")
@@ -48,6 +53,7 @@ class BookingGate(HookProvider):
         self._store = store
         self._bindings = dict(chain_bindings)
         self._prices = dict(evidence_prices)
+        self._targets = dict(evidence_targets)
         self._allowed = allowed_tools
         self._consequential = consequential_tools
         self._timeout = timeout_seconds
@@ -82,10 +88,13 @@ class BookingGate(HookProvider):
         chain_id = self._bindings.get(offer_id) if isinstance(offer_id, str) else None
         if chain_id is None:
             return GateDecision(tool_use_id, tool_name, args, "DENY", "NO_OPERATOR_CHAIN_BINDING")
+        target_id = args.get("target_id")
+        if not isinstance(target_id, str) or target_id != self._targets[offer_id]:
+            return GateDecision(tool_use_id, tool_name, args, "DENY", "TARGET_NOT_IN_EVIDENCE", chain_id=chain_id)
         if isinstance(price, bool) or not isinstance(price, int) or price != self._prices[offer_id]:
             return GateDecision(tool_use_id, tool_name, args, "DENY", "PRICE_NOT_IN_EVIDENCE", chain_id=chain_id)
         action_context = {"agent_id": self._agent_id, "tool": tool_name, "tool_use_id": tool_use_id,
-                          "offer_id": offer_id, "price_usd": price, "gate": GATE_VERSION}
+                          "offer_id": offer_id, "target_id": target_id, "price_usd": price, "gate": GATE_VERSION}
         d = GateDecision(tool_use_id, tool_name, args, "DENY", "", chain_id=chain_id, eve_called=True)
         try:
             raw = await asyncio.wait_for(self._pre_action(chain_id, action_context), timeout=self._timeout)

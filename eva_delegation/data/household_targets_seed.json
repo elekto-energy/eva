@@ -1,0 +1,16 @@
+{
+  "note": "Synthetic demo data. Not a real household, product registration, purchase or warranty.",
+  "schema": "eva-household-targets-1.0",
+  "targets": [
+    {
+      "location": "kitchen",
+      "manufacturer": "Bosch",
+      "model": "SYNTH-DW-100",
+      "record_sha256": "2857fbe5d4243c70a1349e62d992a9d946336e9c8614d868b15dd88802eea1e6",
+      "schema": "eva-household-target-1.0",
+      "synthetic": true,
+      "target_id": "APPLIANCE-001",
+      "target_type": "dishwasher"
+    }
+  ]
+}

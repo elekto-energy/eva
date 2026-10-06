@@ -1,9 +1,9 @@
 """Build the DW evidence declaration deterministically from confirmed records (decision D-beta).
 
-Inputs are records only: the confirmed mandate, the offer from the offer register, and optionally the confirmed
-authorization of the exact offer. The within-mandate check is RECOMPUTED here from those records; no caller-supplied
-verdict is trusted. Same records in -> byte-identical declaration out (timestamps come from the records, never
-from the clock).
+Inputs are records only: the confirmed mandate, the offer from the offer register, the sealed target record the
+mandate was confirmed for, and optionally the confirmed authorization of the exact offer. The within-mandate check
+is RECOMPUTED here from those records; no caller-supplied verdict is trusted. Same records in -> byte-identical
+declaration out (timestamps come from the records, never from the clock).
 
 How the mandate check reaches EVE (measured in the frozen HumanApprovalAdapter, eve-core-v1):
   approved=true and approved_scope == requested_scope  -> SUPPORTED
@@ -11,6 +11,9 @@ How the mandate check reaches EVE (measured in the frozen HumanApprovalAdapter, 
 A confirmed mandate is a human approval on record, so approved=true. approved_scope is the exact requested action
 only when the deterministic check says within_mandate; otherwise it is the mandate's own scope. EVE compares two
 scope strings; it never compares amounts.
+
+Target identity: both scope strings carry the stable target_id, so a request for another object can never equal the
+approved scope. Coverage facts are deliberately NOT part of the declaration: they describe, they never authorize.
 """
 from __future__ import annotations
 
@@ -19,7 +22,7 @@ import hashlib
 import json
 
 from . import dconfig
-from .mandate import MandateError, check_within_mandate
+from .mandate import MandateError, check_within_mandate, require_target
 
 DECLARATION_SCHEMA = "eva-evidence-declaration-1.0"
 SYNTHETIC = "synthetic demo data, not a real company"
@@ -38,22 +41,33 @@ def _canonical(obj) -> bytes:
 
 
 def requested_scope(offer_id: str, offer: dict) -> str:
-    return f"{dconfig.ACTION_CLASS} {offer_id} {offer['service']} USD {offer['price_usd']}"
+    return f"{dconfig.ACTION_CLASS} {offer_id} {offer['target_id']} {offer['service']} USD {offer['price_usd']}"
 
 
 def mandate_scope(mandate: dict) -> str:
-    return f"{dconfig.ACTION_CLASS} {mandate['service']} up to USD {mandate['limit_usd']} {mandate['window']}"
+    return (f"{dconfig.ACTION_CLASS} {mandate['target_id']} {mandate['service']} up to USD {mandate['limit_usd']} "
+            f"{mandate['window']}")
 
 
-def evidence_records(mandate: dict, offer_id: str, offer: dict, authorization: dict | None) -> dict:
+def _require_mandate_target(mandate: dict, target: dict) -> dict:
+    """The target record must be exactly the one the mandate was confirmed for (id AND sealed record)."""
+    target = require_target(target)
+    if target["target_id"] != mandate.get("target_id") or target["record_sha256"] != mandate.get("target_record_sha256"):
+        raise MandateError("the target record is not the one the mandate was confirmed for")
+    return target
+
+
+def evidence_records(mandate: dict, offer_id: str, offer: dict, target: dict, authorization: dict | None) -> dict:
     """The exact records a declaration is built from, plus the recomputed check. Written next to the declaration."""
     check = check_within_mandate(mandate=mandate, offer_id=offer_id, offer=offer, authorization=authorization)
-    return {"schema": "eva-delegation-evidence-records-1.0", "offer_id": offer_id, "offer": offer,
+    target = _require_mandate_target(mandate, target)
+    return {"schema": "eva-delegation-evidence-records-1.1", "offer_id": offer_id, "offer": offer, "target": target,
             "mandate": mandate, "authorization": authorization, "mandate_check": check}
 
 
-def build_declaration(*, mandate: dict, offer_id: str, offer: dict, authorization: dict | None = None) -> dict:
-    recs = evidence_records(mandate, offer_id, offer, authorization)       # recomputes and verifies seals
+def build_declaration(*, mandate: dict, offer_id: str, offer: dict, target: dict,
+                      authorization: dict | None = None) -> dict:
+    recs = evidence_records(mandate, offer_id, offer, target, authorization)   # recomputes and verifies seals
     check = recs["mandate_check"]
     times = [_ts(mandate["confirmed_at"])] + ([_ts(authorization["confirmed_at"])] if authorization else [])
     at = max(times)
@@ -66,8 +80,8 @@ def build_declaration(*, mandate: dict, offer_id: str, offer: dict, authorizatio
         "subject_ref": offer_id,
         "declared_by": "EVA delegation demo operator (synthetic)",
         "declared_at": at,
-        "decision": f"Allow the agent to book service visit {offer_id}",
-        "subject": f"{offer_id} ({offer['provider']})",
+        "decision": f"Allow the agent to book service visit {offer_id} for {offer['target_id']}",
+        "subject": f"{offer_id} for {offer['target_id']} ({offer['provider']})",
         "expected_control_result": ("The agent may book the visit only within the user's confirmed mandate, or with "
                                     "the user's explicit confirmed approval of the exact offer and price"),
         "governance": {

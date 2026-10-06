@@ -18,6 +18,7 @@ from eva_delegation.declarations import (build_declaration, declaration_bytes, e
                                          records_bytes, requested_scope)
 from eva_delegation.mandate import (MandateError, confirm_authorization, confirm_mandate, propose_authorization,
                                     propose_mandate)
+from eva_delegation.targets import load_targets
 from eva_delegation.tools import load_offers
 from eva_intake import declaration as D
 from eva_intake import intake as I
@@ -25,10 +26,11 @@ from eva_review.audit import AuditError, subject_of
 
 OFFER_ID = "DW-OFFER-001"
 OFFER = load_offers()[OFFER_ID]
+TARGET = load_targets()["APPLIANCE-001"]
 
 
 def mandate(limit=200):
-    p = propose_mandate(service="dishwasher_repair", limit_usd=limit, window="this week")
+    p = propose_mandate(target=TARGET, service="dishwasher_repair", limit_usd=limit, window="this week")
     return confirm_mandate(p, confirmed_by="Joakim Eklund", confirmation_utterance="Yes.", read_back_shown=p["read_back"])
 
 
@@ -45,45 +47,46 @@ def valid(decl):
 # ------------------------------------------------------------------ declarations from records (no EVE needed)
 def test_v1_mandate_only_declares_a_scope_mismatch():
     m = mandate()
-    d = valid(build_declaration(mandate=m, offer_id=OFFER_ID, offer=OFFER))
+    d = valid(build_declaration(target=TARGET, mandate=m, offer_id=OFFER_ID, offer=OFFER))
     a = d["raw"]["approval"]
     assert d["action_class"] == "book_service_visit" and d["subject_ref"] == OFFER_ID
     assert a["approved"] is True and a["approver"] == "Joakim Eklund"
-    assert a["requested_scope"] == "book_service_visit DW-OFFER-001 dishwasher_repair USD 275"
-    assert a["approved_scope"] == "book_service_visit dishwasher_repair up to USD 200 this week"
+    assert a["requested_scope"] == "book_service_visit DW-OFFER-001 APPLIANCE-001 dishwasher_repair USD 275"
+    assert a["approved_scope"] == "book_service_visit APPLIANCE-001 dishwasher_repair up to USD 200 this week"
+    assert d["subject"].startswith("DW-OFFER-001 for APPLIANCE-001 ")
 
 
 def test_v2_with_exact_authorization_declares_the_requested_scope():
     m, auth = mandate(), authorization()
-    a = valid(build_declaration(mandate=m, offer_id=OFFER_ID, offer=OFFER, authorization=auth))["raw"]["approval"]
+    a = valid(build_declaration(target=TARGET, mandate=m, offer_id=OFFER_ID, offer=OFFER, authorization=auth))["raw"]["approval"]
     assert a["approved_scope"] == a["requested_scope"]
 
 
 def test_same_records_give_byte_identical_declarations():
     m, auth = mandate(), authorization()
-    one = declaration_bytes(build_declaration(mandate=m, offer_id=OFFER_ID, offer=OFFER, authorization=auth))
-    two = declaration_bytes(build_declaration(mandate=copy.deepcopy(m), offer_id=OFFER_ID, offer=dict(OFFER),
+    one = declaration_bytes(build_declaration(target=TARGET, mandate=m, offer_id=OFFER_ID, offer=OFFER, authorization=auth))
+    two = declaration_bytes(build_declaration(target=TARGET, mandate=copy.deepcopy(m), offer_id=OFFER_ID, offer=dict(OFFER),
                                               authorization=copy.deepcopy(auth)))
     assert one == two
 
 
 def test_documents_hash_is_the_hash_of_the_records_it_was_built_from():
     m, auth = mandate(), authorization()
-    d = build_declaration(mandate=m, offer_id=OFFER_ID, offer=OFFER, authorization=auth)
-    rb = records_bytes(evidence_records(m, OFFER_ID, OFFER, auth))
+    d = build_declaration(target=TARGET, mandate=m, offer_id=OFFER_ID, offer=OFFER, authorization=auth)
+    rb = records_bytes(evidence_records(m, OFFER_ID, OFFER, TARGET, auth))
     assert d["raw"]["documents"]["sha256"] == hashlib.sha256(rb).hexdigest()
 
 
 def test_v1_and_v2_are_different_chains():
     m = mandate()
-    v1 = build_declaration(mandate=m, offer_id=OFFER_ID, offer=OFFER)
-    v2 = build_declaration(mandate=m, offer_id=OFFER_ID, offer=OFFER, authorization=authorization())
+    v1 = build_declaration(target=TARGET, mandate=m, offer_id=OFFER_ID, offer=OFFER)
+    v2 = build_declaration(target=TARGET, mandate=m, offer_id=OFFER_ID, offer=OFFER, authorization=authorization())
     assert I.chain_id_for(v1) != I.chain_id_for(v2)
 
 
 def test_timestamps_come_from_the_records_not_the_clock():
     m = mandate()
-    d = build_declaration(mandate=m, offer_id=OFFER_ID, offer=OFFER)
+    d = build_declaration(target=TARGET, mandate=m, offer_id=OFFER_ID, offer=OFFER)
     assert d["declared_at"] == d["raw"]["approval"]["timestamp"] == d["governance"]["chain_authorised_at"]
     assert m["confirmed_at"].startswith(d["declared_at"][:19].replace("Z", ""))
 
@@ -99,8 +102,8 @@ def _reseal_at(rec: dict, iso: str) -> dict:
 def test_declared_times_are_exactly_the_record_times_not_the_clock():
     m = _reseal_at(mandate(), "2026-10-01T09:30:15.123456+00:00")
     a = _reseal_at(authorization(), "2026-10-02T14:05:59.999999+00:00")
-    v1 = build_declaration(mandate=m, offer_id=OFFER_ID, offer=OFFER)
-    v2 = build_declaration(mandate=m, offer_id=OFFER_ID, offer=OFFER, authorization=a)
+    v1 = build_declaration(target=TARGET, mandate=m, offer_id=OFFER_ID, offer=OFFER)
+    v2 = build_declaration(target=TARGET, mandate=m, offer_id=OFFER_ID, offer=OFFER, authorization=a)
     assert v1["declared_at"] == v1["raw"]["approval"]["timestamp"] == "2026-10-01T09:30:15Z"
     assert v2["declared_at"] == "2026-10-02T14:05:59Z"                    # the later of the two records
     assert v2["governance"]["chain_authorised_at"] == "2026-10-01T09:30:15Z"
@@ -108,28 +111,28 @@ def test_declared_times_are_exactly_the_record_times_not_the_clock():
 
 
 def test_a_proposal_or_a_tampered_record_gives_no_declaration():
-    p = propose_mandate(service="dishwasher_repair", limit_usd=200, window="this week")
+    p = propose_mandate(target=TARGET, service="dishwasher_repair", limit_usd=200, window="this week")
     with pytest.raises(MandateError):
-        build_declaration(mandate=p, offer_id=OFFER_ID, offer=OFFER)
+        build_declaration(target=TARGET, mandate=p, offer_id=OFFER_ID, offer=OFFER)
     m = mandate()
     m["limit_usd"] = 300
     with pytest.raises(MandateError):
-        build_declaration(mandate=m, offer_id=OFFER_ID, offer=OFFER)
+        build_declaration(target=TARGET, mandate=m, offer_id=OFFER_ID, offer=OFFER)
     auth = authorization()
     auth["approved_usd"] = 200
     with pytest.raises(MandateError):
-        build_declaration(mandate=mandate(), offer_id=OFFER_ID, offer=OFFER, authorization=auth)
+        build_declaration(target=TARGET, mandate=mandate(), offer_id=OFFER_ID, offer=OFFER, authorization=auth)
 
 
 def test_scope_strings():
-    assert requested_scope(OFFER_ID, OFFER) == "book_service_visit DW-OFFER-001 dishwasher_repair USD 275"
-    assert mandate_scope(mandate(150)) == "book_service_visit dishwasher_repair up to USD 150 this week"
+    assert requested_scope(OFFER_ID, OFFER) == "book_service_visit DW-OFFER-001 APPLIANCE-001 dishwasher_repair USD 275"
+    assert mandate_scope(mandate(150)) == "book_service_visit APPLIANCE-001 dishwasher_repair up to USD 150 this week"
 
 
 # ------------------------------------------------------------------ intake action classes + audit subject key
 def test_intake_accepts_both_action_classes_and_still_refuses_others():
     assert D.ACTION_CLASSES == ("set_supplier_risk_status", "book_service_visit")
-    d = build_declaration(mandate=mandate(), offer_id=OFFER_ID, offer=OFFER)
+    d = build_declaration(target=TARGET, mandate=mandate(), offer_id=OFFER_ID, offer=OFFER)
     d["action_class"] = "unlock_front_door"
     with pytest.raises(D.DeclarationError) as e:
         valid(d)
@@ -177,7 +180,8 @@ def test_cli_refuses_a_closed_package_and_bad_input(tmp_path):
     mf = _write(tmp_path, "m.json", mandate())
     assert cli.main(["--mandate", mf, "--offer-id", OFFER_ID, "--out-dir", str(closed)]) == 4
     assert sorted(p.name for p in closed.iterdir()) == ["X_RUN_INDEX_2026-01-01.json"]
-    pf = _write(tmp_path, "p.json", propose_mandate(service="dishwasher_repair", limit_usd=200, window="this week"))
+    pf = _write(tmp_path, "p.json", propose_mandate(target=TARGET, service="dishwasher_repair", limit_usd=200,
+                                                    window="this week"))
     assert cli.main(["--mandate", pf, "--offer-id", OFFER_ID, "--out-dir", str(tmp_path / "o2")]) == 2
     assert cli.main(["--mandate", mf, "--offer-id", "DW-OFFER-404", "--out-dir", str(tmp_path / "o3")]) == 2
 
@@ -225,12 +229,13 @@ def eve_compose(tmp_path, *decls):
 @needs_eve
 def test_eve_v1_escalates_for_scope_mismatch_and_v2_is_supported(tmp_path):
     m = mandate()
-    out = eve_compose(tmp_path, build_declaration(mandate=m, offer_id=OFFER_ID, offer=OFFER),
-                      build_declaration(mandate=m, offer_id=OFFER_ID, offer=OFFER, authorization=authorization()))
+    out = eve_compose(tmp_path, build_declaration(target=TARGET, mandate=m, offer_id=OFFER_ID, offer=OFFER),
+                      build_declaration(target=TARGET, mandate=m, offer_id=OFFER_ID, offer=OFFER, authorization=authorization()))
     v1, v2 = out["chains"]
     assert v1["gate"] == "HUMAN_REVIEW_REQUIRED" and v1["human_review"] is True
     assert [g["code"] for g in v1["gaps"]] == ["APPROVAL_SCOPE_MISMATCH"]
-    assert v1["gaps"][0]["step_id"] == "human_approval" and "up to USD 200" in v1["gaps"][0]["text"]
+    assert v1["gaps"][0]["step_id"] == "human_approval" and "APPLIANCE-001" in v1["gaps"][0]["text"]
+    assert "up to USD 200" in v1["gaps"][0]["text"]
     assert v1["binding"] == {"book_service_visit": {OFFER_ID: v1["chain_id"]}}
     assert v2["gate"] == "ACTION_CHAIN_SUPPORTED" and v2["human_review"] is False and v2["gaps"] == []
     assert v1["chain_id"] != v2["chain_id"]
@@ -238,7 +243,7 @@ def test_eve_v1_escalates_for_scope_mismatch_and_v2_is_supported(tmp_path):
 
 @needs_eve
 def test_eve_within_a_higher_mandate_is_supported_without_authorization(tmp_path):
-    out = eve_compose(tmp_path, build_declaration(mandate=mandate(300), offer_id=OFFER_ID, offer=OFFER))
+    out = eve_compose(tmp_path, build_declaration(target=TARGET, mandate=mandate(300), offer_id=OFFER_ID, offer=OFFER))
     assert out["chains"][0]["gate"] == "ACTION_CHAIN_SUPPORTED"
 
 

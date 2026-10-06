@@ -25,8 +25,8 @@ CH_V1 = "EVA-CH-" + "a1" * 12
 CH_V2 = "EVA-CH-" + "b2" * 12
 POLICY = {"policy_ref": config.POLICY_REF, "policy_content_sha256": config.POLICY_CONTENT_SHA256}
 GAP_V1 = {"code": "APPROVAL_SCOPE_MISMATCH", "step_id": "human_approval", "source_system": "Human Approval",
-          "text": 'Approval covers "book_service_visit dishwasher_repair up to USD 200 this week"; request includes '
-                  '"book_service_visit DW-OFFER-001 dishwasher_repair USD 275"'}
+          "text": 'Approval covers "book_service_visit APPLIANCE-001 dishwasher_repair up to USD 200 this week"; '
+                  'request includes "book_service_visit DW-OFFER-001 APPLIANCE-001 dishwasher_repair USD 275"'}
 MANDATE_TEXT = "Book a dishwasher repair this week. You may approve up to $200."
 
 
@@ -162,7 +162,8 @@ def test_mode_and_mandate_session_without_binding(dirs):
     assert c.get("/api/mode").json()["mode"] == "delegation"
     t = turn(c, MANDATE_TEXT)
     assert not t["observed"]["booking_proposed"] and t["proposals"][0]["kind"] == "mandate_proposal"
-    assert t["spoken"] == "Please confirm: Mandate: dishwasher repair, up to $200, this week. Confirm?"
+    assert t["spoken"] == ("Please confirm: Mandate: dishwasher repair for APPLIANCE-001 (Bosch dishwasher SYNTH-DW-100, "
+                           "kitchen), up to $200, this week. Confirm?")
     t = turn(c, "Book the repair.")                                          # no binding yet
     assert t["observed"]["gate_reason"] == "NO_OPERATOR_CHAIN_BINDING" and not t["observed"]["booked"]
     assert fake.calls == [] and c.get("/api/delegation/state").json()["bookings"] == {}
@@ -213,7 +214,9 @@ def test_why_after_v1_is_established_from_records_only(dirs):
     c1, _, _ = _v1_session(dirs)
     a = c1.post("/api/delegation/why", json={"question": "Why didn't you book it?"}).json()
     assert a["answer_class"] == "ESTABLISHED"
-    assert a["spoken"] == ("I didn't book it. The quote was $275 and your confirmed mandate allows up to $200. "
+    assert a["spoken"] == ("I didn't book it. The quote for repairing APPLIANCE-001, your Bosch dishwasher in the "
+                           "kitchen, was $275 and your confirmed mandate allows up to $200. The manufacturer warranty "
+                           "has expired. I don't have established evidence of other applicable repair coverage. "
                            "EVE required human review: the approval on record does not cover this request. "
                            "Evidence record EVE-PAR-LOCAL-000201.")
     files = [s["source"]["file"] for s in a["statements"]]

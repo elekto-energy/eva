@@ -4,7 +4,7 @@
          --offer-id DW-OFFER-001 --out-dir DIR
 
 Writes two files with exclusive create, never overwriting:
-  DW_EVIDENCE_RECORDS_<sha12>.json   the exact records (mandate, offer, authorization, recomputed check);
+  DW_EVIDENCE_RECORDS_<sha12>.json   the exact records (mandate, offer, target, authorization, recomputed check);
                                      its sha256 is the declaration's raw.documents.sha256
   DW_DECLARATION_<label>_<sha12>.json the eva-evidence-declaration-1.0 for eva_intake
 A directory that holds a run index (a closed evidence package) is refused before anything is read or written.
@@ -22,6 +22,7 @@ from eva_intake.declaration import DeclarationError, validate
 
 from .declarations import build_declaration, declaration_bytes, evidence_records, records_bytes
 from .mandate import MandateError
+from .targets import load_targets
 from .tools import load_offers
 
 # The enum sets the frozen EVE schema defines (eve-core-v1 core/eve_chain/schema.py), as used by tests/test_intake.py.
@@ -54,8 +55,13 @@ def main(argv=None) -> int:
             return 2
         mandate = json.loads(Path(a.mandate).read_text(encoding="utf-8"))
         authorization = json.loads(Path(a.authorization).read_text(encoding="utf-8")) if a.authorization else None
-        recs = evidence_records(mandate, a.offer_id, offer, authorization)
-        decl = build_declaration(mandate=mandate, offer_id=a.offer_id, offer=offer, authorization=authorization)
+        target = load_targets().get(mandate.get("target_id")) if isinstance(mandate, dict) else None
+        if target is None:
+            print(f"STOP: the mandate names no established target ({mandate.get('target_id') if isinstance(mandate, dict) else None!r})")
+            return 2
+        recs = evidence_records(mandate, a.offer_id, offer, target, authorization)
+        decl = build_declaration(mandate=mandate, offer_id=a.offer_id, offer=offer, target=target,
+                                 authorization=authorization)
         validate(decl, authorisation_statuses=AUTH, monitoring_statuses=MON)
     except (MandateError, DeclarationError, ValueError, OSError) as exc:
         print(f"STOP: {type(exc).__name__}: {exc}")

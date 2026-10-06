@@ -20,10 +20,13 @@ from eva_delegation.consequence_registry import TOOL_CONSEQUENCE, ConsequenceCon
 from eva_delegation.gate_booking import BookingGate
 from eva_delegation.mandate import (MandateError, check_within_mandate, confirm_authorization, confirm_mandate,
                                     propose_authorization, propose_mandate, verify_seal)
+from eva_delegation.targets import load_targets
 from eva_delegation.tools import BookingRegister, build_tools, load_offers
 
 CHAIN_V1 = "EVA-CH-DW-V1"
 OFFER = "DW-OFFER-001"
+TARGET = "APPLIANCE-001"
+TARGET_REC = load_targets()[TARGET]
 
 
 def eve_result(chain_id=CHAIN_V1, status="evaluated", cpo="allow", vco="ACTION_CHAIN_SUPPORTED",
@@ -59,16 +62,18 @@ def run(fake, register, turns, timeout=eva_config.GATE_TIMEOUT_SECONDS):
     store, executions, proposals = AuthorizationStore(), [], []
     offers = load_offers()
     gate = BookingGate(fake, store, chain_bindings={OFFER: CHAIN_V1},
-                       evidence_prices={OFFER: offers[OFFER]["price_usd"]}, timeout_seconds=timeout)
+                       evidence_prices={OFFER: offers[OFFER]["price_usd"]},
+                       evidence_targets={OFFER: offers[OFFER]["target_id"]}, timeout_seconds=timeout)
     agent = build_delegation_agent(ScriptedModel(turns), gate,
-                                   build_tools(store, register, offers, executions, proposals))
+                                   build_tools(store, register, offers, load_targets(), executions, proposals))
     agent("go")
     results = [c["toolResult"] for m in agent.messages for c in m.get("content", []) if "toolResult" in c]
     return gate, store, executions, results, proposals
 
 
-def book(tid="tu-1", offer=OFFER, price=275):
-    return [("tool", tid, "book_service_visit", {"offer_id": offer, "price_usd": price}), ("text", "done")]
+def book(tid="tu-1", offer=OFFER, price=275, target=TARGET):
+    return [("tool", tid, "book_service_visit", {"offer_id": offer, "price_usd": price, "target_id": target}),
+            ("text", "done")]
 
 
 # ============================================================ the mandatory consequence invariant
@@ -91,12 +96,13 @@ def test_invariant_a_misconfiguration_is_refused(allowed, consequential, needle)
 def test_invariant_the_booking_gate_refuses_to_start_on_a_leaking_config():
     with pytest.raises(ConsequenceConfigError):
         BookingGate(FakeEve(), AuthorizationStore(), chain_bindings={OFFER: CHAIN_V1}, evidence_prices={OFFER: 275},
+                    evidence_targets={OFFER: TARGET},
                     consequential_tools=frozenset())      # book_service_visit allowed but not gated
 
 
 def test_invariant_every_built_tool_is_declared_and_there_is_no_confirm_tool(tmp_path):
     names = [t.tool_name for t in build_tools(AuthorizationStore(), BookingRegister(tmp_path / "r.json"),
-                                              load_offers(), [], [])]
+                                              load_offers(), load_targets(), [], [])]
     assert set(names) == set(dconfig.ALLOWED_TOOLS)
     assert all(n in TOOL_CONSEQUENCE for n in names)
     assert not any("confirm" in n for n in names)            # the model can never confirm a proposal
@@ -113,8 +119,9 @@ def test_allow_books_exactly_once(register):
     d = [x for x in gate.decisions if x.tool_name == "book_service_visit"][0]
     assert d.decision == "ALLOW" and d.eve_record_id == "EVE-PAR-LOCAL-000099" and len(fake.calls) == 1
     assert fake.calls[0][0] == CHAIN_V1 and fake.calls[0][1]["price_usd"] == 275
+    assert fake.calls[0][1]["target_id"] == TARGET
     assert [e["executed"] for e in executions] == [True] and store.pending_count() == 0
-    assert OFFER in register.load()["bookings"]
+    assert register.load()["bookings"][OFFER]["target_id"] == TARGET
 
 
 @pytest.mark.parametrize("cpo,vco", [("escalate", "HUMAN_REVIEW_REQUIRED"), ("block", "HUMAN_REVIEW_REQUIRED"),
@@ -129,13 +136,17 @@ def test_every_non_allow_books_nothing(register, cpo, vco):
 
 
 @pytest.mark.parametrize("args,reason", [
-    ({"offer_id": OFFER, "price_usd": 274}, "PRICE_NOT_IN_EVIDENCE"),
-    ({"offer_id": OFFER, "price_usd": "275"}, "PRICE_NOT_IN_EVIDENCE"),
-    ({"offer_id": OFFER, "price_usd": True}, "PRICE_NOT_IN_EVIDENCE"),
-    ({"offer_id": OFFER, "price_usd": 275.0}, "PRICE_NOT_IN_EVIDENCE"),
-    ({"offer_id": "DW-OFFER-999", "price_usd": 275}, "NO_OPERATOR_CHAIN_BINDING"),
-    ({"offer_id": OFFER, "price_usd": 275, "override": True}, "UNEXPECTED_ARGUMENTS"),
+    ({"offer_id": OFFER, "price_usd": 274, "target_id": TARGET}, "PRICE_NOT_IN_EVIDENCE"),
+    ({"offer_id": OFFER, "price_usd": "275", "target_id": TARGET}, "PRICE_NOT_IN_EVIDENCE"),
+    ({"offer_id": OFFER, "price_usd": True, "target_id": TARGET}, "PRICE_NOT_IN_EVIDENCE"),
+    ({"offer_id": OFFER, "price_usd": 275.0, "target_id": TARGET}, "PRICE_NOT_IN_EVIDENCE"),
+    ({"offer_id": "DW-OFFER-999", "price_usd": 275, "target_id": TARGET}, "NO_OPERATOR_CHAIN_BINDING"),
+    ({"offer_id": OFFER, "price_usd": 275, "target_id": TARGET, "override": True}, "UNEXPECTED_ARGUMENTS"),
     ({"offer_id": OFFER}, "UNEXPECTED_ARGUMENTS"),
+    ({"offer_id": OFFER, "price_usd": 275}, "UNEXPECTED_ARGUMENTS"),                       # no target at all
+    ({"offer_id": OFFER, "price_usd": 275, "target_id": "APPLIANCE-002"}, "TARGET_NOT_IN_EVIDENCE"),
+    ({"offer_id": OFFER, "price_usd": 275, "target_id": "dishwasher"}, "TARGET_NOT_IN_EVIDENCE"),  # a type is no id
+    ({"offer_id": OFFER, "price_usd": 274, "target_id": "APPLIANCE-002"}, "TARGET_NOT_IN_EVIDENCE"),  # target first
 ])
 def test_gate_refuses_before_calling_eve(register, args, reason):
     fake, before = FakeEve(eve_result()), sha(register)
@@ -154,12 +165,14 @@ def test_non_consequential_tools_pass_without_eve(register):
     fake = FakeEve(eve_result())
     gate, _, _, results, proposals = run(fake, register, [
         ("tool", "tu-1", "find_service_offers", {"service": "dishwasher_repair"}),
-        ("tool", "tu-2", "propose_mandate", {"service": "dishwasher_repair", "limit_usd": 200, "window": "this week"}),
+        ("tool", "tu-2", "propose_mandate", {"target_id": TARGET, "service": "dishwasher_repair", "limit_usd": 200,
+                                            "window": "this week"}),
         ("text", "done")])
     assert [d.decision for d in gate.decisions] == ["PASS", "PASS"] and fake.calls == []
     assert "DW-OFFER-001" in results[0]["content"][0]["text"]
-    assert proposals[0]["read_back"] == "Mandate: dishwasher repair, up to $200, this week. Confirm?"
-    assert "not confirmed" in results[1]["content"][0]["text"]
+    assert proposals[0]["read_back"] == ("Mandate: dishwasher repair for APPLIANCE-001 (Bosch dishwasher SYNTH-DW-100, "
+                                         "kitchen), up to $200, this week. Confirm?")
+    assert proposals[0]["target_id"] == TARGET and "not confirmed" in results[1]["content"][0]["text"]
 
 
 @pytest.mark.parametrize("fake,reason_prefix", [
@@ -183,26 +196,27 @@ def test_eve_timeout_fails_closed(register):
 
 def test_booking_tool_refuses_without_gate_authorization(tmp_path):
     reg, executions = BookingRegister(tmp_path / "r.json"), []
-    tools = {t.tool_name: t for t in build_tools(AuthorizationStore(), reg, load_offers(), executions, [])}
+    tools = {t.tool_name: t for t in build_tools(AuthorizationStore(), reg, load_offers(), load_targets(), executions, [])}
 
     class Ctx:
         tool_use = {"toolUseId": "tu-direct"}
     with pytest.raises(RuntimeError, match="REFUSED"):
-        tools["book_service_visit"]._tool_func(offer_id=OFFER, price_usd=275, tool_context=Ctx())
+        tools["book_service_visit"]._tool_func(offer_id=OFFER, price_usd=275, target_id=TARGET, tool_context=Ctx())
     assert reg.load()["bookings"] == {} and executions[0]["executed"] is False
 
 
 def test_a_second_identical_proposal_cannot_book_twice(register):
     gate, store, executions, *_ = run(FakeEve(eve_result()), register, [
-        ("tool", "tu-1", "book_service_visit", {"offer_id": OFFER, "price_usd": 275}),
-        ("tool", "tu-2", "book_service_visit", {"offer_id": OFFER, "price_usd": 275}), ("text", "done")])
+        ("tool", "tu-1", "book_service_visit", {"offer_id": OFFER, "price_usd": 275, "target_id": TARGET}),
+        ("tool", "tu-2", "book_service_visit", {"offer_id": OFFER, "price_usd": 275, "target_id": TARGET}),
+        ("text", "done")])
     assert [e["executed"] for e in executions] == [True]                 # the register refuses a second booking
     assert len(register.load()["bookings"]) == 1
 
 
 # ============================================================ mandate records and the deterministic check
 def _mandate(limit=200):
-    p = propose_mandate(service="dishwasher_repair", limit_usd=limit, window="this week")
+    p = propose_mandate(target=TARGET_REC, service="dishwasher_repair", limit_usd=limit, window="this week")
     return confirm_mandate(p, confirmed_by="Joakim Eklund", confirmation_utterance="Yes.", read_back_shown=p["read_back"])
 
 
@@ -253,7 +267,7 @@ def test_service_mismatch_is_never_within_mandate():
 
 
 def test_a_proposal_is_never_evidence():
-    p = propose_mandate(service="dishwasher_repair", limit_usd=200, window="this week")
+    p = propose_mandate(target=TARGET_REC, service="dishwasher_repair", limit_usd=200, window="this week")
     with pytest.raises(MandateError):
         check_within_mandate(mandate=p, offer_id=OFFER, offer=load_offers()[OFFER])
 
@@ -266,7 +280,7 @@ def test_a_tampered_mandate_is_refused():
 
 
 def test_confirmation_must_match_the_read_back_and_be_explicit():
-    p = propose_mandate(service="dishwasher_repair", limit_usd=200, window="this week")
+    p = propose_mandate(target=TARGET_REC, service="dishwasher_repair", limit_usd=200, window="this week")
     with pytest.raises(MandateError, match="read-back"):
         confirm_mandate(p, confirmed_by="J", confirmation_utterance="Yes", read_back_shown="Mandate: up to $2000")
     with pytest.raises(MandateError, match="name"):
@@ -278,7 +292,7 @@ def test_confirmation_must_match_the_read_back_and_be_explicit():
 @pytest.mark.parametrize("bad", [200.0, "200", True, 0, -5, None])
 def test_amounts_are_whole_positive_dollars(bad):
     with pytest.raises(MandateError):
-        propose_mandate(service="dishwasher_repair", limit_usd=bad, window="this week")
+        propose_mandate(target=TARGET_REC, service="dishwasher_repair", limit_usd=bad, window="this week")
 
 
 def test_an_authorization_must_be_for_the_exact_offer_price():
@@ -288,4 +302,4 @@ def test_an_authorization_must_be_for_the_exact_offer_price():
 
 def test_unsupported_service_is_refused():
     with pytest.raises(MandateError, match="unsupported service"):
-        propose_mandate(service="unlock_front_door", limit_usd=10, window="tonight")
+        propose_mandate(target=TARGET_REC, service="unlock_front_door", limit_usd=10, window="tonight")

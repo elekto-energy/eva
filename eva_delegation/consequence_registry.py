@@ -13,6 +13,7 @@ TOOL_CONSEQUENCE: dict[str, bool] = {
     "get_supplier": False,
     "set_supplier_risk_status": True,
     # delegation path (eva_delegation)
+    "find_household_targets": False,
     "find_service_offers": False,
     "propose_mandate": False,
     "propose_authorization": False,
