@@ -1,0 +1,119 @@
+{
+  "binding": {
+    "bindings": {
+      "book_service_visit": {
+        "DW-OFFER-001": "EVA-CH-6233ff2ed6411adea6622030"
+      }
+    },
+    "file": "dishwasher_target_v2.chain_map.json",
+    "intake_records": [
+      {
+        "chain_id": "EVA-CH-6233ff2ed6411adea6622030",
+        "file": "INTAKE_20261006T190826946321Z_SAVE_EVA-CH-6233ff2ed6411adea6622030.json",
+        "file_sha256": "56a2517be640d3be5f4383da895c34472a4f9d0a03c575393c9617917d6784b6",
+        "record_sha256": "735bb104756877ebb15e06f5b90002424da1b95e56180d58b9c81702d14c5590"
+      }
+    ],
+    "sha256": "36388b81ea41cadfb63c00667e05d6174007ffd7079f6caaae8bd0b9a90ae3bd",
+    "source": "external"
+  },
+  "bookings_after": {},
+  "claims": "The gate refused a booking for another object of the same type before EVE: no EVE call, no PAR, no booking. Target equality is by stable target_id only.",
+  "established_target_register": {
+    "file": "eva_delegation/data/household_targets_seed.json",
+    "file_sha256": "06edb56b3a9e734ccf819ffea71713bfb357257cd06c72ea06c62a8d4558e994",
+    "targets": [
+      "APPLIANCE-001"
+    ]
+  },
+  "eve_calls": [],
+  "evidence_prices": {
+    "DW-OFFER-001": 275
+  },
+  "evidence_targets": {
+    "DW-OFFER-001": "APPLIANCE-001"
+  },
+  "gate_decisions": [
+    {
+      "args": {
+        "offer_id": "DW-OFFER-001",
+        "price_usd": 275,
+        "target_id": "APPLIANCE-002"
+      },
+      "at_utc": "2026-10-06T19:26:44.460579+00:00",
+      "chain_id": "EVA-CH-6233ff2ed6411adea6622030",
+      "customer_policy_outcome": null,
+      "decision": "DENY",
+      "eve_called": false,
+      "eve_record_id": null,
+      "pre_action_status": null,
+      "reason": "TARGET_NOT_IN_EVIDENCE",
+      "tool_name": "book_service_visit",
+      "tool_use_id": "nc-1",
+      "verified_chain_outcome": null
+    },
+    {
+      "args": {
+        "offer_id": "DW-OFFER-001",
+        "price_usd": 275,
+        "target_id": "dishwasher"
+      },
+      "decision": "DENY",
+      "eve_called": false,
+      "reason": "TARGET_NOT_IN_EVIDENCE",
+      "tool_name": "book_service_visit",
+      "tool_use_id": "nc-2"
+    }
+  ],
+  "gate_version": "eva-booking-gate-1.1",
+  "record_kind": "eva_target_negative_control",
+  "record_schema_version": "eva-target-negative-control-1.0",
+  "record_sha256": "c8e9ca2103572fa6838fec79f35a6581b872b533f00c05455bef37279ad13d71",
+  "recorded_utc": "20261006T192644463582Z",
+  "requests": [
+    {
+      "offer_id": "DW-OFFER-001",
+      "price_usd": 275,
+      "target_id": "APPLIANCE-002"
+    },
+    {
+      "offer_id": "DW-OFFER-001",
+      "price_usd": 275,
+      "target_id": "dishwasher"
+    }
+  ],
+  "resolution_with_two_dishwashers": {
+    "candidates": [
+      "APPLIANCE-001",
+      "APPLIANCE-002"
+    ],
+    "reason": "AMBIGUOUS_TARGET",
+    "status": "NOT_ESTABLISHED"
+  },
+  "result": "PASS",
+  "source_identities": {
+    "eva_delegation/data/household_targets_seed.json": "06edb56b3a9e734ccf819ffea71713bfb357257cd06c72ea06c62a8d4558e994",
+    "eva_delegation/data/service_offers_seed.json": "0f9eb96892e88853304fb56ab051b18167fa6c548ee28bff8cf5c274b8791da2",
+    "eva_delegation/dconfig.py": "4022e1fca0faeaa10a82b5e24d8f65276d643fdf0d50e1b5effd15aa11fa7811",
+    "eva_delegation/gate_booking.py": "28131403c0d9e5d2cfaca5d8a03697a64a2436db1771dc807482bbf313d48e38",
+    "eva_delegation/mandate.py": "dc8f7cbb23bdc1a0c0e987877cee2cfd5c43097895d67aef68ed7f37519053ea",
+    "eva_delegation/targets.py": "d22104c128bf20594cf9e381e71f1009ad4991e71db177b90278addc42157a6d",
+    "eva_delegation/tools.py": "6996032d1e3645e2027ff17d54593340fb6faa357eae9c5d6fe97c0831a03190",
+    "tools/target_negative_control.py": "3278cfe15dda01a50adc7f723d113894f1bdb6a873bc7cfd29f2fcf537613007"
+  },
+  "tool_executions": [],
+  "wrong_target_fixture": {
+    "note": "a second dishwasher, same type/make/model; fixture only",
+    "target": {
+      "location": "utility room",
+      "manufacturer": "Bosch",
+      "model": "SYNTH-DW-100",
+      "note": "negative-control fixture only; not part of the target register",
+      "record_sha256": "d2b2233a80c53b9b792a565ed7135775a83a7ce7d6245b24c2e09d0394437388",
+      "schema": "eva-household-target-1.0",
+      "synthetic": true,
+      "target_id": "APPLIANCE-002",
+      "target_type": "dishwasher"
+    }
+  }
+}

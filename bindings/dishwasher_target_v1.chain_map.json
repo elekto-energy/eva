@@ -1,0 +1,9 @@
+{
+  "bindings": {
+    "book_service_visit": {
+      "DW-OFFER-001": "EVA-CH-6a454fef0b9a3ea0b799a446"
+    }
+  },
+  "note": "Operator binding (decision D5), immutable: DW-OFFER-001 -> Target-v1 evidence (target-bound successor revision, code 6d6df5b): confirmed mandate for established target APPLIANCE-001, USD 200 limit; quote USD 275. Not the historical dishwasher_v1. Binding selects evidence; it does not establish evidence. Unlisted (tool, offer) pairs fail closed.",
+  "schema": "eva-chain-map-1.0"
+}

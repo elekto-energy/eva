@@ -1,0 +1,123 @@
+{
+  "authorizations_pending_after": 0,
+  "binding": {
+    "bindings": {
+      "book_service_visit": {
+        "DW-OFFER-001": "EVA-CH-6a454fef0b9a3ea0b799a446"
+      }
+    },
+    "file": "dishwasher_target_v1.chain_map.json",
+    "intake_records": [
+      {
+        "chain_id": "EVA-CH-6a454fef0b9a3ea0b799a446",
+        "file": "INTAKE_20261006T190149825532Z_SAVE_EVA-CH-6a454fef0b9a3ea0b799a446.json",
+        "file_sha256": "19e19556b7ebe8f01e4fb3c31b7f520983221ea3c26e36fb90085261d6a63a87",
+        "record_sha256": "9373b38ceb153f85c7a326681e6428ec59d75802581c883ce022d5cafa9363b5"
+      }
+    ],
+    "sha256": "eb63fbc620aa71b6e7d19636fbae5cd20b340da1b20c297b9dfed987607eec3f",
+    "source": "external"
+  },
+  "eva_version": "0.1.0-i3a",
+  "eve": {
+    "bearer": "PRESENT_NOT_RECORDED",
+    "policy_ref": "eve-mcp-demo-policy-v1"
+  },
+  "flow": "eva-delegation-s1-lite-v1",
+  "frozen_i3a_boundary_verified": {
+    "eva/authorization.py": "4247e513d5408297e1eecddb6b6b7eb5240a577e17c48d91433b6d8fd087f2ae",
+    "eva/data/chain_map.json": "987a7e625d172e797ce1f51cc7f43f7f9cf28e8c63abe53410478ef0b6f94b6c",
+    "eva/eve_client.py": "82f6afb2b5685b67bea96ceaa03870367206aec35e2d2d9cc7e4b93d6eeeaa44",
+    "eva/gate.py": "8eeff78772a97508cbf2ee8acfdbbb22c0c4ad08b7677063f3b9e9a58cbc7ed8",
+    "eva/tools.py": "70e88f7138ec02f099d0b4e79ebc81909febe63810e99be4a5f68ee0d5e84ac3"
+  },
+  "gate_decisions": [
+    {
+      "args": {
+        "offer_id": "DW-OFFER-001",
+        "price_usd": 275,
+        "target_id": "APPLIANCE-001"
+      },
+      "at_utc": "2026-10-06T19:02:53.641429+00:00",
+      "chain_id": "EVA-CH-6a454fef0b9a3ea0b799a446",
+      "customer_policy_outcome": "escalate",
+      "decision": "DENY",
+      "eve_called": true,
+      "eve_record_id": "EVE-PAR-LOCAL-000037",
+      "pre_action_status": "evaluated",
+      "reason": "EVE_OUTCOME: escalate",
+      "tool_name": "book_service_visit",
+      "tool_use_id": "eva-deleg-20261006T190253634893Z-1-book",
+      "verified_chain_outcome": "HUMAN_REVIEW_REQUIRED"
+    }
+  ],
+  "gate_version": "eva-booking-gate-1.1",
+  "model_text": "Done.",
+  "observed": {
+    "booked": false,
+    "booking_proposed": true,
+    "customer_policy_outcome": "escalate",
+    "eve_called": true,
+    "eve_record_id": "EVE-PAR-LOCAL-000037",
+    "gate_decision": "DENY",
+    "gate_reason": "EVE_OUTCOME: escalate",
+    "offer_id": "DW-OFFER-001",
+    "pre_action_status": "evaluated",
+    "price_usd": 275,
+    "risk_after": null,
+    "risk_before": null,
+    "target_id": "APPLIANCE-001"
+  },
+  "offer_prices_source": {
+    "file": "eva_delegation/data/service_offers_seed.json",
+    "prices": {
+      "DW-OFFER-001": 275
+    },
+    "targets": {
+      "DW-OFFER-001": "APPLIANCE-001"
+    }
+  },
+  "policy": {
+    "expected": {
+      "policy_content_sha256": "e7a23e8c448ccff96f54ca7a449908e5707a2df5e7f37afcc61d712a285867aa",
+      "policy_ref": "eve-mcp-demo-policy-v1"
+    },
+    "observations": [
+      {
+        "chain_id": "EVA-CH-6a454fef0b9a3ea0b799a446",
+        "expected": {
+          "policy_content_sha256": "e7a23e8c448ccff96f54ca7a449908e5707a2df5e7f37afcc61d712a285867aa",
+          "policy_ref": "eve-mcp-demo-policy-v1"
+        },
+        "observed": {
+          "policy_content_sha256": "e7a23e8c448ccff96f54ca7a449908e5707a2df5e7f37afcc61d712a285867aa",
+          "policy_ref": "eve-mcp-demo-policy-v1"
+        },
+        "result": "MATCH",
+        "tool_use_id": "eva-deleg-20261006T190253634893Z-1-book"
+      }
+    ]
+  },
+  "proposals": [],
+  "proposer": {
+    "kind": "scripted",
+    "label": "Scripted proposer (no LLM)"
+  },
+  "proposer_error": null,
+  "record_kind": "eva_i4_turn",
+  "record_schema_version": "eva-i4-turn-1.1",
+  "record_sha256": "6ee4bdedcc4b23d9564ce6a496a349fbfbd202752f90141c816d0e671a139725",
+  "register": {
+    "after": {},
+    "after_sha256": "e8f21de2294fd84ab7873182cbac694f762429b3082b36fd141f087ac8de51b7",
+    "before": {},
+    "before_sha256": "e8f21de2294fd84ab7873182cbac694f762429b3082b36fd141f087ac8de51b7",
+    "changed": false
+  },
+  "spoken": "EVE required human review. Nothing was booked. Evidence record EVE-PAR-LOCAL-000037.",
+  "spoken_source": "eva_delegation.web.compose_spoken(observed, proposals) -- observed fields only",
+  "tool_executions": [],
+  "turn_seq": 1,
+  "turn_utc": "20261006T190253634893Z",
+  "utterance": "Book the repair."
+}

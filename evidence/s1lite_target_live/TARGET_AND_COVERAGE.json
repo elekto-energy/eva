@@ -1,0 +1,71 @@
+{
+  "authority": "none: target and coverage records describe; only the confirmed mandate/authorization authorize",
+  "code_baseline": "6d6df5bbbe7c18b4594dd4d73c25ec57144eb3f2",
+  "coverage_at_mandate_time": {
+    "as_of": "2026-10-06T18:59:04.139423+00:00",
+    "manufacturer_warranty": {
+      "as_of": "2026-10-06",
+      "status": "EXPIRED",
+      "warranty_end": "2025-03-14"
+    },
+    "manufacturer_warranty_record_sha256": "f6c645e32cfeb6c62cbb008bf8a7287bc4e2d98cbfe71fd21c8c32709c2d00be",
+    "other_repair_coverage": "COVERAGE_NOT_ESTABLISHED"
+  },
+  "coverage_facts": {
+    "content": {
+      "facts": [
+        {
+          "fact": "manufacturer_warranty",
+          "purchase_date": "2023-03-14",
+          "record_sha256": "f6c645e32cfeb6c62cbb008bf8a7287bc4e2d98cbfe71fd21c8c32709c2d00be",
+          "schema": "eva-coverage-fact-1.0",
+          "source": "synthetic purchase record (demo data)",
+          "synthetic": true,
+          "target_id": "APPLIANCE-001",
+          "warranty_end": "2025-03-14"
+        }
+      ],
+      "note": "Synthetic demo data. Not a real household, product registration, purchase or warranty. Only facts listed here exist as evidence; anything not listed is NOT ESTABLISHED, never absent.",
+      "schema": "eva-coverage-facts-1.0"
+    },
+    "file": "eva_delegation/data/coverage_facts_seed.json",
+    "file_sha256": "0c62f87d8354d662989c6ab5d44af6be7caeca3785d911ee84ecc64c1e49e95a",
+    "git_blob": "83eef85f31d07fa3abfd5eb5d5469015d331ef3e"
+  },
+  "mandate_binding": {
+    "equals_register_record": true,
+    "mandate_file": "MANDATE_20261006T185904139423Z.json",
+    "target_id": "APPLIANCE-001",
+    "target_record_sha256": "2857fbe5d4243c70a1349e62d992a9d946336e9c8614d868b15dd88802eea1e6"
+  },
+  "record_kind": "eva_target_and_coverage",
+  "record_schema_version": "eva-target-and-coverage-1.0",
+  "record_sha256": "4dbb8daed40b1e73576b2880958f9d6ab4c6b3639637f0e7c806eaaf4c1f8b32",
+  "resolution": {
+    "method": "eva_delegation.targets.resolve: exactly one established target of the type -> ESTABLISHED; none or several -> NOT_ESTABLISHED (never picks)",
+    "query": "dishwasher",
+    "status": "ESTABLISHED",
+    "target_id": "APPLIANCE-001"
+  },
+  "target_register": {
+    "content": {
+      "note": "Synthetic demo data. Not a real household, product registration, purchase or warranty.",
+      "schema": "eva-household-targets-1.0",
+      "targets": [
+        {
+          "location": "kitchen",
+          "manufacturer": "Bosch",
+          "model": "SYNTH-DW-100",
+          "record_sha256": "2857fbe5d4243c70a1349e62d992a9d946336e9c8614d868b15dd88802eea1e6",
+          "schema": "eva-household-target-1.0",
+          "synthetic": true,
+          "target_id": "APPLIANCE-001",
+          "target_type": "dishwasher"
+        }
+      ]
+    },
+    "file": "eva_delegation/data/household_targets_seed.json",
+    "file_sha256": "06edb56b3a9e734ccf819ffea71713bfb357257cd06c72ea06c62a8d4558e994",
+    "git_blob": "71ee78eef2ac9deb4759646c6e07857922baf007"
+  }
+}

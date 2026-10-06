@@ -1,0 +1,62 @@
+{
+  "action_class": "book_service_visit",
+  "chain": {
+    "action_gate": "HUMAN_REVIEW_REQUIRED",
+    "chain_id": "EVA-CH-6a454fef0b9a3ea0b799a446",
+    "content_hash": "4fd1a78384b60a7a263c2e0fd719bb87e6e2052063b16eb0458776775a3972e3",
+    "gaps": [
+      {
+        "code": "APPROVAL_SCOPE_MISMATCH",
+        "source_system": "Human Approval",
+        "step_id": "human_approval",
+        "text": "Approval covers \"book_service_visit APPLIANCE-001 dishwasher_repair up to USD 200 this week\"; request includes \"book_service_visit DW-OFFER-001 APPLIANCE-001 dishwasher_repair USD 275\""
+      }
+    ],
+    "human_review_required": true,
+    "overall_verdict": "PARTIAL"
+  },
+  "declaration_canonical_sha256": "6a454fef0b9a3ea0b799a44659713e3c75c50e4a610062018046ff438a276d7d",
+  "declaration_file": "/opt/eva-demo/incoming/dw_target/DW_DECLARATION_MANDATE_ONLY_138e887ad9b9.json",
+  "declaration_sha256": "138e887ad9b98f6418042fd8e7845327d4b2c1c722426e152028eb5754cd1c47",
+  "declared_at": "2026-10-06T18:59:04Z",
+  "declared_by": "EVA delegation demo operator (synthetic)",
+  "equivalence_gate": {
+    "reference_chain_id": "AI-ACTION-2026-001",
+    "reference_content_hash": "d05f220af3c8dc1a1f6d504605dc3e9f532d2218978d291b16685ef66f6f4287",
+    "status": "PASS"
+  },
+  "eve_checkout": {
+    "git_executable": "/usr/bin/git",
+    "head": "ffe118c326e3d4ec4b194ddea0ba6c8d09d78f27",
+    "path": "/opt/eva-demo/eve-core-v1",
+    "tree": "a698922c9fd740c4b114e572a626380abf1590a4"
+  },
+  "evidence_truth": "DECLARED -- EVE composes and verifies the declared record; it does not establish that the declared evidence is true",
+  "external_store": "/opt/eva-demo/eve_store",
+  "instrument": {
+    "builder_sha256": "d11c248409609e7a29b82ad34db6a26b23989e1723025005796def8696ce8f4b",
+    "declaration_module_sha256": "0b7cb4c24137d86ffbf8e24b36f685c1e76e8bf8d3509c142233e53e6276f9b8",
+    "intake_module_sha256": "eba9cc19d7034a2ff07f630214404a447055e390294cc7356273736a9343092f",
+    "version": "eva-chain-intake-0.1.0"
+  },
+  "mode": "SAVE",
+  "placement": "CREATED",
+  "proposed_chain_map_binding": {
+    "book_service_visit": {
+      "DW-OFFER-001": "EVA-CH-6a454fef0b9a3ea0b799a446"
+    }
+  },
+  "record_kind": "eva_chain_intake",
+  "record_schema_version": "eva-chain-intake-1.0",
+  "record_sha256": "9373b38ceb153f85c7a326681e6428ec59d75802581c883ce022d5cafa9363b5",
+  "recorded_utc": "20261006T190149825532Z",
+  "store_guard": {
+    "after_sha256": "ab32c3378bbf4a33cb60ed8f655d74ab37c780cd580fef2a03257aac77b8570d",
+    "before_sha256": "9a4d2aaa38f8f023b5191a2acbe17ad72d572978b55902d6716c0b9baceee181",
+    "chains_after": 7,
+    "chains_before": 6,
+    "store_file": "/opt/eva-demo/eve_store/chains.json"
+  },
+  "subject_ref": "DW-OFFER-001",
+  "supersedes": null
+}

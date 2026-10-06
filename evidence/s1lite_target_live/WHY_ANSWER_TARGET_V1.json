@@ -1,0 +1,79 @@
+{
+  "answer": {
+    "answer_class": "ESTABLISHED",
+    "not_established": [
+      "applicable insurance or service repair coverage for APPLIANCE-001: COVERAGE_NOT_ESTABLISHED (no such evidence in eva_delegation/data/coverage_facts_seed.json)"
+    ],
+    "spoken": "I didn't book it. The quote for repairing APPLIANCE-001, your Bosch dishwasher in the kitchen, was $275 and your confirmed mandate allows up to $200. The manufacturer warranty has expired. I don't have established evidence of other applicable repair coverage. EVE required human review: the approval on record does not cover this request. Evidence record EVE-PAR-LOCAL-000037.",
+    "statements": [
+      {
+        "source": {
+          "file": "TURN_20261006T190253634893Z_1.json",
+          "file_sha256": "3bf532ac8b881772a1dd56e03662c7bdc9dcc620944ee18fc546d38b6cb6e7dc",
+          "record_sha256": "6ee4bdedcc4b23d9564ce6a496a349fbfbd202752f90141c816d0e671a139725"
+        },
+        "text": "EVE returned escalate for booking DW-OFFER-001 for APPLIANCE-001 at $275 (record EVE-PAR-LOCAL-000037, chain EVA-CH-6a454fef0b9a3ea0b799a446); nothing was booked."
+      },
+      {
+        "source": {
+          "file": "INTAKE_20261006T190149825532Z_SAVE_EVA-CH-6a454fef0b9a3ea0b799a446.json",
+          "file_sha256": "19e19556b7ebe8f01e4fb3c31b7f520983221ea3c26e36fb90085261d6a63a87",
+          "record_sha256": "9373b38ceb153f85c7a326681e6428ec59d75802581c883ce022d5cafa9363b5"
+        },
+        "text": "EVE recorded for this evidence: APPROVAL_SCOPE_MISMATCH -- Approval covers \"book_service_visit APPLIANCE-001 dishwasher_repair up to USD 200 this week\"; request includes \"book_service_visit DW-OFFER-001 APPLIANCE-001 dishwasher_repair USD 275\""
+      },
+      {
+        "source": {
+          "file": "MANDATE_20261006T185904139423Z.json",
+          "file_sha256": "fbc35f8ad0f6efe65f2899af3482625a901e28560fb21dcc53724a9a2adc54db",
+          "record_sha256": "90a0cbfaedbdb2625e6457ef828cb364a403057171ff30e060950bcb7f1b4f3b"
+        },
+        "text": "Your confirmed mandate: dishwasher repair for APPLIANCE-001, up to $200, this week (confirmed by Joakim Eklund, declared not authenticated)."
+      },
+      {
+        "source": {
+          "file": "eva_delegation/data/household_targets_seed.json",
+          "file_sha256": "06edb56b3a9e734ccf819ffea71713bfb357257cd06c72ea06c62a8d4558e994",
+          "record_sha256": "2857fbe5d4243c70a1349e62d992a9d946336e9c8614d868b15dd88802eea1e6"
+        },
+        "text": "The established target: APPLIANCE-001 (Bosch dishwasher SYNTH-DW-100, kitchen)."
+      },
+      {
+        "source": {
+          "file": "eva_delegation/data/coverage_facts_seed.json",
+          "file_sha256": "0c62f87d8354d662989c6ab5d44af6be7caeca3785d911ee84ecc64c1e49e95a",
+          "record_sha256": "f6c645e32cfeb6c62cbb008bf8a7287bc4e2d98cbfe71fd21c8c32709c2d00be"
+        },
+        "text": "Manufacturer warranty: EXPIRED (ends 2025-03-14, evaluated at the mandate date 2026-10-06)."
+      }
+    ]
+  },
+  "boundary": "Coverage is described, never a reason: warranty EXPIRED only from explicit dates at the mandate time; other coverage stays COVERAGE_NOT_ESTABLISHED; no 'no insurance' / 'not covered' phrasing.",
+  "captured": {
+    "after_turn": "TURN_20261006T190253634893Z_1.json",
+    "endpoint": "POST /api/delegation/why (read-only; the server writes no record for it)",
+    "method": "browser fetch of the same read-only endpoint; returned text read in slices [0:700],[700:1400],[1400:2100],[2100:] and reassembled; length 2549 equals the server-reported length",
+    "process": {
+      "binding_file": "dishwasher_target_v1.chain_map.json",
+      "binding_sha256": "eb63fbc620aa71b6e7d19636fbae5cd20b340da1b20c297b9dfed987607eec3f"
+    }
+  },
+  "offline_recompute": {
+    "code": "eva_delegation.explain.why at 6d6df5b",
+    "equal_to_captured": true,
+    "inputs": [
+      "MANDATE_20261006T185904139423Z.json",
+      "TURN_20261006T185853382891Z_1.json",
+      "TURN_20261006T190253634893Z_1.json",
+      "intake/INTAKE_20261006T190149825532Z_SAVE_EVA-CH-6a454fef0b9a3ea0b799a446.json",
+      "eva_delegation/data/household_targets_seed.json",
+      "eva_delegation/data/coverage_facts_seed.json"
+    ]
+  },
+  "question": "Why didn't you book it?",
+  "record_kind": "eva_why_answer",
+  "record_schema_version": "eva-why-answer-1.0",
+  "record_sha256": "72065ecfc221a536035112cbbddfe9ce0ebe622349151b66423f8875ba5e2013",
+  "response_text": "{\"answer_class\":\"ESTABLISHED\",\"spoken\":\"I didn't book it. The quote for repairing APPLIANCE-001, your Bosch dishwasher in the kitchen, was $275 and your confirmed mandate allows up to $200. The manufacturer warranty has expired. I don't have established evidence of other applicable repair coverage. EVE required human review: the approval on record does not cover this request. Evidence record EVE-PAR-LOCAL-000037.\",\"statements\":[{\"text\":\"EVE returned escalate for booking DW-OFFER-001 for APPLIANCE-001 at $275 (record EVE-PAR-LOCAL-000037, chain EVA-CH-6a454fef0b9a3ea0b799a446); nothing was booked.\",\"source\":{\"file\":\"TURN_20261006T190253634893Z_1.json\",\"file_sha256\":\"3bf532ac8b881772a1dd56e03662c7bdc9dcc620944ee18fc546d38b6cb6e7dc\",\"record_sha256\":\"6ee4bdedcc4b23d9564ce6a496a349fbfbd202752f90141c816d0e671a139725\"}},{\"text\":\"EVE recorded for this evidence: APPROVAL_SCOPE_MISMATCH -- Approval covers \\\"book_service_visit APPLIANCE-001 dishwasher_repair up to USD 200 this week\\\"; request includes \\\"book_service_visit DW-OFFER-001 APPLIANCE-001 dishwasher_repair USD 275\\\"\",\"source\":{\"file\":\"INTAKE_20261006T190149825532Z_SAVE_EVA-CH-6a454fef0b9a3ea0b799a446.json\",\"file_sha256\":\"19e19556b7ebe8f01e4fb3c31b7f520983221ea3c26e36fb90085261d6a63a87\",\"record_sha256\":\"9373b38ceb153f85c7a326681e6428ec59d75802581c883ce022d5cafa9363b5\"}},{\"text\":\"Your confirmed mandate: dishwasher repair for APPLIANCE-001, up to $200, this week (confirmed by Joakim Eklund, declared not authenticated).\",\"source\":{\"file\":\"MANDATE_20261006T185904139423Z.json\",\"file_sha256\":\"fbc35f8ad0f6efe65f2899af3482625a901e28560fb21dcc53724a9a2adc54db\",\"record_sha256\":\"90a0cbfaedbdb2625e6457ef828cb364a403057171ff30e060950bcb7f1b4f3b\"}},{\"text\":\"The established target: APPLIANCE-001 (Bosch dishwasher SYNTH-DW-100, kitchen).\",\"source\":{\"file\":\"eva_delegation/data/household_targets_seed.json\",\"file_sha256\":\"06edb56b3a9e734ccf819ffea71713bfb357257cd06c72ea06c62a8d4558e994\",\"record_sha256\":\"2857fbe5d4243c70a1349e62d992a9d946336e9c8614d868b15dd88802eea1e6\"}},{\"text\":\"Manufacturer warranty: EXPIRED (ends 2025-03-14, evaluated at the mandate date 2026-10-06).\",\"source\":{\"file\":\"eva_delegation/data/coverage_facts_seed.json\",\"file_sha256\":\"0c62f87d8354d662989c6ab5d44af6be7caeca3785d911ee84ecc64c1e49e95a\",\"record_sha256\":\"f6c645e32cfeb6c62cbb008bf8a7287bc4e2d98cbfe71fd21c8c32709c2d00be\"}}],\"not_established\":[\"applicable insurance or service repair coverage for APPLIANCE-001: COVERAGE_NOT_ESTABLISHED (no such evidence in eva_delegation/data/coverage_facts_seed.json)\"]}",
+  "response_text_sha256": "3d36b92238d56fab85090a68b353fc42ba64ec102de83c54caf0083776bb827a"
+}

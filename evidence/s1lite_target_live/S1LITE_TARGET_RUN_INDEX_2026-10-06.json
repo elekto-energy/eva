@@ -1,0 +1,273 @@
+{
+  "bindings": {
+    "dishwasher_target_v1.chain_map.json": {
+      "chain": "EVA-CH-6a454fef0b9a3ea0b799a446",
+      "sha256": "eb63fbc620aa71b6e7d19636fbae5cd20b340da1b20c297b9dfed987607eec3f"
+    },
+    "dishwasher_target_v2.chain_map.json": {
+      "chain": "EVA-CH-6233ff2ed6411adea6622030",
+      "sha256": "36388b81ea41cadfb63c00667e05d6174007ffd7079f6caaae8bd0b9a90ae3bd"
+    }
+  },
+  "code": {
+    "commit": "6d6df5bbbe7c18b4594dd4d73c25ec57144eb3f2",
+    "instrument": {
+      "file": "tools/target_negative_control.py",
+      "git_blob": "ebe0e449b811ab1cae99493a1b165676effbbe97",
+      "note": "new in this act; not part of 6d6df5b",
+      "sha256": "3278cfe15dda01a50adc7f723d113894f1bdb6a873bc7cfd29f2fcf537613007"
+    },
+    "repo": "elekto-energy/eva",
+    "server": "python -m eva_delegation.web (delegation mode)"
+  },
+  "coverage": {
+    "authority": "none",
+    "manufacturer_warranty": "EXPIRED (warranty_end 2025-03-14, evaluated at the mandate time 2026-10-06)",
+    "other_repair_coverage": "COVERAGE_NOT_ESTABLISHED",
+    "record": "TARGET_AND_COVERAGE.json"
+  },
+  "date_utc": "2026-10-06",
+  "deviation": {
+    "notes": [
+      "Phase 7 instrument choice: FRÅGESTOPP was not answered; the stated default (instrument) was applied.",
+      "Why was preserved by re-querying the same read-only endpoint (the server writes no record for why); it was recomputed offline from exactly the records present at question time and is identical.",
+      "Turn records keep tool calls, not tool results; the target resolution is established from the sealed register (TARGET_AND_COVERAGE.json).",
+      "A producer verification script first assumed a register field name; it was measured (before/after) and the check re-run. No evidence was affected."
+    ],
+    "unplanned_turns": "none"
+  },
+  "files": [
+    {
+      "bytes": 561,
+      "file": "AUTHORIZATION_20261006T190414295015Z.json",
+      "sha256": "f65bb4b498700aa3871515f33c99adc8a7763a0949b5d49f78c2c409814f8723"
+    },
+    {
+      "bytes": 652,
+      "file": "MANDATE_20261006T185904139423Z.json",
+      "sha256": "fbc35f8ad0f6efe65f2899af3482625a901e28560fb21dcc53724a9a2adc54db"
+    },
+    {
+      "bytes": 4269,
+      "file": "NEGATIVE_CONTROL_20261006T192644463582Z.json",
+      "sha256": "4a276fa08d9c7dfad3841633928c52ec06609bf01dc7955d296477454e0f854e"
+    },
+    {
+      "bytes": 3018,
+      "file": "TARGET_AND_COVERAGE.json",
+      "sha256": "f6a5bb5f6d06314b6a63bc4694e41ae15c74c2e0b0c2d915a3a4090ae162d941"
+    },
+    {
+      "bytes": 4503,
+      "file": "TURN_20261006T185853382891Z_1.json",
+      "sha256": "2df5ca5e04e5e854fa716da706d7981c646be804fbcb44fcee6808167fa244b5"
+    },
+    {
+      "bytes": 4356,
+      "file": "TURN_20261006T190253634893Z_1.json",
+      "sha256": "3bf532ac8b881772a1dd56e03662c7bdc9dcc620944ee18fc546d38b6cb6e7dc"
+    },
+    {
+      "bytes": 4065,
+      "file": "TURN_20261006T190403740781Z_2.json",
+      "sha256": "0b2d3e8651405c5b7ebf19b50992ad8637f8cd598fba320cee2959b929d004c7"
+    },
+    {
+      "bytes": 5044,
+      "file": "TURN_20261006T190932778225Z_1.json",
+      "sha256": "f4228f6988bde3e4391a44aff8b6fade8aebbb64d04f555523f27b4b580b1581"
+    },
+    {
+      "bytes": 7210,
+      "file": "WHY_ANSWER_TARGET_V1.json",
+      "sha256": "c14153214d12f9323dd98592d9d5634e301aeba8718b4cd5d235b0558ab001e9"
+    },
+    {
+      "bytes": 3180,
+      "file": "declarations/DW_DECLARATION_MANDATE_ONLY_138e887ad9b9.json",
+      "sha256": "138e887ad9b98f6418042fd8e7845327d4b2c1c722426e152028eb5754cd1c47"
+    },
+    {
+      "bytes": 3177,
+      "file": "declarations/DW_DECLARATION_WITH_AUTHORIZATION_77617c5cfb10.json",
+      "sha256": "77617c5cfb10597bf9dca61c562b966d75cdde6e3826d248994929874aa912b4"
+    },
+    {
+      "bytes": 1770,
+      "file": "declarations/DW_EVIDENCE_RECORDS_25ce8bb32ff0.json",
+      "sha256": "25ce8bb32ff00e474b3b49df36929f5842d7f2fe7e55bef7984ff50d047acfe6"
+    },
+    {
+      "bytes": 2341,
+      "file": "declarations/DW_EVIDENCE_RECORDS_f31854a38624.json",
+      "sha256": "f31854a38624370e9557e8011d02f265f46e3168a5904c8ad834880a6c205ad9"
+    },
+    {
+      "bytes": 2788,
+      "file": "intake/INTAKE_20261006T190127522927Z_PRINT_ONLY_EVA-CH-6a454fef0b9a3ea0b799a446.json",
+      "sha256": "04374ed1582ace73c96e99658f0aa7a70fa546c814cb08c4d48d46223e9bb8ce"
+    },
+    {
+      "bytes": 2777,
+      "file": "intake/INTAKE_20261006T190149825532Z_SAVE_EVA-CH-6a454fef0b9a3ea0b799a446.json",
+      "sha256": "19e19556b7ebe8f01e4fb3c31b7f520983221ea3c26e36fb90085261d6a63a87"
+    },
+    {
+      "bytes": 2476,
+      "file": "intake/INTAKE_20261006T190801552202Z_PRINT_ONLY_EVA-CH-6233ff2ed6411adea6622030.json",
+      "sha256": "0dc6a50c6979d51f5f6f6731e2794fbf9e8eb019224a9d6fdd8550a892544f99"
+    },
+    {
+      "bytes": 2465,
+      "file": "intake/INTAKE_20261006T190826946321Z_SAVE_EVA-CH-6233ff2ed6411adea6622030.json",
+      "sha256": "56a2517be640d3be5f4383da895c34472a4f9d0a03c575393c9617917d6784b6"
+    }
+  ],
+  "historical_baseline": {
+    "bindings": {
+      "dishwasher_v1.chain_map.json": "88d65161824c9c394526d3ab114284948301f00f6448d22c2fbb372e182830a7",
+      "dishwasher_v2.chain_map.json": "f0593d25c94ef9cdadba6384f7aba63cff31488517200cd760624319aa449898"
+    },
+    "commit": "1199f223b368b5e871781a4f3032d0be8942c1b4",
+    "git_diff_1199f22_evidence_bindings": "empty (measured before the run)",
+    "package": {
+      "dir": "evidence/s1lite_live",
+      "record_sha256": "878c1ca9ba8003493c9b3d93f6c632c4c3abaaccd094718407ff99b0806d04d4",
+      "run_index": "S1LITE_RUN_INDEX_2026-10-06.json",
+      "self_hash_verified": true,
+      "sha256": "42685cb25e9d30c6998caecd28c541e7ff63fc5e5a24ee1bd6574997fb4cb8d6"
+    },
+    "statement": "Untouched. The new run adds chains and records; it replaces nothing.",
+    "vps_par": {
+      "EVE-PAR-LOCAL-000035": {
+        "chain": "EVA-CH-e1698b4b7d2963f272e1692a",
+        "outcome": "escalate"
+      },
+      "EVE-PAR-LOCAL-000036": {
+        "chain": "EVA-CH-6fb7fe20ec7762db7025c829",
+        "outcome": "allow"
+      }
+    }
+  },
+  "limits": [
+    "Synthetic target, provider, offer, booking and payment-free scope; nothing real is booked or paid.",
+    "Confirmer identity is declared, not authenticated.",
+    "EVE verifies the declared evidence record; it does not establish that the declared evidence is true.",
+    "Coverage facts are synthetic and only describe; other coverage is NOT ESTABLISHED, not absent.",
+    "PRE only: DURING and POST are not part of this run.",
+    "Record seals are local, not anchored externally."
+  ],
+  "proposer": {
+    "kind": "scripted",
+    "label": "Scripted proposer (no LLM)",
+    "statement": "This run does not claim that Amazon Nova performed it. It establishes the scripted proposer path."
+  },
+  "record_kind": "eva_s1lite_target_run_index",
+  "record_schema_version": "eva-s1lite-target-run-index-1.0",
+  "record_sha256": "0787b50873c9000cd14b114ae74deaf8dc2b52768afd8de5ae44b3fa6e712d62",
+  "run": "S1-lite Target Identity -- live verification against the hosted demo EVE (eve-core-v1 behind EVE MCP v1); target-bound successor of the historical S1-lite run",
+  "sequence": [
+    {
+      "result": "find_household_targets(dishwasher) -> resolved deterministically to APPLIANCE-001 (see TARGET_AND_COVERAGE.json; turn records keep tool calls, not tool results); read-back names the object; confirmed by Joakim Eklund (declared, not authenticated) -> MANDATE_20261006T185904139423Z.json; no EVE call",
+      "step": 1,
+      "turn": "TURN_20261006T185853382891Z_1.json",
+      "what": "mandate session (no binding)"
+    },
+    {
+      "files": [
+        "declarations/DW_DECLARATION_MANDATE_ONLY_138e887ad9b9.json",
+        "declarations/DW_EVIDENCE_RECORDS_25ce8bb32ff0.json"
+      ],
+      "result": "print-only WOULD_CREATE EVA-CH-6a454fef0b9a3ea0b799a446 verdict=PARTIAL gate=HUMAN_REVIEW_REQUIRED (= pre-computed); saved CREATED; binding dishwasher_target_v1",
+      "step": 2,
+      "what": "D-alpha Target-v1 from the mandate only"
+    },
+    {
+      "result": "Book the repair -> EVE-PAR-LOCAL-000037 escalate (HUMAN_REVIEW_REQUIRED), gate DENY, booking count 0; Why -> ESTABLISHED (WHY_ANSWER_TARGET_V1.json); $275 is fine -> approval proposal for APPLIANCE-001; confirmed by Joakim Eklund -> AUTHORIZATION_20261006T190414295015Z.json",
+      "step": 3,
+      "turns": [
+        "TURN_20261006T190253634893Z_1.json",
+        "TURN_20261006T190403740781Z_2.json"
+      ],
+      "what": "Target-v1 session"
+    },
+    {
+      "files": [
+        "declarations/DW_DECLARATION_WITH_AUTHORIZATION_77617c5cfb10.json",
+        "declarations/DW_EVIDENCE_RECORDS_f31854a38624.json"
+      ],
+      "result": "print-only WOULD_CREATE EVA-CH-6233ff2ed6411adea6622030 verdict=SUPPORTED gate=ACTION_CHAIN_SUPPORTED (= pre-computed); saved CREATED superseding Target-v1; binding dishwasher_target_v2",
+      "step": 4,
+      "what": "D-alpha Target-v2 from mandate + authorization"
+    },
+    {
+      "result": "Book the repair -> EVE-PAR-LOCAL-000038 allow (ACTION_CHAIN_SUPPORTED), gate ALLOW, DW-OFFER-001 for APPLIANCE-001 booked exactly once at USD 275 (synthetic)",
+      "step": 5,
+      "turn": "TURN_20261006T190932778225Z_1.json",
+      "what": "Target-v2 session (new process, D5 B4)"
+    },
+    {
+      "file": "NEGATIVE_CONTROL_20261006T192644463582Z.json",
+      "result": "PASS: APPLIANCE-002 and 'dishwasher' as id -> DENY TARGET_NOT_IN_EVIDENCE before EVE; 0 EVE calls, 0 PAR, 0 bookings; two dishwashers -> NOT_ESTABLISHED/AMBIGUOUS_TARGET",
+      "step": 6,
+      "what": "wrong-target negative control (local, no network)"
+    }
+  ],
+  "target": {
+    "record": "TARGET_AND_COVERAGE.json",
+    "record_sha256": "2857fbe5d4243c70a1349e62d992a9d946336e9c8614d868b15dd88802eea1e6",
+    "resolution": "ESTABLISHED (exactly one dishwasher in the sealed register)",
+    "target_id": "APPLIANCE-001"
+  },
+  "vps": {
+    "after": {
+      "chains": 8,
+      "chains_json_sha256": "90aff696c4e2fee759c4dc6db9bfedc33b10a5f61834a65fa0c0b625e8486570",
+      "dirty_files": 0,
+      "eve_tree": "a698922c9fd740c4b114e572a626380abf1590a4",
+      "intake_declaration_py": "0b7cb4c24137d86ffbf8e24b36f685c1e76e8bf8d3509c142233e53e6276f9b8",
+      "mcp_core_py": "07b3acad160d67797166d355b0f88b4a8c25a5a0c4549bb803874c1b8c4242f6",
+      "missing_from_previous": [],
+      "new_records": [
+        "EVE-PAR-LOCAL-000037",
+        "EVE-PAR-LOCAL-000038"
+      ],
+      "policy_registry": "7d9cd6a72ff48673c58ed0973e228be6a73f87af0d9fb1f03176f3036a39609c",
+      "pre_action_records_sha256": "cc9c496de88f3f2308d94994bf93bb1d866cd012bfbce00d61038b10cecbd87e",
+      "records": 38,
+      "services": "active"
+    },
+    "after_target_v1_save": {
+      "chains": 7,
+      "chains_json_sha256": "ab32c3378bbf4a33cb60ed8f655d74ab37c780cd580fef2a03257aac77b8570d",
+      "records": 36
+    },
+    "after_target_v1_session": {
+      "new": [
+        "EVE-PAR-LOCAL-000037"
+      ],
+      "pre_action_records_sha256": "383429689dfe0dd7499093719a622775a01e72dadcde6ab2def48ffb0a762f29",
+      "records": 37
+    },
+    "after_target_v2_save": {
+      "chains": 8,
+      "chains_json_sha256": "90aff696c4e2fee759c4dc6db9bfedc33b10a5f61834a65fa0c0b625e8486570",
+      "records": 37
+    },
+    "before": {
+      "chains": 6,
+      "chains_json_sha256": "9a4d2aaa38f8f023b5191a2acbe17ad72d572978b55902d6716c0b9baceee181",
+      "dirty_files": 0,
+      "eve_commit": "ffe118c326e3d4ec4b194ddea0ba6c8d09d78f27",
+      "eve_tree": "a698922c9fd740c4b114e572a626380abf1590a4",
+      "intake_declaration_py": "0b7cb4c24137d86ffbf8e24b36f685c1e76e8bf8d3509c142233e53e6276f9b8",
+      "mcp_core_py": "07b3acad160d67797166d355b0f88b4a8c25a5a0c4549bb803874c1b8c4242f6",
+      "mcp_equals_vendored_v1": true,
+      "mcp_server_py": "c46556f0fb072066de98118785aafc8525ab72d06c7885d0aaad5805900e90d9",
+      "policy_registry": "7d9cd6a72ff48673c58ed0973e228be6a73f87af0d9fb1f03176f3036a39609c",
+      "pre_action_records_sha256": "c9eac484687d29d99501c6ed8e72f999392b04e62d62bfe2d602f89805f1c73a",
+      "records": 36
+    },
+    "delta": "exactly 2 new chains (EVA-CH-6a454fef0b9a3ea0b799a446, EVA-CH-6233ff2ed6411adea6622030) and exactly 2 new PAR records (000037 escalate, 000038 allow); EVE, MCP, policy and intake code unchanged; new VPS dirs incoming/dw_target and evidence/dw_target_intake only"
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "action_class": "book_service_visit",
+  "chain": {
+    "action_gate": "ACTION_CHAIN_SUPPORTED",
+    "chain_id": "EVA-CH-6233ff2ed6411adea6622030",
+    "content_hash": "902ec32bd7638c49696da0b59f27783240a4d2c3e81dab77c9fee66eae086692",
+    "gaps": [],
+    "human_review_required": false,
+    "overall_verdict": "SUPPORTED"
+  },
+  "declaration_canonical_sha256": "6233ff2ed6411adea66220302c68e4cf3a252e79a8f2c14b39d5bfa28ebe1edf",
+  "declaration_file": "/opt/eva-demo/incoming/dw_target/DW_DECLARATION_WITH_AUTHORIZATION_77617c5cfb10.json",
+  "declaration_sha256": "77617c5cfb10597bf9dca61c562b966d75cdde6e3826d248994929874aa912b4",
+  "declared_at": "2026-10-06T19:04:14Z",
+  "declared_by": "EVA delegation demo operator (synthetic)",
+  "equivalence_gate": {
+    "reference_chain_id": "AI-ACTION-2026-001",
+    "reference_content_hash": "d05f220af3c8dc1a1f6d504605dc3e9f532d2218978d291b16685ef66f6f4287",
+    "status": "PASS"
+  },
+  "eve_checkout": {
+    "git_executable": "/usr/bin/git",
+    "head": "ffe118c326e3d4ec4b194ddea0ba6c8d09d78f27",
+    "path": "/opt/eva-demo/eve-core-v1",
+    "tree": "a698922c9fd740c4b114e572a626380abf1590a4"
+  },
+  "evidence_truth": "DECLARED -- EVE composes and verifies the declared record; it does not establish that the declared evidence is true",
+  "external_store": "/opt/eva-demo/eve_store",
+  "instrument": {
+    "builder_sha256": "d11c248409609e7a29b82ad34db6a26b23989e1723025005796def8696ce8f4b",
+    "declaration_module_sha256": "0b7cb4c24137d86ffbf8e24b36f685c1e76e8bf8d3509c142233e53e6276f9b8",
+    "intake_module_sha256": "eba9cc19d7034a2ff07f630214404a447055e390294cc7356273736a9343092f",
+    "version": "eva-chain-intake-0.1.0"
+  },
+  "mode": "PRINT_ONLY",
+  "placement": "WOULD_CREATE",
+  "proposed_chain_map_binding": {
+    "book_service_visit": {
+      "DW-OFFER-001": "EVA-CH-6233ff2ed6411adea6622030"
+    }
+  },
+  "record_kind": "eva_chain_intake",
+  "record_schema_version": "eva-chain-intake-1.0",
+  "record_sha256": "a07a222df693c3b05764a75e48d407415043d1341caca5ee0054900da64058f9",
+  "recorded_utc": "20261006T190801552202Z",
+  "store_guard": {
+    "after_sha256": "ab32c3378bbf4a33cb60ed8f655d74ab37c780cd580fef2a03257aac77b8570d",
+    "before_sha256": "ab32c3378bbf4a33cb60ed8f655d74ab37c780cd580fef2a03257aac77b8570d",
+    "chains_after": 7,
+    "chains_before": 7,
+    "store_file": "/opt/eva-demo/eve_store/chains.json"
+  },
+  "subject_ref": "DW-OFFER-001",
+  "supersedes": "EVA-CH-6a454fef0b9a3ea0b799a446"
+}
