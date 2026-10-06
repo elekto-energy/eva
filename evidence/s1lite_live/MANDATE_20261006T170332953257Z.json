@@ -1,0 +1,12 @@
+{
+  "confirmation_utterance": "Yes.",
+  "confirmed_at": "2026-10-06T17:03:32.953257+00:00",
+  "confirmed_by": "Joakim Eklund",
+  "limit_usd": 200,
+  "read_back": "Mandate: dishwasher repair, up to $200, this week. Confirm?",
+  "record_sha256": "da13da0ec97affbf1022bd222cfc490f89e062c20ea28b8b4c90fc29a1591b84",
+  "reviewer_identity": "DECLARED_NOT_AUTHENTICATED",
+  "schema": "eva-delegation-mandate-1.0",
+  "service": "dishwasher_repair",
+  "window": "this week"
+}

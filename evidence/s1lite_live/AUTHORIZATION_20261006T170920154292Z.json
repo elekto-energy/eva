@@ -1,0 +1,11 @@
+{
+  "approved_usd": 275,
+  "confirmation_utterance": "Yes.",
+  "confirmed_at": "2026-10-06T17:09:20.154292+00:00",
+  "confirmed_by": "Joakim Eklund",
+  "offer_id": "DW-OFFER-001",
+  "read_back": "Approve DW-OFFER-001 from EVE Synthetic Appliance Repair Co. (Synthetic demo entity. Not a real company.) at $275. Confirm?",
+  "record_sha256": "3e0c1008447f5d5f7a074cdb21b685e962d2ba13c1dd2cbf50be0341d3067700",
+  "reviewer_identity": "DECLARED_NOT_AUTHENTICATED",
+  "schema": "eva-delegation-authorization-1.0"
+}

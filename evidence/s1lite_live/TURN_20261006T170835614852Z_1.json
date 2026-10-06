@@ -1,0 +1,129 @@
+{
+  "authorizations_pending_after": 0,
+  "binding": {
+    "bindings": {
+      "book_service_visit": {
+        "DW-OFFER-001": "EVA-CH-e1698b4b7d2963f272e1692a"
+      }
+    },
+    "file": "dishwasher_v1.chain_map.json",
+    "intake_records": [
+      {
+        "chain_id": "EVA-CH-e1698b4b7d2963f272e1692a",
+        "file": "INTAKE_20261006T170705116301Z_SAVE_EVA-CH-e1698b4b7d2963f272e1692a.json",
+        "file_sha256": "740c81c886f3cae3aed3498570e84f4d902e9d957e4e39faace4d1056695bbc3",
+        "record_sha256": "8a68595be88a318d9483a6039585284a9a72080c8c719de23dced6b07f8461aa"
+      }
+    ],
+    "sha256": "88d65161824c9c394526d3ab114284948301f00f6448d22c2fbb372e182830a7",
+    "source": "external"
+  },
+  "eva_version": "0.1.0-i3a",
+  "eve": {
+    "bearer": "PRESENT_NOT_RECORDED",
+    "policy_ref": "eve-mcp-demo-policy-v1"
+  },
+  "flow": "eva-delegation-s1-lite-v1",
+  "frozen_i3a_boundary_verified": {
+    "eva/authorization.py": "4247e513d5408297e1eecddb6b6b7eb5240a577e17c48d91433b6d8fd087f2ae",
+    "eva/data/chain_map.json": "987a7e625d172e797ce1f51cc7f43f7f9cf28e8c63abe53410478ef0b6f94b6c",
+    "eva/eve_client.py": "82f6afb2b5685b67bea96ceaa03870367206aec35e2d2d9cc7e4b93d6eeeaa44",
+    "eva/gate.py": "8eeff78772a97508cbf2ee8acfdbbb22c0c4ad08b7677063f3b9e9a58cbc7ed8",
+    "eva/tools.py": "70e88f7138ec02f099d0b4e79ebc81909febe63810e99be4a5f68ee0d5e84ac3"
+  },
+  "gate_decisions": [
+    {
+      "args": {
+        "service": "dishwasher_repair"
+      },
+      "at_utc": "2026-10-06T17:08:35.622408+00:00",
+      "chain_id": null,
+      "customer_policy_outcome": null,
+      "decision": "PASS",
+      "eve_called": false,
+      "eve_record_id": null,
+      "pre_action_status": null,
+      "reason": "NON_CONSEQUENTIAL",
+      "tool_name": "find_service_offers",
+      "tool_use_id": "eva-deleg-20261006T170835614852Z-1-offers",
+      "verified_chain_outcome": null
+    },
+    {
+      "args": {
+        "limit_usd": 200,
+        "service": "dishwasher_repair",
+        "window": "this week"
+      },
+      "at_utc": "2026-10-06T17:08:35.623411+00:00",
+      "chain_id": null,
+      "customer_policy_outcome": null,
+      "decision": "PASS",
+      "eve_called": false,
+      "eve_record_id": null,
+      "pre_action_status": null,
+      "reason": "NON_CONSEQUENTIAL",
+      "tool_name": "propose_mandate",
+      "tool_use_id": "eva-deleg-20261006T170835614852Z-1-mandate",
+      "verified_chain_outcome": null
+    }
+  ],
+  "gate_version": "eva-booking-gate-1.0",
+  "model_text": "I have proposed your mandate. Please confirm it.",
+  "observed": {
+    "booked": false,
+    "booking_proposed": false,
+    "customer_policy_outcome": null,
+    "eve_called": false,
+    "eve_record_id": null,
+    "gate_decision": null,
+    "gate_reason": null,
+    "offer_id": null,
+    "pre_action_status": null,
+    "price_usd": null,
+    "risk_after": null,
+    "risk_before": null
+  },
+  "offer_prices_source": {
+    "file": "eva_delegation/data/service_offers_seed.json",
+    "prices": {
+      "DW-OFFER-001": 275
+    }
+  },
+  "policy": {
+    "expected": {
+      "policy_content_sha256": "e7a23e8c448ccff96f54ca7a449908e5707a2df5e7f37afcc61d712a285867aa",
+      "policy_ref": "eve-mcp-demo-policy-v1"
+    },
+    "observations": []
+  },
+  "proposals": [
+    {
+      "kind": "mandate_proposal",
+      "limit_usd": 200,
+      "read_back": "Mandate: dishwasher repair, up to $200, this week. Confirm?",
+      "service": "dishwasher_repair",
+      "window": "this week"
+    }
+  ],
+  "proposer": {
+    "kind": "scripted",
+    "label": "Scripted proposer (no LLM)"
+  },
+  "proposer_error": null,
+  "record_kind": "eva_i4_turn",
+  "record_schema_version": "eva-i4-turn-1.1",
+  "record_sha256": "30c7e63609e709f92615f3fd9f5d2979cb822e077fa57dee2dd5ee294d471300",
+  "register": {
+    "after": {},
+    "after_sha256": "e8f21de2294fd84ab7873182cbac694f762429b3082b36fd141f087ac8de51b7",
+    "before": {},
+    "before_sha256": "e8f21de2294fd84ab7873182cbac694f762429b3082b36fd141f087ac8de51b7",
+    "changed": false
+  },
+  "spoken": "Please confirm: Mandate: dishwasher repair, up to $200, this week. Confirm?",
+  "spoken_source": "eva_delegation.web.compose_spoken(observed, proposals) -- observed fields only",
+  "tool_executions": [],
+  "turn_seq": 1,
+  "turn_utc": "20261006T170835614852Z",
+  "utterance": "Book a dishwasher repair this week. You may approve up to $200."
+}

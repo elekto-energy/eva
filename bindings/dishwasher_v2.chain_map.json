@@ -1,0 +1,9 @@
+{
+  "bindings": {
+    "book_service_visit": {
+      "DW-OFFER-001": "EVA-CH-6fb7fe20ec7762db7025c829"
+    }
+  },
+  "note": "Operator binding (decision D5), immutable: DW-OFFER-001 -> DW evidence v2 (confirmed mandate + confirmed authorization of the exact offer at USD 275; supersedes v1 EVA-CH-e1698b4b7d2963f272e1692a). Binding selects evidence; it does not establish evidence. Unlisted (tool, offer) pairs fail closed.",
+  "schema": "eva-chain-map-1.0"
+}

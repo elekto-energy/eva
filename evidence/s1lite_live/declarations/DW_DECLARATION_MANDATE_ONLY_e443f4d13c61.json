@@ -1,0 +1,73 @@
+{
+  "action_class": "book_service_visit",
+  "decision": "Allow the agent to book service visit DW-OFFER-001",
+  "declared_at": "2026-10-06T17:03:32Z",
+  "declared_by": "EVA delegation demo operator (synthetic)",
+  "expected_control_result": "The agent may book the visit only within the user's confirmed mandate, or with the user's explicit confirmed approval of the exact offer and price",
+  "governance": {
+    "chain_authorisation_basis": "eva_delegation_mandate_record",
+    "chain_authorisation_expires_at": "2027-12-31T23:59:59Z",
+    "chain_authorisation_required": true,
+    "chain_authorisation_scope": "book_service_visit",
+    "chain_authorisation_status": "authorised",
+    "chain_authorised_at": "2026-10-06T17:03:32Z",
+    "chain_authorised_by": "EVA Synthetic Household Governance Owner (synthetic demo data, not a real company)",
+    "chain_current_scope": "book_service_visit",
+    "chain_monitoring_owner": "EVA Synthetic Household Monitoring Owner (synthetic demo data, not a real company)",
+    "chain_monitoring_status": "monitored",
+    "chain_owner": "EVA Synthetic Household Chain Owner (synthetic demo data, not a real company)",
+    "chain_owner_confirmed": true,
+    "chain_review_cycle": "per_booking"
+  },
+  "raw": {
+    "agent_action": {
+      "action": "book_service_visit DW-OFFER-001 dishwasher_repair USD 275",
+      "action_id": "EVA-DW-ACT-DW-OFFER-001",
+      "action_request_created": true,
+      "timestamp": "2026-10-06T17:03:32Z"
+    },
+    "approval": {
+      "approval_id": "EVA-DW-APR-ff50fef7504debfd",
+      "approved": true,
+      "approved_scope": "book_service_visit dishwasher_repair up to USD 200 this week",
+      "approver": "Joakim Eklund",
+      "requested_scope": "book_service_visit DW-OFFER-001 dishwasher_repair USD 275",
+      "timestamp": "2026-10-06T17:03:32Z"
+    },
+    "documents": {
+      "file": "DW_EVIDENCE_RECORDS_3610e4947411.json",
+      "sha256": "3610e494741192bccc23e8c0d673b0fb13b0b06b49b85016e4c69ecb1e235d39",
+      "stored": true,
+      "timestamp": "2026-10-06T17:03:32Z"
+    },
+    "identity": {
+      "authority_in_scope": true,
+      "evidence_ref": "mandate:da13da0ec97affbf",
+      "owner_confirmed": true,
+      "subject": "household_member",
+      "timestamp": "2026-10-06T17:03:32Z"
+    },
+    "policy_baseline": {
+      "baseline_id": "EVA-DW-POL-01",
+      "loaded": true,
+      "timestamp": "2026-10-06T17:03:32Z"
+    },
+    "ticketing": {
+      "exists": true,
+      "ticket_id": "EVA-DW-REQ-DW-OFFER-001",
+      "timestamp": "2026-10-06T17:03:32Z"
+    },
+    "tool_permission": {
+      "agent": "EVA household agent (synthetic demo data, not a real company)",
+      "granted_scope": "book:service_visit",
+      "overscoped": false,
+      "permission_checked": true,
+      "permission_ref": "perm:eva:delegation:booking",
+      "required_scope": "book:service_visit",
+      "timestamp": "2026-10-06T17:03:32Z"
+    }
+  },
+  "schema": "eva-evidence-declaration-1.0",
+  "subject": "DW-OFFER-001 (EVE Synthetic Appliance Repair Co. (Synthetic demo entity. Not a real company.))",
+  "subject_ref": "DW-OFFER-001"
+}

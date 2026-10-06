@@ -1,0 +1,207 @@
+{
+  "code": {
+    "commit": "0520506aebdc2c727c19a573361b3057ffc14a3d",
+    "repo": "elekto-energy/eva",
+    "server": "python -m eva_delegation.web (delegation mode; eva/web/app.py untouched)"
+  },
+  "date_utc": "2026-10-06",
+  "deviation": {
+    "id": "D-1",
+    "not_used_as_input": "The v2 declaration was built only from MANDATE_20261006T170332953257Z.json and AUTHORIZATION_20261006T170920154292Z.json.",
+    "owner_decision": "continue from the actual state; do not re-run; record the deviation (2026-10-06)",
+    "text": "Unplanned turn: `TURN_20261006T170835614852Z_1.json` occurred during browser handling before the intended booking turn. The cause is NOT ESTABLISHED. Its timing coincided with a failed browser reload attempt, but causation is not claimed. The turn produced a non-consequential mandate proposal only: no EVE call, no PAR record, no confirmed mandate record, and no external action. The turn is retained unchanged in the evidence package."
+  },
+  "files": [
+    {
+      "bytes": 511,
+      "file": "AUTHORIZATION_20261006T170920154292Z.json",
+      "sha256": "241dc07e610f9f2c9ab21f08c4e5df6a998bd92f9c73209c65dad0ee06e6193c"
+    },
+    {
+      "bytes": 467,
+      "file": "MANDATE_20261006T170332953257Z.json",
+      "sha256": "d17233bd86c445a351ae343b33a8b032c3b72138ec98a20279dbbf9628cfdd3a"
+    },
+    {
+      "bytes": 3682,
+      "file": "TURN_20261006T170253542938Z_1.json",
+      "sha256": "3374fe11caf260f6499ec055d61ec0f3dbdf398f1640f12c3d4a1a14fc824dc4"
+    },
+    {
+      "bytes": 4362,
+      "file": "TURN_20261006T170835614852Z_1.json",
+      "sha256": "128272cb81a24a1cfddf1825937afd19f9699a4d08599b563089339429fc2a50"
+    },
+    {
+      "bytes": 4215,
+      "file": "TURN_20261006T170840383947Z_2.json",
+      "sha256": "f923c6d4859c81565822d9c1dfc554515799da2131c3ec17dd397e36748c06f3"
+    },
+    {
+      "bytes": 3901,
+      "file": "TURN_20261006T170907706030Z_3.json",
+      "sha256": "a08251a6600812546c08a3c56c8e503c49fda585313215623ce1688dd48eb949"
+    },
+    {
+      "bytes": 4811,
+      "file": "TURN_20261006T171545636795Z_1.json",
+      "sha256": "d934aac634bf80e3afcbb87d644ca69173fce681938133889b73ddd01552458a"
+    },
+    {
+      "bytes": 3102,
+      "file": "declarations/DW_DECLARATION_MANDATE_ONLY_e443f4d13c61.json",
+      "sha256": "e443f4d13c61862cea001952b0b7674cf832ffad217ee4b960ebbad58918e51d"
+    },
+    {
+      "bytes": 3099,
+      "file": "declarations/DW_DECLARATION_WITH_AUTHORIZATION_6c8043a11ed7.json",
+      "sha256": "6c8043a11ed7100e03b1259b6d24be9f683159475de8f6cbcc440e51575edb78"
+    },
+    {
+      "bytes": 1214,
+      "file": "declarations/DW_EVIDENCE_RECORDS_3610e4947411.json",
+      "sha256": "3610e494741192bccc23e8c0d673b0fb13b0b06b49b85016e4c69ecb1e235d39"
+    },
+    {
+      "bytes": 1739,
+      "file": "declarations/DW_EVIDENCE_RECORDS_b4ab44380711.json",
+      "sha256": "b4ab443807111a537debd9bd26f40ba5258c1c733c624e8b10b416be8e8265a4"
+    },
+    {
+      "bytes": 2768,
+      "file": "intake/INTAKE_20261006T170641443882Z_PRINT_ONLY_EVA-CH-e1698b4b7d2963f272e1692a.json",
+      "sha256": "bbda2a3ee0e58dcb69602e6c36fdf14b6740eab36708156fd8e7f9bf98457ef3"
+    },
+    {
+      "bytes": 2757,
+      "file": "intake/INTAKE_20261006T170705116301Z_SAVE_EVA-CH-e1698b4b7d2963f272e1692a.json",
+      "sha256": "740c81c886f3cae3aed3498570e84f4d902e9d957e4e39faace4d1056695bbc3"
+    },
+    {
+      "bytes": 2484,
+      "file": "intake/INTAKE_20261006T171242870443Z_PRINT_ONLY_EVA-CH-6fb7fe20ec7762db7025c829.json",
+      "sha256": "6be0bf30c83f49253d368a11ffffc4de83241e1eae8b76789b0e4481e52ed147"
+    },
+    {
+      "bytes": 2473,
+      "file": "intake/INTAKE_20261006T171305161765Z_SAVE_EVA-CH-6fb7fe20ec7762db7025c829.json",
+      "sha256": "92ec1d92ece93ddcfceac6e0b496934a942d46a6f6d67027b5b7a74c1e56e142"
+    }
+  ],
+  "limits": [
+    "Synthetic provider, offer, booking and payment-free scope; nothing real is booked or paid.",
+    "Confirmer identity is declared, not authenticated; the human channel means the model has no tool for it, not that the person is authenticated.",
+    "EVE verifies the declared evidence record; it does not establish that the declared evidence is true.",
+    "PRE only: DURING and POST are not part of S1-lite.",
+    "Record seals are local, not externally anchored."
+  ],
+  "proposer": {
+    "kind": "scripted",
+    "label": "Scripted proposer (no LLM)",
+    "statement": "This run does not claim that Amazon Nova performed S1-lite. It establishes the scripted proposer path through mandate -> D-alpha -> binding -> EVE -> gate -> execution/history. A Nova run, if made, is a separate, separately labelled run."
+  },
+  "record_kind": "eva_s1lite_run_index",
+  "record_schema_version": "eva-s1lite-run-index-1.0",
+  "record_sha256": "878c1ca9ba8003493c9b3d93f6c632c4c3abaaccd094718407ff99b0806d04d4",
+  "run": "S1-lite Verified Delegation -- increment 4 live run against the hosted demo EVE (eve-core-v1 behind EVE MCP v1)",
+  "sequence": [
+    {
+      "result": "mandate proposal; confirmed in the human channel by Joakim Eklund (declared, not authenticated) -> MANDATE_20261006T170332953257Z.json; no EVE call",
+      "step": 1,
+      "turn": "TURN_20261006T170253542938Z_1.json",
+      "what": "mandate session (no binding)"
+    },
+    {
+      "binding": "bindings/dishwasher_v1.chain_map.json sha256 88d65161824c9c394526d3ab114284948301f00f6448d22c2fbb372e182830a7",
+      "chain_id": "EVA-CH-e1698b4b7d2963f272e1692a",
+      "declaration": "declarations/DW_DECLARATION_MANDATE_ONLY_e443f4d13c61.json",
+      "eve_composed": "PARTIAL / HUMAN_REVIEW_REQUIRED, single gap APPROVAL_SCOPE_MISMATCH",
+      "step": 2,
+      "what": "D-alpha v1: declaration built from the confirmed mandate only; intake print-only then save on the VPS (/opt/eva-demo/eva-intake-dw)"
+    },
+    {
+      "result": "'Book the repair.' -> EVE escalate, EVE-PAR-LOCAL-000035, gate DENY, nothing booked; 'Why didn't you book it?' -> ESTABLISHED from the turn, the v1 SAVE intake (EVE's own gap text) and the mandate record (no record written, no EVE call); '$275 is fine.' -> authorization proposal, confirmed in the human channel by Joakim Eklund -> AUTHORIZATION_20261006T170920154292Z.json",
+      "step": 3,
+      "turns": [
+        "TURN_20261006T170835614852Z_1.json",
+        "TURN_20261006T170840383947Z_2.json",
+        "TURN_20261006T170907706030Z_3.json"
+      ],
+      "what": "v1 process (binding v1)"
+    },
+    {
+      "binding": "bindings/dishwasher_v2.chain_map.json sha256 f0593d25c94ef9cdadba6384f7aba63cff31488517200cd760624319aa449898",
+      "chain_id": "EVA-CH-6fb7fe20ec7762db7025c829",
+      "declaration": "declarations/DW_DECLARATION_WITH_AUTHORIZATION_6c8043a11ed7.json",
+      "eve_composed": "SUPPORTED / ACTION_CHAIN_SUPPORTED, no gaps",
+      "step": 4,
+      "supersedes": "EVA-CH-e1698b4b7d2963f272e1692a",
+      "what": "D-alpha v2: declaration built from the confirmed mandate and the confirmed authorization only; intake print-only then save with --supersedes v1"
+    },
+    {
+      "result": "'Book the repair.' -> EVE allow, EVE-PAR-LOCAL-000036, gate ALLOW, DW-OFFER-001 booked once at USD 275 (synthetic); history shows 000035 ESCALATE / NOT EXECUTED and 000036 ALLOW / EXECUTED side by side; both audits VERIFIED",
+      "step": 5,
+      "turn": "TURN_20261006T171545636795Z_1.json",
+      "what": "v2 process (new process, binding v2; D5 B4)"
+    }
+  ],
+  "verification_2026-10-06": [
+    "15 files, all LF; 5 turns self-hash verified, flow eva-delegation-s1-lite-v1, proposer scripted",
+    "EVE record ids in the turns exactly EVE-PAR-LOCAL-000035 and EVE-PAR-LOCAL-000036; exactly 2 EVE calls, both policy MATCH",
+    "exactly one booking executed in the whole run: DW-OFFER-001 USD 275 under EVE-PAR-LOCAL-000036",
+    "unplanned turn D-1: mandate proposal only, no EVE call, no execution, register unchanged",
+    "exactly one mandate record; mandate and authorization seals verify",
+    "both declarations and both evidence-records files re-built byte-identical from the confirmed records only (D-beta); documents.sha256 equals the records file",
+    "4 intake records self-hash verified; v1 CREATED with single gap APPROVAL_SCOPE_MISMATCH; v2 CREATED, no gaps, supersedes v1; both against tree a698922c",
+    "audit EVE-PAR-LOCAL-000035 VERIFIED (escalate, not executed, policy MATCH); audit EVE-PAR-LOCAL-000036 VERIFIED (allow, executed, policy MATCH)"
+  ],
+  "vps": {
+    "after_dw_v1_save": {
+      "chains": 5,
+      "chains_json_sha256": "5fdb3b8644bd1f004f0aa3196bcebe2575add00528045bde89b8efa105173f89",
+      "records": 34
+    },
+    "after_dw_v2_save": {
+      "chains": 6,
+      "chains_json_sha256": "9a4d2aaa38f8f023b5191a2acbe17ad72d572978b55902d6716c0b9baceee181",
+      "records": 35
+    },
+    "after_v1_session": {
+      "new": [
+        "EVE-PAR-LOCAL-000035"
+      ],
+      "pre_action_records_sha256": "ff529f317dbcec14806cc911ecb76f7cdc4beee57d752a47ad842c9e142d8f44",
+      "records": 35
+    },
+    "baseline": {
+      "chains": 4,
+      "chains_json_sha256": "f58f8159b30b90a9c516b42f1e9b30eec9aecab15fad65ffe8ca2ce149a44906",
+      "checkout_dirty_files": 0,
+      "eve_tree": "a698922c9fd740c4b114e572a626380abf1590a4",
+      "pre_action_records_sha256": "87087325d8f6beb40f8d5d8c29758e9c33525d52e380f4e51ca49434fcadf490",
+      "records": 34,
+      "services": "eva-eve active, eva-mcp active"
+    },
+    "final": {
+      "chains": 6,
+      "chains_json_sha256": "9a4d2aaa38f8f023b5191a2acbe17ad72d572978b55902d6716c0b9baceee181",
+      "checkout_dirty_files": 0,
+      "eve_tree": "a698922c9fd740c4b114e572a626380abf1590a4",
+      "new_records_in_this_run": [
+        "EVE-PAR-LOCAL-000035",
+        "EVE-PAR-LOCAL-000036"
+      ],
+      "pre_action_records_sha256": "c9eac484687d29d99501c6ed8e72f999392b04e62d62bfe2d602f89805f1c73a",
+      "records": 36,
+      "services": "eva-eve active, eva-mcp active"
+    },
+    "mutations_in_this_run": [
+      "new directory /opt/eva-demo/eva-intake-dw (intake code from repo + builder copy d11c2484..., two declarations)",
+      "new directory /opt/eva-demo/incoming/dw_s1lite (uploads)",
+      "new directory /opt/eva-demo/evidence/dw_intake (four intake records)",
+      "store: exactly two chains added (EVA-CH-e1698b4b7d2963f272e1692a, EVA-CH-6fb7fe20ec7762db7025c829)",
+      "store: exactly two pre-action records added (EVE-PAR-LOCAL-000035, EVE-PAR-LOCAL-000036)"
+    ],
+    "untouched": "/opt/eva-demo/eva-intake (declaration.py still 683c8010...), EVE checkout, services, all earlier chains and records"
+  }
+}
