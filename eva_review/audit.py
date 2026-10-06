@@ -21,6 +21,18 @@ class AuditError(ValueError):
         super().__init__(f"{code}: {detail}")
 
 
+# The argument that names the bound subject, per consequential action class. An action class that is not
+# listed has no defined subject: the audit refuses it rather than guessing which argument to look up.
+SUBJECT_ARG = {"set_supplier_risk_status": "supplier_id", "book_service_visit": "offer_id"}
+
+
+def subject_of(det: dict):
+    key = SUBJECT_ARG.get(det.get("tool_name"))
+    if key is None:
+        raise AuditError("UNKNOWN_ACTION_CLASS", f"no subject argument is defined for {det.get('tool_name')!r}")
+    return (det.get("args") or {}).get(key)
+
+
 def _not_established(reason: str) -> str:
     return f"NOT_ESTABLISHED: {reason}"
 
@@ -90,7 +102,7 @@ def export_action(eve_record_id: str, turns: list[Loaded], intakes: list[Loaded]
 
     binding = t.get("binding")
     if isinstance(binding, dict):
-        bound = (binding.get("bindings") or {}).get(det["tool_name"], {}).get((det["args"] or {}).get("supplier_id"))
+        bound = (binding.get("bindings") or {}).get(det["tool_name"], {}).get(subject_of(det))
         if bound != det["chain_id"]:
             raise AuditError("BINDING_DECISION_MISMATCH",
                              f"the turn's recorded binding gives {bound!r}, but EVE was asked about {det['chain_id']!r}")

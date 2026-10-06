@@ -20,7 +20,7 @@ from datetime import datetime
 from typing import Any
 
 SCHEMA_ID = "eva-evidence-declaration-1.0"
-ACTION_CLASSES = ("set_supplier_risk_status",)
+ACTION_CLASSES = ("set_supplier_risk_status", "book_service_visit")
 
 TS_RE = re.compile(r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$")
 REF_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$")
