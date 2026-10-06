@@ -1,0 +1,33 @@
+{
+  "classification": "FAIL",
+  "eva_version": "0.1.0-i3a",
+  "eve": {
+    "bearer": "PRESENT_NOT_RECORDED",
+    "policy_ref": "eve-mcp-demo-policy-v1"
+  },
+  "frozen_i3a_boundary_verified": {
+    "eva/authorization.py": "4247e513d5408297e1eecddb6b6b7eb5240a577e17c48d91433b6d8fd087f2ae",
+    "eva/data/chain_map.json": "987a7e625d172e797ce1f51cc7f43f7f9cf28e8c63abe53410478ef0b6f94b6c",
+    "eva/eve_client.py": "82f6afb2b5685b67bea96ceaa03870367206aec35e2d2d9cc7e4b93d6eeeaa44",
+    "eva/gate.py": "8eeff78772a97508cbf2ee8acfdbbb22c0c4ad08b7677063f3b9e9a58cbc7ed8",
+    "eva/tools.py": "70e88f7138ec02f099d0b4e79ebc81909febe63810e99be4a5f68ee0d5e84ac3"
+  },
+  "mode": "proof",
+  "model": {
+    "kind": "bedrock",
+    "max_tokens": 512,
+    "model_id": "amazon.nova-lite-v1:0",
+    "profile": "eva-runtime",
+    "region": "eu-north-1",
+    "temperature": 0.0
+  },
+  "record_kind": "eva_i3b_run",
+  "record_schema_version": "eva-i3b-run-1.0",
+  "record_sha256": "402f760f6672f2910c4212f29ab056d3988ce8098edd6ae319cf037fc5d451e9",
+  "result": {
+    "classification": "FAIL",
+    "error": "ModelThrottledException: An error occurred (ThrottlingException) when calling the ConverseStream operation (reached max retries: 4): Too many tokens per day, please wait before trying again.",
+    "mode": "proof"
+  },
+  "run_utc": "20260930T181605Z"
+}
