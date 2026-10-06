@@ -15,16 +15,16 @@ If the disk differs: STOP and report.
 ## CURRENT HANDOVER
 
 ```
-_HANDOVER_2026-09-30_052_I2-CLOSED.md
-cf1360ee659dbc112996b6c77853dd2777babf4d655e9ac5249b688b6b21925b   6862
+_HANDOVER_2026-10-06_052_S1LITE-TARGET-CLOSED.md
+426b688520f18460b3c4591656f07c3807a6db2b4e0699d479de3497172715e0   17573
 ```
 
 ```
-I1               CLOSED (owner decision 2026-09-30)
-I2               CLOSED (owner decision 2026-09-30) -- evidence\i2\I2_CLOSURE_2026-09-30.json record_sha256 be1fb1fd...
-I3               NOT_STARTED -- read-only AWS discovery blocked: no AWS credentials on the workstation (owner-reported)
-main at snapshot 95bb7392d2fb4065a27ea931b1bf7a99769439cf (ls-remote 2026-09-30)
-track            self-contained project track; no Atlas mutation (owner decision 2026-09-30)
+S1-lite / PRE    CLOSED; Target Identity IMPLEMENTED + LIVE VERIFIED + SEALED
+                 closing commit 42ec356d6cf2423526614527cda48ad9534bec91 (owner decision 2026-10-06)
+submission       Amazon presentation/submission PARKED (owner decision 2026-10-06)
+DURING           NEXT, NOT STARTED
+track            self-contained project track; no Atlas mutation (owner decision 2026-09-30, reaffirmed 2026-10-06)
 ```
 
 ## What this project is
@@ -44,12 +44,15 @@ rule         neither is modified here; tools/verify_vendor.py must PASS before a
 ## Read next
 
 ```
-_HANDOVER_2026-09-30_052_I2-CLOSED.md   state, identities, owner decisions and deviations at 2026-09-30
-evidence\i2\I2_CLOSURE_2026-09-30.json  I2 gates, evidence inventory, instrument hashes
-README.md                               EVA story, architecture, immutable dependencies, claim boundaries
-tools\verify_vendor.py                  vendor identity check (git tree without git + manifest + inventory)
-tools\vps\                              I2 instruments (backend steps, nginx diagnosis, remote probe)
-vendor\eve-mcp\                         frozen EVE MCP v1
+_HANDOVER_2026-10-06_052_S1LITE-TARGET-CLOSED.md   final S1-lite model: target identity, coverage boundary, three baselines, live results
+evidence\s1lite_target_live\S1LITE_TARGET_RUN_INDEX_2026-10-06.json  target-bound live run (record_sha256 0787b508...)
+_HANDOVER_2026-10-06_052_S1LITE-CLOSED.md          S1-lite as it stood at 1199f22 (before Target Identity); history
+docs/DESIGN_S1LITE_VERIFIED_DELEGATION_2026-10-06.md  S1-lite design at 1199f22, provenance-labelled (not updated for Target Identity)
+evidence\s1lite_live\S1LITE_RUN_INDEX_2026-10-06.json  historical S1-lite live run (record_sha256 878c1ca9...)
+docs\DECISION_D4_HUMAN_REVIEW_2026-10-02.md        locked human-review semantics (R1-R7)
+docs\DECISION_D5_CUSTOMER_CHAIN_BINDING_2026-10-02.md  locked chain-binding semantics (B1-B13)
+README.md                                          EVA story and claim boundaries (not yet updated for S1-lite)
+vendor\eve-mcp\                                    frozen EVE MCP v1
 ```
 
 ## RECORDING PROTOCOL (this project)
@@ -70,5 +73,7 @@ vendor\eve-mcp\                         frozen EVE MCP v1
 ## Retained handovers
 
 ```
-(none earlier; _HANDOVER_2026-09-30_052_I2-CLOSED.md is the first dated handover of this track)
+_HANDOVER_2026-10-06_052_S1LITE-TARGET-CLOSED.md   426b688520f18460b3c4591656f07c3807a6db2b4e0699d479de3497172715e0   17573   (current)
+_HANDOVER_2026-10-06_052_S1LITE-CLOSED.md          63cf9e2b33df1bf613e7a075ea5137c6aec8ef48376198e3c4091acbf3ff7221   11256
+_HANDOVER_2026-09-30_052_I2-CLOSED.md              cf1360ee659dbc112996b6c77853dd2777babf4d655e9ac5249b688b6b21925b    6862
 ```
