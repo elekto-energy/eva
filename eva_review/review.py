@@ -22,7 +22,8 @@ from typing import Optional
 from .records import D4_BLOB, Loaded, RecordError, canonical_sha256
 
 OUTCOMES = ("NEW_EVIDENCE", "DECLINED", "HANDLED_BY_HUMAN")
-CONSEQUENTIAL_TOOL = "set_supplier_risk_status"
+# The consequential action classes whose EVE determinations are reviewable. Any other tool is skipped.
+CONSEQUENTIAL_TOOLS = frozenset({"set_supplier_risk_status", "book_service_visit"})
 
 
 class ReviewError(ValueError):
@@ -38,7 +39,7 @@ def determinations(turns: list[Loaded]) -> dict[str, dict]:
     for t in turns:
         executed_ids = {e.get("tool_use_id") for e in t.body.get("tool_executions", []) if e.get("executed")}
         for d in t.body.get("gate_decisions", []):
-            if d.get("tool_name") != CONSEQUENTIAL_TOOL or not d.get("eve_record_id"):
+            if d.get("tool_name") not in CONSEQUENTIAL_TOOLS or not d.get("eve_record_id"):
                 continue
             par = d["eve_record_id"]
             if par in out:
@@ -86,10 +87,11 @@ def _check_new_evidence(det: dict, intake: Loaded) -> dict:
     new_chain = b["chain"]["chain_id"]
     if new_chain == det["chain_id"]:
         raise ReviewError("NEW_EVIDENCE_SAME_CHAIN", f"{new_chain} is the reviewed chain; new evidence needs its own identity")
-    supplier = (det.get("args") or {}).get("supplier_id")
-    if b.get("action_class") != det["tool_name"] or b.get("subject_ref") != supplier:
+    from .audit import subject_of                       # one subject model (audit imports this module)
+    subject = subject_of(det)
+    if b.get("action_class") != det["tool_name"] or b.get("subject_ref") != subject:
         raise ReviewError("NEW_EVIDENCE_OTHER_ACTION",
-                          f"intake is for {b.get('action_class')}/{b.get('subject_ref')}, review is for {det['tool_name']}/{supplier}")
+                          f"intake is for {b.get('action_class')}/{b.get('subject_ref')}, review is for {det['tool_name']}/{subject}")
     return {"intake_record": intake.ref(), "declaration_sha256": b["declaration_sha256"],
             "new_chain_id": new_chain, "new_chain_content_hash": b["chain"]["content_hash"],
             "supersedes_recorded_in_intake": b.get("supersedes"),

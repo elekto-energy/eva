@@ -60,7 +60,7 @@ def _sha(p: Path) -> str:
     return hashlib.sha256(p.read_bytes()).hexdigest()
 
 
-def _read_locked(path: Path) -> tuple[str, dict]:
+def _read_locked(path: Path, consequential_tools: frozenset = config.CONSEQUENTIAL_TOOLS) -> tuple[str, dict]:
     """Read once, parse with the frozen loader, and refuse if the file changed in between."""
     before = _sha(path)
     try:
@@ -77,7 +77,7 @@ def _read_locked(path: Path) -> tuple[str, dict]:
     if type(bindings) is not dict or not bindings:
         raise BindingError("BINDING_INVALID", f"{path.name}: bindings must be a non-empty object")
     for tool, by_subject in bindings.items():
-        if tool not in config.CONSEQUENTIAL_TOOLS:
+        if tool not in consequential_tools:
             raise BindingError("BINDING_INVALID", f"{path.name}: {tool!r} is not a consequential tool")
         if type(by_subject) is not dict or not by_subject:
             raise BindingError("BINDING_INVALID", f"{path.name}: bindings for {tool!r} must be a non-empty object")
@@ -101,7 +101,8 @@ def _intake_for(chain_id: str, tool: str, subject: str, intakes: list) -> dict:
     raise BindingError("BINDING_WITHOUT_INTAKE", f"{chain_id} has no stored intake record among the supplied records")
 
 
-def lock_binding(path: Optional[Path], intake_dirs: tuple = ()) -> LockedBinding:
+def lock_binding(path: Optional[Path], intake_dirs: tuple = (),
+                 consequential_tools: frozenset = config.CONSEQUENTIAL_TOOLS) -> LockedBinding:
     """Lock the binding for the lifetime of the process (B4)."""
     if path is None:
         sha, bindings = _read_locked(FROZEN_CHAIN_MAP)
@@ -109,7 +110,7 @@ def lock_binding(path: Optional[Path], intake_dirs: tuple = ()) -> LockedBinding
     path = Path(path).resolve()
     if not path.is_file():
         raise BindingError("BINDING_MISSING", str(path))
-    sha, bindings = _read_locked(path)
+    sha, bindings = _read_locked(path, consequential_tools)
     from eva_review.records import INTAKE_RECORD_GLOB, load_dir      # verified (self-hashed) intake records only
     intakes = [r for d in intake_dirs for r in load_dir(Path(d), INTAKE_RECORD_GLOB, ("eva_chain_intake",))]
     refs = []

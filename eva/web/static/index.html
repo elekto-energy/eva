@@ -139,6 +139,8 @@ tr.changed td{background:#E4F1EB}
   <blockquote id="spokenText">Ask EVA to change a supplier's risk status.</blockquote>
 </section>
 
+<section class="reviewbox" id="confirmbox" hidden aria-live="polite"></section>
+
 <div class="below">
   <details id="modeldetails"><summary>The model's own text (shown, never spoken)</summary><p id="modelText">None yet.</p></details>
   <div>
@@ -200,11 +202,13 @@ function render(t){
   if($("speak").checked && "speechSynthesis" in window){ speechSynthesis.cancel(); speechSynthesis.speak(new SpeechSynthesisUtterance(t.spoken)); }
 }
 let inFlight=false;
+let MODE="supplier";
 function setBusy(b){
   inFlight=b;
   for(const e of document.querySelectorAll("#send,#reset,#proposer,[data-say]")) e.disabled=b;
 }
 async function ask(text){
+  if(MODE==="delegation") return askDelegation(text);
   if(inFlight) return;
   text=(text||$("utterance").value).trim(); if(!text) return;
   $("utterance").value=text; setBusy(true);
@@ -246,7 +250,7 @@ async function loadHistory(){
   for(const i of j.items){
     const bt=el("button",null,"hitem "+htone(i)); bt.type="button"; bt.setAttribute("aria-current",String(i.eve_record_id===selected));
     bt.append(el("b",i.eve_record_id)); bt.append(el("span",i.turn_utc)); bt.append(el("span","\u201c"+i.request_utterance+"\u201d"));
-    bt.append(el("span","EVE "+String(i.customer_policy_outcome).toUpperCase()+" \u00b7 "+(i.executed?"EXECUTED "+i.risk_before+" \u2192 "+i.risk_after:"NOT EXECUTED")));
+    bt.append(el("span","EVE "+String(i.customer_policy_outcome).toUpperCase()+" \u00b7 "+(i.executed?"EXECUTED"+(i.risk_before!=null?" "+i.risk_before+" \u2192 "+i.risk_after:""):"NOT EXECUTED")));
     if(i.review) bt.append(el("span","Human review: "+i.review.outcome));
     else if(i.requires_review) bt.append(el("span","Awaiting human review"));
     bt.onclick=()=>{ selected=i.eve_record_id; loadHistory().then(()=>showAudit(i.eve_record_id)); };
@@ -272,7 +276,7 @@ async function showAudit(par){
   if(typeof x.review==="object"){
     flow.append(card("appended", "Human review", x.review.outcome, rows([["Note",(item&&item.review&&item.review.note)||"Added after the determination. Does not change it. Authorizes nothing."],["Recorded",x.review.recorded_utc],["Reviewer",x.review.reviewer+" (declared, not authenticated)"],["Authorizes action",String(x.review.effects.authorizes_action)],["Review id",x.review.review_id]])));
   } else flow.append(card("", "Human review", null, rows([["Review",x.review]])));
-  flow.append(card(ex.executed_by_eva?"done":"stop", "Execution", ex.executed_by_eva?"EXECUTED \u00b7 "+j.register.risk_before+" \u2192 "+j.register.risk_after:"NOT EXECUTED", rows([["Register changed",ex.register_changed]])));
+  flow.append(card(ex.executed_by_eva?"done":"stop", "Execution", ex.executed_by_eva?"EXECUTED"+(j.register.risk_before!=null?" \u00b7 "+j.register.risk_before+" \u2192 "+j.register.risk_after:""):"NOT EXECUTED", rows([["Register changed",ex.register_changed]])));
   const src=el("ul",null,"bounds"); for(const s of x.sources){ const li=el("li"); li.append(el("span",s.file+"  ")); li.append(hash(s.sha256)); src.append(li); }
   flow.append(card("verified", "Audit verification", j.verification, src));
   a.append(flow);
@@ -298,6 +302,99 @@ function reviewBox(i){
   return b;
 }
 loadHistory();
+
+// ---- Delegation mode (eva_delegation.web only; eva.web.app has no /api/mode, so the page stays in supplier mode) ----
+function initDelegation(m){
+  MODE="delegation";
+  document.querySelector("header p").textContent="An agent you can delegate a household task to. It may book only within your confirmed mandate, and only when EVE has verified the evidence and allowed it.";
+  document.querySelector(".notice").textContent="Simulated voice-assistant experience. Not Alexa+, and not affiliated with or endorsed by Amazon. The service provider is a synthetic demo entity; nothing is really booked or paid.";
+  $("utterance").placeholder="e.g. Book a dishwasher repair this week. You may approve up to $200.";
+  $("reset").hidden=true;
+  const tr=document.querySelector(".try"); tr.replaceChildren();
+  for(const s of ["Book a dishwasher repair this week. You may approve up to $200.","Book the repair.","$275 is fine.","Why didn't you book it?"]){
+    const b=el("button",s,"quiet"); b.type="button"; b.dataset.say=s; b.onclick=()=>ask(s); tr.append(b);
+  }
+  document.querySelector('table[aria-label="Supplier register"] thead').replaceChildren((()=>{const r=el("tr"); r.append(el("th","Booking (synthetic)")); r.append(el("th","Status")); return r;})());
+  $("s-reg").querySelector("h2").textContent="Booking";
+  $("spokenText").textContent=m.bound_offers.length?"Ask EVA to book the repair.":"State the task and your spending limit.";
+  refreshDelegation();
+}
+function renderBookings(b){
+  const tb=$("reg"); tb.replaceChildren();
+  const ids=Object.keys(b||{}); if(!ids.length){ const r=el("tr"); r.append(el("td","None","id")); r.append(el("td","not booked")); tb.append(r); return; }
+  for(const id of ids){ const r=el("tr"); r.className="changed"; r.append(el("td",id,"id")); r.append(el("td","booked $"+b[id].price_usd+", "+b[id].slot)); tb.append(r); }
+}
+async function refreshDelegation(){
+  const r=await fetch("/api/delegation/state"); if(!r.ok) return; const s=await r.json();
+  renderBookings(s.bookings); renderConfirm(s.pending);
+}
+function renderConfirm(pending){
+  const box=$("confirmbox"); box.replaceChildren();
+  if(!pending||!pending.length){ box.hidden=true; return; }
+  const p=pending[pending.length-1]; box.hidden=false;
+  box.append(el("p","Confirm before it counts","big"));
+  box.append(el("p",p.read_back));
+  const nl=el("label","Your name (declared, not authenticated)"); const ni=el("input"); ni.maxLength=120; nl.append(ni);
+  const ul=el("label","Your confirmation, in your words"); const ui=el("input"); ui.maxLength=300; ui.value="Yes."; ul.append(ui);
+  const btn=el("button","Confirm","primary"); btn.type="button"; const msg=el("p","","info");
+  btn.onclick=async()=>{
+    if(!ni.value.trim()){ msg.textContent="Name the person confirming first."; return; }
+    const kind=p.kind==="mandate_proposal"?"mandate":"authorization";
+    const r=await fetch("/api/delegation/confirm",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({kind,read_back:p.read_back,confirmed_by:ni.value.trim(),confirmation_utterance:ui.value.trim()})});
+    const j=await r.json(); if(!r.ok){ msg.textContent=j.error||("Refused ("+r.status+")"); return; }
+    msg.textContent="Recorded: "+j.file+"  sha256 "+j.file_sha256.slice(0,16)+"...";
+    $("spokenText").textContent="Confirmed. "+p.read_back.replace(/ Confirm\?$/,"")+" This is now a record; EVA cannot change it.";
+    setTimeout(refreshDelegation,1200);
+  };
+  box.append(nl,ul,btn,msg);
+  box.append(el("p","EVA can only propose. Only this confirmation turns the proposal into a record, and the model has no way to press it.","info"));
+}
+function renderDelegation(t){
+  const o=t.observed, d=(t.gate_decisions||[]).filter(x=>x.tool_name==="book_service_visit").pop();
+  const k=!o.booking_proposed?"":(o.booked?"done":(o.customer_policy_outcome==="escalate"||o.customer_policy_outcome==="pause"?"hold":"stop"));
+  const prop=(t.proposals||[]).slice(-1)[0];
+  setStage("s-eva", (o.booking_proposed||prop)?"proposed":"", o.booking_proposed?"Book visit":(prop?"Propose "+(prop.kind==="mandate_proposal"?"mandate":"approval"):(t.proposer_error?"Proposer failed":"Nothing proposed")),
+    [["Proposer",t.proposer.label],["Offer",o.offer_id,true],["Price",o.price_usd!=null?"$"+o.price_usd:null],["Read-back",prop&&prop.read_back],["Error",t.proposer_error]]);
+  if(o.booking_proposed && o.eve_called){
+    setStage("s-eve","eve",o.customer_policy_outcome||o.pre_action_status||"No answer",
+      [["Status",o.pre_action_status],["Chain",d&&d.verified_chain_outcome],["Policy",o.customer_policy_outcome],["Chain id",d&&d.chain_id,true],["Record",o.eve_record_id,true]]);
+  } else setStage("s-eve", o.booking_proposed?"stop":"", o.booking_proposed?"Not reached":"", o.booking_proposed?[["Reason",o.gate_reason]]:null);
+  if(o.booking_proposed){
+    const allow=o.gate_decision==="ALLOW";
+    setStage("s-gate", allow?"done":k, allow?"Allowed":"Stopped", [["Decision",o.gate_decision],["Reason",o.gate_reason]], allow?null:"Stopped here");
+    setStage("s-reg", o.booked?"done":"after-stop", o.booked?"Booked":"Not booked", [["Offer",o.offer_id],["Tool run",o.booked?"yes, once":"no"]]);
+  } else { setStage("s-gate","",""); setStage("s-reg","",""); }
+  $("spoken").className="spoken"+(k?" "+k:""); $("spokenText").textContent=t.spoken;
+  $("modelText").textContent=t.model_text||"(none)";
+  renderBookings(t.register.after); renderConfirm(t.proposals);
+  $("evidence").textContent="Evidence: "+(t.evidence_dir||"")+"/"+t.evidence_file+"  sha256 "+t.record_sha256.slice(0,16)+"...";
+  loadHistory(); speak(t.spoken);
+}
+function speak(text){ if($("speak").checked && "speechSynthesis" in window){ speechSynthesis.cancel(); speechSynthesis.speak(new SpeechSynthesisUtterance(text)); } }
+function renderWhy(a){
+  $("spoken").className="spoken"+(a.answer_class==="ESTABLISHED"?" hold":""); $("spokenText").textContent=a.spoken;
+  const box=$("confirmbox"); box.replaceChildren(); box.hidden=false;
+  box.append(el("p","Why: "+a.answer_class,"big"));
+  for(const s of a.statements){ const p=el("p",s.text); box.append(p); const src=el("p","Source: "+s.source.file+"  ","info"); src.append(hash(s.source.file_sha256)); box.append(src); }
+  for(const m of a.not_established){ box.append(el("p","NOT_ESTABLISHED: "+m,"absent")); }
+  speak(a.spoken);
+}
+async function askDelegation(text){
+  if(inFlight) return;
+  text=(text||$("utterance").value).trim(); if(!text) return;
+  $("utterance").value=text; setBusy(true);
+  const isWhy=/\bwhy\b/i.test(text);
+  $("spokenText").className=""; $("spokenText").textContent=isWhy?"Reading the records...":($("proposer").value==="nova"?"Checking with EVE... (Amazon Nova can take a moment)":"Checking with EVE...");
+  try{
+    const r=await fetch(isWhy?"/api/delegation/why":"/api/delegation/turn",{method:"POST",headers:{"Content-Type":"application/json"},
+      body:JSON.stringify(isWhy?{question:text}:{utterance:text,proposer:$("proposer").value})});
+    const t=await r.json();
+    if(!r.ok){ $("spokenText").textContent=t.error||("Request failed with status "+r.status); $("spokenText").className="error"; return; }
+    if(isWhy) renderWhy(t); else renderDelegation(t);
+  }catch(e){ $("spokenText").textContent="The EVA server did not respond. Check that it is running."; }
+  finally{ setBusy(false); }
+}
+fetch("/api/mode").then(r=>r.ok?r.json():null).then(m=>{ if(m&&m.mode==="delegation") initDelegation(m); }).catch(()=>{});
 
 const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
 if(SR){
